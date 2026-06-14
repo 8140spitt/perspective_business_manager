@@ -241,3 +241,133 @@ export async function createClient(input: CreateClientInput): Promise<number> {
 		connection.release();
 	}
 }
+export interface ClientContact {
+	contactId: number;
+	displayName: string;
+	firstName: string;
+	lastName: string;
+	relationshipLabel: string | null;
+	isPrimary: boolean;
+	statusCode: string;
+	createdAt: string;
+}
+
+export async function listClientContacts(clientId: number): Promise<ClientContact[]> {
+	const [rows] = await db.query(
+		`
+		SELECT
+			contact.party_id AS contactId,
+			contact.display_name AS displayName,
+			person.first_name AS firstName,
+			person.last_name AS lastName,
+			rel.relationship_label AS relationshipLabel,
+			rel.is_primary AS isPrimary,
+			contact.status_code AS statusCode,
+			contact.created_at AS createdAt
+		FROM party_relationship rel
+		INNER JOIN party contact
+			ON contact.party_id = rel.from_party_id
+		INNER JOIN person
+			ON person.party_id = contact.party_id
+		WHERE rel.to_party_id = :clientId
+			AND rel.relationship_type_code = 'CONTACT_OF'
+			AND rel.status_code = 'ACTIVE'
+		ORDER BY rel.is_primary DESC, contact.display_name
+		`,
+		{ clientId }
+	);
+
+	return rows as ClientContact[];
+}
+
+export interface CreateClientContactInput {
+	clientId: number;
+	firstName: string;
+	lastName: string;
+	relationshipLabel?: string | null;
+	isPrimary?: boolean;
+}
+
+export async function createClientContact(input: CreateClientContactInput): Promise<number> {
+	const connection = await db.getConnection();
+
+	try {
+		await connection.beginTransaction();
+
+		const displayName = `${input.firstName} ${input.lastName}`.trim();
+
+		const [partyResult] = await connection.query(
+			`
+			INSERT INTO party (
+				party_type_code,
+				display_name,
+				status_code
+			)
+			VALUES (
+				'PERSON',
+				:displayName,
+				'ACTIVE'
+			)
+			`,
+			{ displayName }
+		);
+
+		const contactId = Number((partyResult as { insertId: number }).insertId);
+
+		await connection.query(
+			`
+			INSERT INTO person (
+				party_id,
+				first_name,
+				last_name
+			)
+			VALUES (
+				:contactId,
+				:firstName,
+				:lastName
+			)
+			`,
+			{
+				contactId,
+				firstName: input.firstName,
+				lastName: input.lastName
+			}
+		);
+
+		await connection.query(
+			`
+			INSERT INTO party_relationship (
+				from_party_id,
+				to_party_id,
+				relationship_type_code,
+				relationship_label,
+				is_primary,
+				status_code
+			)
+			VALUES (
+				:contactId,
+				:clientId,
+				'CONTACT_OF',
+				:relationshipLabel,
+				:isPrimary,
+				'ACTIVE'
+			)
+			`,
+			{
+				contactId,
+				clientId: input.clientId,
+				relationshipLabel: input.relationshipLabel ?? null,
+				isPrimary: input.isPrimary ?? false
+			}
+		);
+
+		await connection.commit();
+
+		return contactId;
+	} catch (error) {
+		await connection.rollback();
+		throw error;
+	} finally {
+		connection.release();
+	}
+}

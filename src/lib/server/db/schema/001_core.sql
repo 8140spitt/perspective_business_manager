@@ -160,3 +160,30 @@ CREATE TABLE IF NOT EXISTS property_unit (
         FOREIGN KEY (property_id)
         REFERENCES property (property_id)
 );
+
+CREATE TABLE IF NOT EXISTS party_relationship (
+    party_relationship_id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+
+    from_party_id BIGINT UNSIGNED NOT NULL,
+    to_party_id BIGINT UNSIGNED NOT NULL,
+
+    relationship_type_code VARCHAR(100) NOT NULL,
+    relationship_label VARCHAR(255) NULL,
+
+    is_primary BOOLEAN NOT NULL DEFAULT FALSE,
+    date_from DATE NULL,
+    date_to DATE NULL,
+
+    status_code VARCHAR(100) NOT NULL DEFAULT 'ACTIVE',
+
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+
+    CONSTRAINT fk_party_relationship_from_party
+        FOREIGN KEY (from_party_id)
+        REFERENCES party (party_id),
+
+    CONSTRAINT fk_party_relationship_to_party
+        FOREIGN KEY (to_party_id)
+        REFERENCES party (party_id)
+);
