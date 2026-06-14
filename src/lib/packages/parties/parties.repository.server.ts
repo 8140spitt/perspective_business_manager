@@ -371,3 +371,125 @@ export async function createClientContact(input: CreateClientContactInput): Prom
 		connection.release();
 	}
 }
+
+export interface ClientAddress {
+	partyAddressId: number;
+	addressId: number;
+	addressTypeCode: string;
+	isPrimary: boolean;
+	addressLine1: string;
+	addressLine2: string | null;
+	townCity: string | null;
+	countyRegion: string | null;
+	postcode: string | null;
+	countryCode: string;
+}
+
+export async function listClientAddresses(clientId: number): Promise<ClientAddress[]> {
+	const [rows] = await db.query(
+		`
+		SELECT
+			pa.party_address_id AS partyAddressId,
+			a.address_id AS addressId,
+			pa.address_type_code AS addressTypeCode,
+			pa.is_primary AS isPrimary,
+			a.address_line_1 AS addressLine1,
+			a.address_line_2 AS addressLine2,
+			a.town_city AS townCity,
+			a.county_region AS countyRegion,
+			a.postcode AS postcode,
+			a.country_code AS countryCode
+		FROM party_address pa
+		INNER JOIN address a
+			ON a.address_id = pa.address_id
+		WHERE pa.party_id = :clientId
+		ORDER BY pa.is_primary DESC, pa.address_type_code, a.address_line_1
+		`,
+		{ clientId }
+	);
+
+	return rows as ClientAddress[];
+}
+
+export interface CreateClientAddressInput {
+	clientId: number;
+	addressTypeCode: string;
+	isPrimary?: boolean;
+	addressLine1: string;
+	addressLine2?: string | null;
+	townCity?: string | null;
+	countyRegion?: string | null;
+	postcode?: string | null;
+	countryCode?: string | null;
+}
+
+export async function createClientAddress(input: CreateClientAddressInput): Promise<number> {
+	const connection = await db.getConnection();
+
+	try {
+		await connection.beginTransaction();
+
+		const [addressResult] = await connection.query(
+			`
+			INSERT INTO address (
+				address_line_1,
+				address_line_2,
+				town_city,
+				county_region,
+				postcode,
+				country_code
+			)
+			VALUES (
+				:addressLine1,
+				:addressLine2,
+				:townCity,
+				:countyRegion,
+				:postcode,
+				:countryCode
+			)
+			`,
+			{
+				addressLine1: input.addressLine1,
+				addressLine2: input.addressLine2 ?? null,
+				townCity: input.townCity ?? null,
+				countyRegion: input.countyRegion ?? null,
+				postcode: input.postcode ?? null,
+				countryCode: input.countryCode ?? 'GB'
+			}
+		);
+
+		const addressId = Number((addressResult as { insertId: number }).insertId);
+
+		await connection.query(
+			`
+			INSERT INTO party_address (
+				party_id,
+				address_id,
+				address_type_code,
+				is_primary
+			)
+			VALUES (
+				:clientId,
+				:addressId,
+				:addressTypeCode,
+				:isPrimary
+			)
+			`,
+			{
+				clientId: input.clientId,
+				addressId,
+				addressTypeCode: input.addressTypeCode,
+				isPrimary: input.isPrimary ?? false
+			}
+		);
+
+		await connection.commit();
+
+		return addressId;
+	} catch (error) {
+		await connection.rollback();
+		throw error;
+	} finally {
+		connection.release();
+	}
+}
