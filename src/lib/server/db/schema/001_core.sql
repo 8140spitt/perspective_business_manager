@@ -187,3 +187,30 @@ CREATE TABLE IF NOT EXISTS party_relationship (
         FOREIGN KEY (to_party_id)
         REFERENCES party (party_id)
 );
+
+CREATE TABLE IF NOT EXISTS property_party_role (
+    property_party_role_id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+
+    property_id BIGINT UNSIGNED NOT NULL,
+    party_id BIGINT UNSIGNED NOT NULL,
+
+    role_code VARCHAR(100) NOT NULL,
+    relationship_label VARCHAR(255) NULL,
+
+    is_primary BOOLEAN NOT NULL DEFAULT FALSE,
+    date_from DATE NULL,
+    date_to DATE NULL,
+
+    status_code VARCHAR(100) NOT NULL DEFAULT 'ACTIVE',
+
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+
+    CONSTRAINT fk_property_party_role_property
+        FOREIGN KEY (property_id)
+        REFERENCES property (property_id),
+
+    CONSTRAINT fk_property_party_role_party
+        FOREIGN KEY (party_id)
+        REFERENCES party (party_id)
+);

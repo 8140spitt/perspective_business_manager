@@ -130,3 +130,106 @@ export async function createProperty(input: CreatePropertyInput): Promise<number
 		connection.release();
 	}
 }
+export interface ClientLinkedProperty {
+	propertyPartyRoleId: number;
+	propertyId: number;
+	propertyName: string | null;
+	propertyReference: string | null;
+	addressLine1: string | null;
+	townCity: string | null;
+	postcode: string | null;
+	roleCode: string;
+	relationshipLabel: string | null;
+	isPrimary: boolean;
+	statusCode: string;
+}
+
+export async function listClientProperties(clientId: number): Promise<ClientLinkedProperty[]> {
+	const [rows] = await db.query(
+		`
+		SELECT
+			ppr.property_party_role_id AS propertyPartyRoleId,
+			p.property_id AS propertyId,
+			p.property_name AS propertyName,
+			p.property_reference AS propertyReference,
+			a.address_line_1 AS addressLine1,
+			a.town_city AS townCity,
+			a.postcode AS postcode,
+			ppr.role_code AS roleCode,
+			ppr.relationship_label AS relationshipLabel,
+			ppr.is_primary AS isPrimary,
+			ppr.status_code AS statusCode
+		FROM property_party_role ppr
+		INNER JOIN property p
+			ON p.property_id = ppr.property_id
+		LEFT JOIN address a
+			ON a.address_id = p.address_id
+		WHERE ppr.party_id = :clientId
+			AND ppr.status_code = 'ACTIVE'
+		ORDER BY ppr.is_primary DESC, p.property_name
+		`,
+		{ clientId }
+	);
+
+	return rows as ClientLinkedProperty[];
+}
+
+export async function listPropertiesForSelection(): Promise<PropertyListItem[]> {
+	const [rows] = await db.query(`
+		SELECT
+			p.property_id AS propertyId,
+			p.property_name AS propertyName,
+			a.address_line_1 AS addressLine1,
+			a.town_city AS townCity,
+			a.postcode AS postcode,
+			p.property_type_code AS propertyTypeCode,
+			p.status_code AS statusCode
+		FROM property p
+		LEFT JOIN address a
+			ON a.address_id = p.address_id
+		WHERE p.status_code = 'ACTIVE'
+		ORDER BY p.property_name, a.address_line_1
+	`);
+
+	return rows as PropertyListItem[];
+}
+
+export interface LinkClientPropertyInput {
+	clientId: number;
+	propertyId: number;
+	roleCode: string;
+	relationshipLabel?: string | null;
+	isPrimary?: boolean;
+}
+
+export async function linkClientProperty(input: LinkClientPropertyInput): Promise<number> {
+	const [result] = await db.query(
+		`
+		INSERT INTO property_party_role (
+			property_id,
+			party_id,
+			role_code,
+			relationship_label,
+			is_primary,
+			status_code
+		)
+		VALUES (
+			:propertyId,
+			:clientId,
+			:roleCode,
+			:relationshipLabel,
+			:isPrimary,
+			'ACTIVE'
+		)
+		`,
+		{
+			propertyId: input.propertyId,
+			clientId: input.clientId,
+			roleCode: input.roleCode,
+			relationshipLabel: input.relationshipLabel ?? null,
+			isPrimary: input.isPrimary ?? false
+		}
+	);
+
+	return Number((result as { insertId: number }).insertId);
+}
