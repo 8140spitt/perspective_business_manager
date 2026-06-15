@@ -8,6 +8,8 @@
 
 Provide the shared platform capabilities needed to operate the ERP safely and at scale.
 
+This module must support documents, reporting and integrations for both B2B and B2C journeys on the same shared enterprise model.
+
 ## Core Objects
 
 - document
@@ -29,9 +31,13 @@ The application shall manage upload, classification, versioning and retrieval of
 
 The application shall support evidence capture for activities, findings, assessments, actions, outcomes and supplier records.
 
+The application shall support evidence and document handling for both organisation-led matters and individual-consumer matters without creating separate control models.
+
 ### DAI-003 Operational Dashboards
 
 The application shall provide dashboards for leadership, finance, delivery, compliance and resource planning.
+
+The application shall allow dashboards to segment operational and commercial trends by B2B and B2C classification.
 
 ### DAI-004 Self-Service Reporting
 
@@ -45,6 +51,8 @@ The application shall support notifications, escalations, reminders and state-dr
 
 The application shall support integration with email, file storage, finance platforms, GIS, BI and client portals.
 
+The application shall support integrations that can address either organisation contacts or individual consumers as the relevant external customer party.
+
 ### DAI-007 Master Data Administration
 
 The application shall provide administrative control of users, roles, permissions, reference data, numbering sequences and workflow definitions.
@@ -55,6 +63,7 @@ The application shall provide administrative control of users, roles, permission
 - evidence completeness by workflow stage
 - integration failures and processing backlog
 - executive dashboards across pipeline, delivery, finance and compliance
+- reporting dimensions and exports that preserve B2B and B2C customer classification
 
 ## Integration Requirements
 

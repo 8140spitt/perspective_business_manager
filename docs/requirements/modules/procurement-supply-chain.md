@@ -8,6 +8,8 @@
 
 Manage supplier relationships, bought-in services and purchasing controls that support professional service delivery.
 
+This module must support procurement patterns needed for both B2B portfolio work and B2C case-by-case delivery work.
+
 ## Core Objects
 
 - supplier
@@ -32,6 +34,8 @@ The application shall support purchase requests, approvals and purchase orders f
 
 The application shall support assignment of specialist suppliers to activities, projects or instructions.
 
+The application shall support subcontractor engagement for both organisation-led delivery programmes and individual-customer instructions.
+
 ### PSC-004 Supplier Document Control
 
 The application shall store supplier insurances, certifications, terms and performance evidence.
@@ -40,12 +44,15 @@ The application shall store supplier insurances, certifications, terms and perfo
 
 The application shall link supplier costs to the relevant project, instruction, property or deliverable.
 
+The application shall preserve cost attribution whether the downstream commercial case is B2B account billing or B2C direct billing.
+
 ## Reporting Requirements
 
 - spend by supplier, category and service line
 - subcontractor utilisation and turnaround
 - expiring supplier compliance documents
 - committed versus actual external cost
+- supplier cost exposure by B2B and B2C delivery mix
 
 ## Integration Requirements
 

@@ -10,6 +10,7 @@ Translate the requirements suite into implementation phases, epics and backlog p
 2. Finish the commercial-to-delivery-to-cash chain before broadening edge modules.
 3. Prefer vertical slices that prove the canonical model in real operational workflows.
 4. Treat compliance, documents and audit as first-class delivery concerns, not late add-ons.
+5. Keep B2B and B2C behavior on the same shared party, client, instruction and finance model.
 
 ## Phase 1: Core Commercial And Delivery Spine
 
@@ -30,9 +31,10 @@ Operate the end-to-end flow from client and instruction through activity, delive
 
 1. Complete instruction routes and server flows around linked parties, properties and status.
 2. Complete activity chain creation flows for observation, assessment, action and outcome.
-3. Add deliverable and review state support linked to instruction and activity outcomes.
-4. Establish WIP item model and invoice issue flow.
-5. Ensure document and evidence attachment works for instruction, activity and outcome.
+3. Add customer-type-aware handling for B2B and B2C instructions without duplicating customer structures.
+4. Add deliverable and review state support linked to instruction and activity outcomes.
+5. Establish WIP item model and invoice issue flow.
+6. Ensure document and evidence attachment works for instruction, activity and outcome.
 
 ## Phase 2: Project Control And Resource Planning
 
@@ -54,7 +56,8 @@ Manage planned delivery, team allocation and execution control across projects a
 2. Introduce allocation, availability and utilisation objects and workflows.
 3. Tie assignment decisions to competency and accreditation data.
 4. Add project financial views linked to WIP, supplier cost and invoice status.
-5. Add overdue and blocked-work exception reporting.
+5. Ensure project and resource views work consistently for B2B portfolio work and B2C single-property work.
+6. Add overdue and blocked-work exception reporting.
 
 ## Phase 3: Governance, Quality And Records Control
 
@@ -77,6 +80,7 @@ Make the platform defensible for regulated professional service delivery through
 3. Add document revision, record classification and retention policy enforcement.
 4. Add corrective action linkage across compliance and operational objects.
 5. Add compliance dashboards for open issues, due actions and review ageing.
+6. Ensure complaint and privacy handling supports both B2B and B2C cases.
 
 ## Phase 4: Procurement, Supplier Control And External Delivery
 
@@ -126,6 +130,7 @@ Scale the platform across offices, service lines and integrations with reliable 
 ### Must-Have Near Term
 
 - instruction, activity, outcome and invoice chain
+- shared B2B and B2C customer handling on the same core model
 - workflow and business event history
 - object-linked documents and evidence
 - baseline finance controls

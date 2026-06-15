@@ -6,6 +6,10 @@ Define the platform requirements that apply across all enterprise modules.
 
 ## Canonical Data Requirements
 
+### CR-000 Shared Customer Model
+
+The platform shall support both B2B and B2C customer relationships using the same shared party, person, organisation, client account and contact model.
+
 ### CR-001 Single Object Ownership Rule
 
 The platform shall maintain a canonical definition for each enterprise object and reuse it across all modules.
@@ -17,6 +21,8 @@ The platform shall assign stable identifiers and references for parties, instruc
 ### CR-003 Reference Data Governance
 
 The platform shall manage status codes, type codes, workflow mappings, numbering sequences and reporting classifications as controlled reference data.
+
+The platform shall manage customer classification, customer role and intermediary role codes as controlled reference data where needed.
 
 ## Workflow Requirements
 
@@ -80,6 +86,8 @@ The platform shall provide reports across pipeline, workload, project status, fi
 
 The platform shall analyse data by client, property, instruction, project, service line, office, team, surveyor and time period.
 
+The platform shall support reporting dimensions that distinguish B2B and B2C customer activity without splitting the underlying customer model.
+
 ### REP-003 Defensible Outputs
 
 The platform shall support evidence-backed reporting suitable for client delivery and regulatory review.
@@ -98,11 +106,15 @@ The platform shall publish business events suitable for integration with documen
 
 The platform shall support controlled migration of clients, properties, instructions, historical projects, invoices and documents.
 
+The platform shall support import and migration of both organisation customers and individual consumers into the same canonical customer structure.
+
 ## User Experience Requirements
 
 ### UX-001 Workspace Navigation
 
 The application shall provide user-facing workspaces aligned to role and module concerns while preserving shared object relationships.
+
+The application shall preserve consistent navigation and record views for both organisation-based and individual-based customer journeys.
 
 ### UX-002 Fast Context Switching
 

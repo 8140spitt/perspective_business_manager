@@ -10,7 +10,8 @@ Trace requirements coverage from enterprise modules to current capability areas,
 2. Every requirement area should map to one or more routes or planned routes.
 3. Every route family should map to one or more domain packages or platform packages.
 4. Every package should map back to canonical business objects.
-5. Gaps between requirement coverage and implementation surfaces should be made explicit rather than implied.
+5. B2B and B2C support should be traceable across all customer-facing and commercially relevant modules.
+6. Gaps between requirement coverage and implementation surfaces should be made explicit rather than implied.
 
 ## Module To Implementation Matrix
 
@@ -39,6 +40,12 @@ Trace requirements coverage from enterprise modules to current capability areas,
 | outcome and deliverable | Service Delivery and Projects, Documents, Analytics and Integration, Finance and Commercial Control | `/app/activities/*`, `/app/documents/*`, `/app/finance/*`                  | `activities`, `documents`, `finance`, `reports`  |
 
 ## Current Gaps And Tensions
+
+### Customer Model Coverage Gaps
+
+- B2B and B2C support is now stated in requirements but is not yet explicitly traced to route-level behavior in every module
+- finance, property and compliance routes will need explicit customer-type handling without splitting the party model
+- reporting surfaces will need consistent customer classification dimensions across pipeline, delivery, debt and complaints
 
 ### Route Coverage Gaps
 

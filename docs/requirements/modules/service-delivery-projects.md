@@ -8,6 +8,8 @@
 
 Manage operational work from instruction through planning, site activity, findings, actions, deliverables and closeout.
 
+This module must support both B2B and B2C delivery journeys using the same instruction, project, activity and outcome model.
+
 ## Core Objects
 
 - instruction
@@ -26,6 +28,8 @@ Manage operational work from instruction through planning, site activity, findin
 ### SDP-001 Instruction Workspace
 
 The application shall provide a workspace for scope, parties, property links, commercial basis, workflow status and planned delivery.
+
+The application shall support instruction workspaces for organisation-led portfolio work and individual-led single-property work without diverging process models.
 
 ### SDP-002 Project Planning
 
@@ -47,6 +51,8 @@ The application shall support draft, internal review, technical approval, issue 
 
 The application shall support assignment of internal and external resources by role, competency, availability and location.
 
+The application shall support scheduling and assignment patterns appropriate to both multi-site B2B engagements and single-customer B2C engagements.
+
 ### SDP-007 Exception Management
 
 The application shall highlight overdue tasks, blocked reviews, overdue actions and activities with incomplete evidence.
@@ -58,6 +64,7 @@ The application shall highlight overdue tasks, blocked reviews, overdue actions 
 - open findings and action ageing
 - deliverable turnaround and review bottlenecks
 - activity volume by type and service line
+- delivery workload and completion trends by B2B and B2C customer mix
 
 ## Integration Requirements
 

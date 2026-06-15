@@ -17,6 +17,7 @@ The intent is to make sure the product covers the same broad functional ground e
 - [03-cross-cutting-platform-requirements.md](./03-cross-cutting-platform-requirements.md)
 - [04-traceability-matrix.md](./04-traceability-matrix.md)
 - [05-phased-delivery-backlog.md](./05-phased-delivery-backlog.md)
+- [06-customer-model-rules.md](./06-customer-model-rules.md)
 
 ### Module Requirements
 
@@ -36,8 +37,9 @@ The intent is to make sure the product covers the same broad functional ground e
 3. Use module requirement documents to drive backlog definition, data design, workflow design and reporting.
 4. Use the traceability matrix to check that requirements, routes and package boundaries stay aligned.
 5. Use the phased delivery backlog to sequence implementation and release scope.
-6. Cross-check every functional requirement against the canonical business object model in [../architecture/001-canonical-enterprise-data-model.md](../architecture/001-canonical-enterprise-data-model.md).
-7. Cross-check every new object against [../architecture/002-business-object-catalogue.md](../architecture/002-business-object-catalogue.md).
+6. Use the customer model rules document to keep B2B and B2C support on one shared enterprise model.
+7. Cross-check every functional requirement against the canonical business object model in [../architecture/001-canonical-enterprise-data-model.md](../architecture/001-canonical-enterprise-data-model.md).
+8. Cross-check every new object against [../architecture/002-business-object-catalogue.md](../architecture/002-business-object-catalogue.md).
 
 ## Architectural Rule
 

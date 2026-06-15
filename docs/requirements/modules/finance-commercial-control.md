@@ -8,6 +8,8 @@
 
 Control commercial performance from fee agreement through WIP, invoice, payment and profitability.
 
+This module must support both B2B and B2C commercial flows using the same underlying party, client account and billing architecture.
+
 ## Core Objects
 
 - fee_agreement
@@ -34,9 +36,13 @@ The application shall track unbilled work by instruction, project, service line,
 
 The application shall issue invoices linked to client accounts, instructions, projects and deliverables.
 
+The application shall support invoices addressed to an organisation, an individual consumer or an authorised third-party payer.
+
 ### FIN-004 Payment Allocation
 
 The application shall record payments, allocate them to invoices and track outstanding debt.
+
+The application shall support payment allocation patterns common to both account-based B2B customers and direct-pay B2C customers.
 
 ### FIN-005 Credit And Adjustment Control
 
@@ -45,6 +51,8 @@ The application shall support credit notes, invoice adjustments and approval-con
 ### FIN-006 Profitability Analysis
 
 The application shall analyse revenue, cost, margin and recovery by client, project, instruction, service line and team.
+
+The application shall allow profitability and debt analysis to be segmented by B2B and B2C customer classification.
 
 ### FIN-007 Budget And Cost Control
 
@@ -57,6 +65,7 @@ The application shall support planned effort, cost-to-complete and variance anal
 - invoice status and billing turnaround
 - profitability by client, property, project and surveyor
 - write-off and credit note analysis
+- revenue, debt and recovery by B2B and B2C customer mix
 
 ## Integration Requirements
 
