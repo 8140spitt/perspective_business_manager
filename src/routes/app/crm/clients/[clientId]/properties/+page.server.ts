@@ -1,6 +1,6 @@
 import { error } from '@sveltejs/kit';
-import { getPartyById } from '$lib/packages/parties/parties.repository.server';
-import { listClientProperties } from '$lib/packages/properties/properties.repository.server';
+import { getParty } from '$lib/packages/parties/parties.service.server';
+import { getClientProperties } from '$lib/packages/properties/properties.service.server';
 
 export async function load({ params }) {
 	const clientId = Number(params.clientId);
@@ -9,14 +9,12 @@ export async function load({ params }) {
 		throw error(400, 'Invalid client ID');
 	}
 
-	const client = await getPartyById(clientId);
-
-	if (!client) {
+	try {
+		return {
+			client: await getParty(clientId),
+			properties: await getClientProperties(clientId)
+		};
+	} catch {
 		throw error(404, 'Client not found');
 	}
-
-	return {
-		client,
-		properties: await listClientProperties(clientId)
-	};
 }
