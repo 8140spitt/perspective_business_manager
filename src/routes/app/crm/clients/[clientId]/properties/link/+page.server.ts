@@ -1,9 +1,9 @@
 import { error, fail, redirect } from '@sveltejs/kit';
-import { getPartyById } from '$lib/packages/parties/parties.repository.server';
+import { getParty } from '$lib/packages/parties/parties.service.server';
 import {
-	linkClientProperty,
-	listPropertiesForSelection
-} from '$lib/packages/properties/properties.repository.server';
+	getPropertiesForSelection,
+	linkClientPropertyRecord
+} from '$lib/packages/properties/properties.service.server';
 
 export async function load({ params }) {
 	const clientId = Number(params.clientId);
@@ -12,16 +12,14 @@ export async function load({ params }) {
 		throw error(400, 'Invalid client ID');
 	}
 
-	const client = await getPartyById(clientId);
-
-	if (!client) {
+	try {
+		return {
+			client: await getParty(clientId),
+			properties: await getPropertiesForSelection()
+		};
+	} catch {
 		throw error(404, 'Client not found');
 	}
-
-	return {
-		client,
-		properties: await listPropertiesForSelection()
-	};
 }
 
 export const actions = {
@@ -39,20 +37,20 @@ export const actions = {
 		const relationshipLabel = String(formData.get('relationshipLabel') ?? '').trim();
 		const isPrimary = formData.get('isPrimary') === 'on';
 
-		if (!Number.isInteger(propertyId)) {
+		try {
+			await linkClientPropertyRecord({
+				clientId,
+				propertyId,
+				roleCode,
+				relationshipLabel: relationshipLabel || null,
+				isPrimary
+			});
+		} catch (error) {
 			return fail(400, {
-				message: 'Please select a property.',
+				message: error instanceof Error ? error.message : 'Unable to link property.',
 				values: Object.fromEntries(formData)
 			});
 		}
-
-		await linkClientProperty({
-			clientId,
-			propertyId,
-			roleCode,
-			relationshipLabel: relationshipLabel || null,
-			isPrimary
-		});
 
 		throw redirect(303, `/app/crm/clients/${clientId}/properties`);
 	}
