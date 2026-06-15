@@ -1,5 +1,5 @@
 import { fail, redirect } from '@sveltejs/kit';
-import { createClient } from '$lib/packages/parties/parties.repository.server';
+import { createClientRecord } from '$lib/packages/parties/parties.service.server';
 
 export const actions = {
 	default: async ({ request }) => {
@@ -11,38 +11,29 @@ export const actions = {
 		const vatNumber = String(formData.get('vatNumber') ?? '').trim();
 		const firstName = String(formData.get('firstName') ?? '').trim();
 		const lastName = String(formData.get('lastName') ?? '').trim();
+		const displayName = clientType === 'ORGANISATION' ? organisationName : `${firstName} ${lastName}`.trim();
 
-		if (clientType !== 'ORGANISATION' && clientType !== 'PERSON') {
-			return fail(400, { message: 'Invalid client type.' });
-		}
+		try {
+			const clientId = await createClientRecord({
+				clientType: clientType === 'PERSON' ? 'PERSON' : 'ORGANISATION',
+				displayName,
+				organisationName,
+				organisationNumber: organisationNumber || null,
+				vatNumber: vatNumber || null,
+				firstName,
+				lastName
+			});
 
-		if (clientType === 'ORGANISATION' && !organisationName) {
+			throw redirect(303, `/app/crm/clients/${clientId}/overview`);
+		} catch (error) {
+			if (error instanceof Response) {
+				throw error;
+			}
+
 			return fail(400, {
-				message: 'Organisation name is required.',
+				message: error instanceof Error ? error.message : 'Unable to create client.',
 				values: Object.fromEntries(formData)
 			});
 		}
-
-		if (clientType === 'PERSON' && (!firstName || !lastName)) {
-			return fail(400, {
-				message: 'First name and last name are required.',
-				values: Object.fromEntries(formData)
-			});
-		}
-
-		const displayName =
-			clientType === 'ORGANISATION' ? organisationName : `${firstName} ${lastName}`;
-
-		const clientId = await createClient({
-			clientType,
-			displayName,
-			organisationName,
-			organisationNumber: organisationNumber || null,
-			vatNumber: vatNumber || null,
-			firstName,
-			lastName
-		});
-
-		throw redirect(303, `/app/crm/clients/${clientId}/overview`);
 	}
 };
