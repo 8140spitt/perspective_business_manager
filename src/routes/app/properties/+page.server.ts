@@ -1,7 +1,7 @@
-import { listProperties } from '$lib/packages/properties/properties.repository.server';
+import { getProperties } from '$lib/packages/properties/properties.service.server';
 
 export async function load() {
 	return {
-		properties: await listProperties()
+		properties: await getProperties()
 	};
 }
