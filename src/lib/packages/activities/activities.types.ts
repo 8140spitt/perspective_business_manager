@@ -88,6 +88,22 @@ export interface Outcome {
 	updatedAt: string | null;
 }
 
+export interface ActivityAssessmentGroup {
+	assessment: Assessment;
+	actions: ActivityAction[];
+}
+
+export interface ActivityObservationGroup {
+	observation: Observation;
+	assessments: ActivityAssessmentGroup[];
+}
+
+export interface ActivityWorkspace {
+	activity: Activity;
+	observations: ActivityObservationGroup[];
+	outcomes: Outcome[];
+}
+
 export interface CreateActivityInput {
 	activityReference: string;
 	activityTypeCode: string;

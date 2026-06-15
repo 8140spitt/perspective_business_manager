@@ -1,5 +1,6 @@
 <script lang="ts">
 	let { data } = $props();
+	import { resolve } from '$app/paths';
 </script>
 
 <svelte:head>
@@ -11,7 +12,9 @@
 		<div>
 			<p class="eyebrow">Operations</p>
 			<h1>Activities</h1>
-			<p>Activities are units of work such as inspections, audits, reviews, meetings and surveys.</p>
+			<p>
+				Activities are units of work such as inspections, audits, reviews, meetings and surveys.
+			</p>
 		</div>
 
 		<a class="button" href="/app/activities/new">New activity</a>
@@ -33,8 +36,16 @@
 			<tbody>
 				{#each data.activities as activity}
 					<tr>
-						<td>{activity.activityReference}</td>
-						<td>{activity.activityName}</td>
+						<td
+							><a href={resolve(`/app/activities/${activity.activityId}`)}
+								>{activity.activityReference}</a
+							></td
+						>
+						<td
+							><a href={resolve(`/app/activities/${activity.activityId}`)}
+								>{activity.activityName}</a
+							></td
+						>
 						<td>{activity.activityTypeCode}</td>
 						<td>{activity.statusCode}</td>
 						<td>{activity.priorityCode}</td>
@@ -82,6 +93,16 @@
 		color: white;
 		text-decoration: none;
 		font-weight: 700;
+	}
+
+	td a {
+		color: inherit;
+		font-weight: 700;
+		text-decoration: none;
+	}
+
+	td a:hover {
+		text-decoration: underline;
 	}
 
 	table {

@@ -18,6 +18,7 @@ import {
 import type {
 	Activity,
 	ActivityAction,
+	ActivityWorkspace,
 	Assessment,
 	CreateActionInput,
 	CreateActivityInput,
@@ -37,6 +38,37 @@ export async function getActivity(activityId: number): Promise<Activity> {
 	const activity = await getActivityById(activityId);
 	if (!activity) throw new Error('Activity not found.');
 	return activity;
+}
+
+export async function getActivityWorkspace(activityId: number): Promise<ActivityWorkspace> {
+	const [activity, observations, outcomes] = await Promise.all([
+		getActivity(activityId),
+		getObservations(activityId),
+		getOutcomes({ activityId })
+	]);
+
+	const observationGroups = await Promise.all(
+		observations.map(async (observation) => {
+			const assessments = await getAssessments(observation.observationId);
+			const assessmentGroups = await Promise.all(
+				assessments.map(async (assessment) => ({
+					assessment,
+					actions: await getActions(assessment.assessmentId)
+				}))
+			);
+
+			return {
+				observation,
+				assessments: assessmentGroups
+			};
+		})
+	);
+
+	return {
+		activity,
+		observations: observationGroups,
+		outcomes
+	};
 }
 
 export async function createActivityRecord(input: CreateActivityInput): Promise<number> {
@@ -100,7 +132,9 @@ export async function createActionRecord(input: CreateActionInput): Promise<numb
 	return createAction(input);
 }
 
-export async function getOutcomes(filters: { activityId?: number; actionId?: number } = {}): Promise<Outcome[]> {
+export async function getOutcomes(
+	filters: { activityId?: number; actionId?: number } = {}
+): Promise<Outcome[]> {
 	return listOutcomes(filters);
 }
 
