@@ -1,7 +1,7 @@
-import { listClients } from '$lib/packages/parties/parties.repository.server';
+import { getClients } from '$lib/packages/parties/parties.service.server';
 
 export async function load() {
 	return {
-		clients: await listClients()
+		clients: await getClients()
 	};
 }
