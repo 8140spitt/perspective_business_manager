@@ -18,3 +18,22 @@ export interface PropertyListItem {
 	propertyTypeCode: string | null;
 	statusCode: string;
 }
+
+export interface CreatePropertyInput {
+	propertyName?: string | null;
+	addressLine1: string;
+	addressLine2?: string | null;
+	townCity?: string | null;
+	countyRegion?: string | null;
+	postcode?: string | null;
+	propertyTypeCode?: string | null;
+	tenureCode?: string | null;
+}
+
+export interface LinkClientPropertyInput {
+	clientId: number;
+	propertyId: number;
+	roleCode: string;
+	relationshipLabel?: string | null;
+	isPrimary?: boolean;
+}
