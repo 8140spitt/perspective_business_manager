@@ -6,7 +6,13 @@
 
 	let { form }: { form?: FormState } = $props();
 
-	let clientType = $state(form?.values?.clientType ?? 'ORGANISATION');
+	let clientType = $state('ORGANISATION');
+
+	$effect(() => {
+		if (form?.values?.clientType) {
+			clientType = form.values.clientType;
+		}
+	});
 </script>
 
 <svelte:head>
