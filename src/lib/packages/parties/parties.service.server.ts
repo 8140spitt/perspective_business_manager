@@ -1,4 +1,5 @@
 import { createClient, getPartyById, listClients, listParties } from './parties.repository.server';
+import { createClientAccountRecord } from '$lib/packages/client-accounts/client-accounts.service.server';
 import type { CreateClientInput, Party } from './parties.types';
 import { validateCreateClient } from './parties.validators';
 
@@ -22,5 +23,15 @@ export async function getClients(): Promise<Party[]> {
 
 export async function createClientRecord(input: CreateClientInput): Promise<number> {
 	validateCreateClient(input);
-	return createClient(input);
+
+	const partyId = await createClient(input);
+
+	await createClientAccountRecord({
+		partyId,
+		clientReference: `CLI-${partyId.toString().padStart(6, '0')}`,
+		clientTypeCode: 'STANDARD',
+		onboardingStatusCode: 'NEW'
+	});
+
+	return partyId;
 }
