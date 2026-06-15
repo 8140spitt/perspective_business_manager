@@ -18,9 +18,15 @@
 			<p>Properties linked to this client.</p>
 		</div>
 
-		<a class="button" href={`/app/crm/clients/${data.client.partyId}/properties/new`}>
-			Link property
-		</a>
+		<div class="actions">
+			<a class="button" href={`/app/crm/clients/${data.client.partyId}/properties/new`}>
+				New property
+			</a>
+
+			<a class="secondary-button" href={`/app/crm/clients/${data.client.partyId}/properties/link`}>
+				Link existing
+			</a>
+		</div>
 	</header>
 
 	{#if data.properties.length === 0}
