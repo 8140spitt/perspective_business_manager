@@ -10,6 +10,8 @@ Perspective Business Manager uses module groupings for planning and navigation, 
 
 The canonical enterprise model remains the system of record.
 
+Customer-facing capabilities must work for both organisation customers and individual consumers using the same shared party, contact, instruction, finance and service-delivery model.
+
 ## Coverage Matrix
 
 | Coverage area                        | Purpose in this product                                                          | Current capability areas         | Typical submodules                                                                                 |
@@ -29,6 +31,8 @@ The canonical enterprise model remains the system of record.
 
 The commercial lifecycle ends at accepted instruction with linked property, scope, parties and fee basis.
 
+This lifecycle must work whether the customer is a company, public body, landlord, managing agent, insurer or an individual consumer.
+
 ### Service Delivery And Projects
 
 The delivery lifecycle must support site work, inspections, technical review, action tracking and issue-to-client controls.
@@ -40,6 +44,8 @@ The property model is the spatial and technical anchor for surveys, inspections,
 ### Finance And Commercial Control
 
 Revenue recognition, WIP, invoice control and profitability need to work by client, instruction, project, property, service line and team.
+
+Commercial controls must also support both account-based B2B billing and person-based B2C billing.
 
 ### Procurement And Supply Chain
 
@@ -73,6 +79,7 @@ Documents, evidence, workflows and analytics are shared platform layers used acr
 ### Sales And Client Management
 
 - client master and relationships
+- customer type handling for organisations and individuals
 - contacts and communication channels
 - enquiries and intake
 - opportunities and pipeline
@@ -108,6 +115,7 @@ Documents, evidence, workflows and analytics are shared platform layers used acr
 - fee agreements and pricing basis
 - WIP capture and valuation
 - invoice preparation and issue
+- B2B account billing and B2C direct billing
 - payments and allocations
 - credit notes and write-offs
 - profitability and margin analysis
@@ -163,11 +171,12 @@ Documents, evidence, workflows and analytics are shared platform layers used acr
 ### Process 1: Lead To Instruction
 
 1. Capture enquiry.
-2. Qualify opportunity and service need.
-3. Prepare fee proposal or quotation.
-4. Run onboarding and compliance checks.
-5. Accept commercial terms.
-6. Convert to instruction with linked parties and properties.
+2. Identify whether the customer is an organisation or an individual consumer.
+3. Qualify opportunity and service need.
+4. Prepare fee proposal or quotation.
+5. Run onboarding and compliance checks.
+6. Accept commercial terms.
+7. Convert to instruction with linked parties and properties.
 
 ### Process 2: Instruction To Deliverable
 
@@ -209,6 +218,7 @@ Documents, evidence, workflows and analytics are shared platform layers used acr
 - document and evidence controls must work consistently across all delivery objects
 - competency and accreditation checks must influence scheduling and assignment decisions
 - client, property and instruction context must remain navigable across every workspace
+- B2B and B2C customer handling must share the same party and client-account model rather than diverging into separate data structures
 - workflow and event history must remain shared layers rather than module-specific duplicates
 
 ## Related Requirement Documents

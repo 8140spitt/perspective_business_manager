@@ -8,6 +8,8 @@ Define the target scope of Perspective Business Manager as an ERP platform for s
 
 Perspective Business Manager is a sector ERP for firms that need to manage the full lifecycle from lead and instruction through site activity, deliverable, invoice, audit trail and retained records.
 
+The platform shall support both business-to-business and business-to-consumer customer models without changing the underlying commercial, operational or reporting architecture.
+
 ## Primary Business Types
 
 - building surveying practices
@@ -71,9 +73,10 @@ Perspective Business Manager is a sector ERP for firms that need to manage the f
 
 1. The application must model enterprise business objects once and reuse them across modules.
 2. Every user-facing workspace must map back to canonical objects and events.
-3. Built-environment workflows must support inspection, evidence, review and issue lifecycles.
-4. All commercially relevant work must flow from client and instruction to invoice and reporting.
-5. All regulated or professionally sensitive records must be auditable and retainable.
+3. Customer and client workflows must support both organisation-based and individual-based customers as first-class records.
+4. Built-environment workflows must support inspection, evidence, review and issue lifecycles.
+5. All commercially relevant work must flow from client and instruction to invoice and reporting.
+6. All regulated or professionally sensitive records must be auditable and retainable.
 
 ## Release Shape
 
