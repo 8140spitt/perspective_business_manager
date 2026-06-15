@@ -1,5 +1,5 @@
 import { error } from '@sveltejs/kit';
-import { getPropertyById } from '$lib/packages/properties/properties.repository.server';
+import { getProperty } from '$lib/packages/properties/properties.service.server';
 
 export async function load({ params }) {
 	const propertyId = Number(params.propertyId);
@@ -8,13 +8,11 @@ export async function load({ params }) {
 		throw error(400, 'Invalid property ID');
 	}
 
-	const property = await getPropertyById(propertyId);
-
-	if (!property) {
+	try {
+		return {
+			property: await getProperty(propertyId)
+		};
+	} catch {
 		throw error(404, 'Property not found');
 	}
-
-	return {
-		property
-	};
 }
