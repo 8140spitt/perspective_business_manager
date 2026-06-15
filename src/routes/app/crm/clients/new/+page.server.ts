@@ -13,8 +13,10 @@ export const actions = {
 		const lastName = String(formData.get('lastName') ?? '').trim();
 		const displayName = clientType === 'ORGANISATION' ? organisationName : `${firstName} ${lastName}`.trim();
 
+		let clientId: number;
+
 		try {
-			const clientId = await createClientRecord({
+			clientId = await createClientRecord({
 				clientType: clientType === 'PERSON' ? 'PERSON' : 'ORGANISATION',
 				displayName,
 				organisationName,
@@ -23,17 +25,13 @@ export const actions = {
 				firstName,
 				lastName
 			});
-
-			throw redirect(303, `/app/crm/clients/${clientId}/overview`);
 		} catch (error) {
-			if (error instanceof Response) {
-				throw error;
-			}
-
 			return fail(400, {
 				message: error instanceof Error ? error.message : 'Unable to create client.',
 				values: Object.fromEntries(formData)
 			});
 		}
+
+		throw redirect(303, `/app/crm/clients/${clientId}/overview`);
 	}
 };
