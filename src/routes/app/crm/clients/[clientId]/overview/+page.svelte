@@ -1,7 +1,7 @@
 <script lang="ts">
 	let { data } = $props();
 
-	const tabs = [
+	const tabs = $derived([
 		{ label: 'Overview', href: `/app/crm/clients/${data.client.partyId}/overview` },
 		{ label: 'Contacts', href: `/app/crm/clients/${data.client.partyId}/contacts/all` },
 		{ label: 'Organisations', href: `/app/crm/clients/${data.client.partyId}/organisations` },
@@ -16,7 +16,7 @@
 		{ label: 'Finance', href: `/app/crm/clients/${data.client.partyId}/finance` },
 		{ label: 'Compliance', href: `/app/crm/clients/${data.client.partyId}/compliance` },
 		{ label: 'Activity', href: `/app/crm/clients/${data.client.partyId}/activity` }
-	];
+	]);
 </script>
 
 <svelte:head>
