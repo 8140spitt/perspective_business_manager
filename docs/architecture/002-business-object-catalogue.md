@@ -29,6 +29,8 @@ Classification: Foundation Object
 
 Purpose: Represents a person, organisation or legal/business entity.
 
+Customer model note: The same party model must support both organisation customers and individual consumers.
+
 Examples:
 
 - Client organisation
@@ -180,6 +182,8 @@ Classification: Core Business Object
 
 Purpose: Represents a commercial client relationship with a party.
 
+Customer model note: A client account may belong to either an organisation or an individual person and must not imply B2B-only behavior.
+
 Parent Objects:
 
 - Party
@@ -212,6 +216,8 @@ Industry Extensions:
 Classification: Core Business Object
 
 Purpose: Represents a formal request, commission or accepted scope of work.
+
+Customer model note: Instructions must support party roles for customer-of-record, billing party, primary contact and intermediary relationships across both B2B and B2C cases.
 
 Parent Objects:
 

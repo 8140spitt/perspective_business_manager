@@ -16,6 +16,17 @@ Applications, workspaces and industry solutions are views over the same enterpri
 6. Every major object is auditable.
 7. Industry solutions extend the platform core.
 
+## Key Architecture Documents
+
+- [001-canonical-enterprise-data-model.md](./001-canonical-enterprise-data-model.md)
+- [002-business-object-catalogue.md](./002-business-object-catalogue.md)
+- [003-enterprise-relationship-model.md](./003-enterprise-relationship-model.md)
+- [004-schema-relationship-appendix.md](./004-schema-relationship-appendix.md)
+- [005-route-object-relationship-appendix.md](./005-route-object-relationship-appendix.md)
+- [006-package-object-relationship-appendix.md](./006-package-object-relationship-appendix.md)
+- [007-architecture-remediation-backlog.md](./007-architecture-remediation-backlog.md)
+- [core-business-object-spine.md](./core-business-object-spine.md)
+
 ## Current Platform Layers
 
 ### Foundation Layer
@@ -77,15 +88,19 @@ Evidence
 ## Migration Roadmap
 
 ### 001 Core Foundation
+
 Completed
 
 ### 002 Core Business Objects
+
 Completed
 
 ### 003 Workflow & Events
+
 Completed
 
 ### 004 Activity Management Engine
+
 Planned
 
 Proposed objects:
@@ -100,6 +115,7 @@ Proposed objects:
 - Evidence Item
 
 ### 005 Work Management
+
 Planned
 
 - Work Item
@@ -108,12 +124,15 @@ Planned
 - Resource Allocation
 
 ### 006 Document & Records
+
 Planned
 
 ### 007 Finance Engine
+
 Planned
 
 ### 008 Reporting & Analytics
+
 Planned
 
 ## Package Extension Model

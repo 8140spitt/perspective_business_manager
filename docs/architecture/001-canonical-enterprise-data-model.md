@@ -52,6 +52,8 @@ RICS, Engineering, Quality, Risk and Compliance packages should configure activi
 
 Represents a person, organisation or other legal/business entity.
 
+This is the shared enterprise root for both B2B and B2C customer models.
+
 Examples:
 
 - Client
@@ -111,6 +113,8 @@ Represents a commercial client relationship with a party.
 
 A party may exist before it becomes a client. A client account records that commercial relationship.
 
+The client account model must work for organisation customers, individual consumers and third-party-led billing arrangements without creating separate customer entities.
+
 Current tables:
 
 - `client_account`
@@ -120,6 +124,8 @@ Current tables:
 Represents a formal request or acceptance of work.
 
 In a consultancy business this is one of the most important operational objects.
+
+An instruction must be able to reference customer-of-record, billing, contact and representative roles for both B2B and B2C journeys.
 
 Current tables:
 
@@ -317,6 +323,19 @@ Event
 Document
 Evidence
 ```
+
+## Customer Model Constraint
+
+The canonical model shall support both organisation-led and individual-led customer journeys using the same enterprise objects.
+
+This means:
+
+- B2B and B2C are classifications and relationship patterns, not separate customer table families
+- `party` remains the canonical root identity
+- `client_account` remains the commercial relationship layer for either a person or an organisation
+- billing, representative and intermediary scenarios are handled through roles and relationships
+
+Detailed implementation rules are defined in [../requirements/06-customer-model-rules.md](../requirements/06-customer-model-rules.md).
 
 ## Industry Specialisation Examples
 

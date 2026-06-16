@@ -100,6 +100,91 @@ The platform shall not introduce separate B2B customer tables and B2C customer t
 
 Any proposal to do so must be rejected unless the canonical model is deliberately changed.
 
+## Schema-Level Requirements
+
+### SCR-001 Party Base Record
+
+Every customer, intermediary, supplier and related external business actor shall have a base `party` record before any specialised or commercial records are created.
+
+### SCR-002 Person And Organisation Optionality
+
+Exactly one specialisation path shall be used for a customer root:
+
+- `party` plus `person` for an individual-led customer
+- `party` plus `organisation` for an organisation-led customer
+
+The implementation shall prevent ambiguous dual specialisation for the same customer identity unless a deliberate business rule requires it.
+
+### SCR-003 Client Account Foreign Key Rule
+
+`client_account` shall reference `party` as its customer anchor.
+
+No client account design may bypass the shared party root by pointing directly to separate consumer or company entities.
+
+### SCR-004 Contact Method Attachment Rule
+
+`contact_method` shall attach to `party` so communication channels can be reused across organisation customers, individual consumers and intermediaries.
+
+### SCR-005 Party Relationship Rule
+
+`party_relationship` shall support intermediary and representative scenarios such as:
+
+- organisation to employee contact
+- insurer to claimant
+- managing agent to landlord
+- family representative to consumer
+- contractor to client or project party
+
+### SCR-006 Instruction Party Role Minimum Set
+
+`instruction_party_role` shall support a controlled minimum role set including:
+
+- customer_of_record
+- billing_party
+- primary_contact
+- representative
+- owner
+- occupier
+- managing_agent
+- insurer
+
+### SCR-007 Property Party Role Minimum Set
+
+`property_party_role` shall support a controlled minimum role set including:
+
+- owner
+- occupier
+- managing_agent
+- tenant
+- landlord
+- insurer
+- access_contact
+
+### SCR-008 Billing Separation Rule
+
+The model shall allow `billing_party` to differ from `customer_of_record` without duplicating the instruction, client or invoice record.
+
+### SCR-009 Classification Storage Rule
+
+Customer classification such as B2B, B2C, public_sector, insurer_led or intermediary_led shall be stored as controlled classification data and referenced consistently in workflows and reporting.
+
+### SCR-010 Reporting Join Rule
+
+Reporting models shall be able to derive customer classification, billing party and representative context through canonical joins rather than through duplicated denormalised customer tables.
+
+### SCR-011 Migration Mapping Rule
+
+Migration and import utilities shall map legacy customer records into:
+
+- shared party identity
+- appropriate person or organisation detail
+- client account if a commercial relationship exists
+- role and relationship links where intermediaries or alternative bill-to parties exist
+
+### SCR-012 Validation Rule
+
+Application services shall reject customer data mutations that break shared customer-model constraints, including missing party roots, invalid billing-party references and unsupported role codes.
+
 ## Example Model Patterns
 
 ### Pattern 1: B2B Portfolio Instruction
@@ -131,3 +216,14 @@ The following areas must conform to these rules:
 - invoicing and payment allocation
 - complaint handling and audit tracing
 - dashboards, reporting and migration utilities
+
+## Delivery Constraints
+
+The following implementation constraints apply to code, schema and route design:
+
+- new migrations must extend shared customer tables and role tables before introducing new customer-facing workflows
+- route handlers must resolve customer context from canonical party and role relationships
+- package services must expose B2B and B2C behavior through shared APIs rather than divergent service families
+- reports and exports must derive customer type from classification and relationships, not from separate table families
+
+See [07-customer-model-implementation-checklist.md](./07-customer-model-implementation-checklist.md) for delivery-time conformance checks.

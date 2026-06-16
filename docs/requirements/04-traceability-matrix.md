@@ -13,6 +13,22 @@ Trace requirements coverage from enterprise modules to current capability areas,
 5. B2B and B2C support should be traceable across all customer-facing and commercially relevant modules.
 6. Gaps between requirement coverage and implementation surfaces should be made explicit rather than implied.
 
+## Shared Control Documents
+
+- enterprise module coverage: [02-enterprise-module-coverage.md](./02-enterprise-module-coverage.md)
+- cross-cutting platform requirements: [03-cross-cutting-platform-requirements.md](./03-cross-cutting-platform-requirements.md)
+- customer model rules: [06-customer-model-rules.md](./06-customer-model-rules.md)
+
+## Architecture Reference Documents
+
+- canonical data model: [../architecture/001-canonical-enterprise-data-model.md](../architecture/001-canonical-enterprise-data-model.md)
+- business object catalogue: [../architecture/002-business-object-catalogue.md](../architecture/002-business-object-catalogue.md)
+- enterprise relationship model: [../architecture/003-enterprise-relationship-model.md](../architecture/003-enterprise-relationship-model.md)
+- schema relationship appendix: [../architecture/004-schema-relationship-appendix.md](../architecture/004-schema-relationship-appendix.md)
+- route relationship appendix: [../architecture/005-route-object-relationship-appendix.md](../architecture/005-route-object-relationship-appendix.md)
+- package relationship appendix: [../architecture/006-package-object-relationship-appendix.md](../architecture/006-package-object-relationship-appendix.md)
+- architecture remediation backlog: [../architecture/007-architecture-remediation-backlog.md](../architecture/007-architecture-remediation-backlog.md)
+
 ## Module To Implementation Matrix
 
 | Enterprise module                    | Requirement document                                                                       | Current capability areas                                        | Current route families                                                   | Current package families                                                       | Core objects                                                                          | Current maturity |
@@ -45,16 +61,19 @@ Trace requirements coverage from enterprise modules to current capability areas,
 
 - B2B and B2C support is now stated in requirements but is not yet explicitly traced to route-level behavior in every module
 - finance, property and compliance routes will need explicit customer-type handling without splitting the party model
+- customer-model rules now exist centrally, but package and route implementation still needs explicit conformance checks against [06-customer-model-rules.md](./06-customer-model-rules.md)
 - reporting surfaces will need consistent customer classification dimensions across pipeline, delivery, debt and complaints
 
 ### Route Coverage Gaps
 
 - delivery routes are broader than the current domain package names in some areas, especially for projects and procurement
 - property routes are split between `/app/property/*` and `/app/properties/*`, which may need deliberate consolidation
+- `/app/instructions/*` and `/app/operations/instructions/*` need a deliberate separation rule to avoid duplicate ownership narratives
 - reporting and dashboard surfaces exist in the capability map but are less explicit in package segmentation
 
 ### Package Coverage Gaps
 
+- `client-accounts` exists as a package family and should be reflected more explicitly in higher-level traceability references
 - there is no dedicated workforce package family yet for employee, competency and allocation concerns
 - procurement currently appears route-led more than package-led
 - integration and admin concerns are distributed across `core`, `reference-data`, `reports` and `workflows`
