@@ -25,6 +25,76 @@ Customer-facing capabilities must work for both organisation customers and indiv
 | Quality, Risk and Compliance         | quality reviews, audit, risk, complaints, conflicts, compliance controls         | Compliance                       | quality reviews, conflicts, complaints, risk register, audit trail, controls                       |
 | Documents, Analytics and Integration | controlled documents, evidence, reports, integration events, workflow automation | Documents, Reporting, Admin      | document control, evidence, dashboards, reporting, integrations, workflow admin                    |
 
+## Standard ERP Module And Submodule Alignment
+
+The table below maps familiar ERP-style modules and submodules to Perspective Business Manager so the coverage is explicit.
+
+| Standard ERP module              | Common submodules                                                  | Perspective coverage area                                         | Current workspace families                                                                | Coverage position |
+| -------------------------------- | ------------------------------------------------------------------ | ----------------------------------------------------------------- | ----------------------------------------------------------------------------------------- | ----------------- |
+| Customer Relationship Management | customer master, contacts, relationships, account view             | Sales and Client Management                                       | `/app/crm/*`, `/app/parties/*`                                                            | present           |
+| Sales                            | enquiries, opportunities, proposals, quotations, tenders, pipeline | Sales and Client Management                                       | `/app/sales/*`                                                                            | present           |
+| Client Onboarding                | due diligence, conflicts, acceptance controls                      | Sales and Client Management, Quality Risk and Compliance          | `/app/crm/*`, `/app/compliance/*`                                                         | present           |
+| Service Order / Job Intake       | instruction acceptance, scope setup, customer handoff              | Service Delivery and Projects                                     | `/app/operations/instructions/*`                                                          | present           |
+| Project Management               | project setup, overview, team, milestones, tasks, risks, issues    | Service Delivery and Projects                                     | `/app/projects/*`                                                                         | present           |
+| Operational Delivery             | activities, inspections, findings, actions, deliverables           | Service Delivery and Projects                                     | `/app/activities/*`, `/app/operations/*`, `/app/surveys`                                  | present           |
+| Asset / Property Management      | property register, sites, buildings, units, ownership, occupation  | Property and Asset Management                                     | `/app/property/*`, `/app/properties/*`                                                    | present           |
+| Document Management              | document library, templates, controlled records                    | Documents, Analytics and Integration                              | `/app/documents/*`                                                                        | present           |
+| Evidence Management              | evidence capture, photos, drawings, linked proof                   | Documents, Analytics and Integration                              | `/app/evidence`, `/app/documents/evidence-library`, delivery routes                       | present           |
+| Accounts Receivable              | fee basis, invoices, collections, debt tracking                    | Finance and Commercial Control                                    | `/app/finance/fees`, `/app/finance/sales-invoices`, `/app/finance/payments`               | present           |
+| Work In Progress                 | unbilled work, valuation, billing readiness                        | Finance and Commercial Control                                    | `/app/finance/wip`                                                                        | present           |
+| Accounts Payable                 | purchase invoices, supplier liabilities                            | Finance and Commercial Control, Procurement and Supply Chain      | `/app/finance/purchase-invoices`                                                          | partial           |
+| Procurement                      | supplier master, requests, orders, bought-in services              | Procurement and Supply Chain                                      | `/app/procurement/*`                                                                      | present           |
+| Expense Management               | expenses and spend capture                                         | Finance and Commercial Control                                    | `/app/finance/expenses`                                                                   | present           |
+| Profitability / Controlling      | margin, recovery, cost control, budgets                            | Finance and Commercial Control                                    | `/app/finance/profitability`, project financial views                                     | present           |
+| Human Resources                  | employees, roles, competencies, training                           | Workforce and Resource Planning                                   | `/app/hr/*`                                                                               | present           |
+| Resource Planning                | allocations, availability, workload, utilisation, scheduling       | Workforce and Resource Planning                                   | `/app/resource-planning/*`                                                                | present           |
+| Compliance / Governance          | complaints, conflicts, PI risk, controls, audit trail              | Quality, Risk and Compliance                                      | `/app/compliance/*`                                                                       | present           |
+| Workflow / BPM                   | workflow definitions, states, transitions, runtime control         | Documents, Analytics and Integration plus platform workflow layer | `/app/admin/workflows`, workflow-enabled delivery routes                                  | present           |
+| Reporting / BI                   | dashboards, KPIs, exports, management reports                      | Documents, Analytics and Integration                              | `/app/reporting/*`, `/app/dashboard`, `/app/reports`                                      | present           |
+| Master Data / Reference Data     | reference values, numbering, service lines, metadata               | Documents, Analytics and Integration                              | `/app/admin/reference-data`, `/app/admin/numbering-sequences`, `/app/admin/service-lines` | present           |
+| Security / Administration        | users, roles, permissions, system settings, integrations           | Documents, Analytics and Integration                              | `/app/admin/*`                                                                            | present           |
+
+## Plain-Language Alignment
+
+If you are thinking in normal ERP terms, the product currently aligns like this:
+
+1. `CRM + Sales` becomes Sales and Client Management.
+2. `Service Orders + Projects + Operations` becomes Instructions, Projects, Activities and Deliverables.
+3. `Asset / Property` becomes Property and Asset Management.
+4. `AR + WIP + Cost Control + Profitability` becomes Finance and Commercial Control.
+5. `Procurement + Supplier Management` becomes Procurement and Supply Chain.
+6. `HR + Resource Planning` becomes Workforce and Resource Planning.
+7. `Compliance + Audit + Risk` becomes Quality, Risk and Compliance.
+8. `DMS + Reporting + Workflow + Admin` becomes Documents, Analytics and Integration.
+
+## Coverage Interpretation
+
+The goal is not to mirror old ERP menu labels exactly.
+
+The goal is:
+
+- every familiar ERP module has a home in the product
+- every familiar ERP submodule has an intended place in the product
+- the product still stays object-first rather than becoming a disconnected module tree
+
+## Current Coverage Depth
+
+### Strongest Coverage Direction
+
+- CRM and sales foundations
+- instruction and activity delivery model
+- property and asset context
+- finance, WIP and invoicing direction
+- compliance, audit and evidence model
+
+### Areas Still More Scaffolded Than Complete
+
+- procurement depth
+- accounts payable depth
+- workforce package depth
+- reporting maturity
+- document control schema depth
+
 ## Built-Environment Interpretation
 
 ### Sales And Client Management
