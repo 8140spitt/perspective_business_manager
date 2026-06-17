@@ -50,18 +50,49 @@ The architecture underneath should be simpler, cleaner and more connected than t
 
 ## Architecture Starting Point
 
-The primary architecture baseline is now the Enterprise Capability Model.
+The primary architecture baseline is now the Enterprise Meta Model.
 
 Start here:
 
+- [000-enterprise-meta-model.md](./000-enterprise-meta-model.md)
+
+The Enterprise Meta Model defines the irreducible enterprise concepts from which PBM capabilities, business objects, routes, packages, workflows, events, documents, controls, reports and framework extensions are derived.
+
+The capability model comes next:
+
 - [001-enterprise-capability-model.md](./001-enterprise-capability-model.md)
 
-This document defines the top-level ERP capability coverage expected of PBM.
+The Enterprise Capability Model defines the ERP capability coverage expected of PBM.
 
-All other architecture documents must align to that capability model.
+All other architecture documents must align to the meta model and capability model.
+
+## Architecture Reading Order
+
+Read the architecture documents in this order:
+
+```text
+000 Enterprise Meta Model
+    ↓
+001 Enterprise Capability Model
+    ↓
+Canonical Enterprise Data Model
+    ↓
+Business Object Catalogue
+    ↓
+Enterprise Relationship Model
+    ↓
+Schema Relationship Appendix
+    ↓
+Route / Workspace Relationship Appendix
+    ↓
+Package Relationship Appendix
+    ↓
+Remediation Backlog
+```
 
 ## Key Architecture Documents
 
+- [000-enterprise-meta-model.md](./000-enterprise-meta-model.md)
 - [001-enterprise-capability-model.md](./001-enterprise-capability-model.md)
 - [001-canonical-enterprise-data-model.md](./001-canonical-enterprise-data-model.md)
 - [002-business-object-catalogue.md](./002-business-object-catalogue.md)
@@ -71,6 +102,26 @@ All other architecture documents must align to that capability model.
 - [006-package-object-relationship-appendix.md](./006-package-object-relationship-appendix.md)
 - [007-architecture-remediation-backlog.md](./007-architecture-remediation-backlog.md)
 - [core-business-object-spine.md](./core-business-object-spine.md)
+
+## Enterprise Meta Concepts
+
+PBM derives business architecture from seven root concepts:
+
+```text
+Party
+Thing
+Agreement
+Work
+Transaction
+Information
+Control
+```
+
+These are not user modules and not table names.
+
+They are architecture categories.
+
+Every PBM object, route, package, report, workflow, event and framework extension must remain traceable to these concepts.
 
 ## Enterprise Capability Groups
 
@@ -278,7 +329,7 @@ administration
 integrations
 ```
 
-Existing packages must be assessed against the Enterprise Capability Model before further expansion.
+Existing packages must be assessed against the Enterprise Meta Model and Enterprise Capability Model before further expansion.
 
 ## Route Direction
 
@@ -305,9 +356,13 @@ The original migration sequence remains useful but must be reframed under the br
 - Workflow and events foundation
 - Client accounts package
 - Activity management foundation
+- Enterprise meta model
+- Enterprise capability model
 
 ### Needs Realignment
 
+- Canonical enterprise data model
+- Business object catalogue
 - Commercial lifecycle
 - Project and delivery model
 - Work package and task model
@@ -323,20 +378,23 @@ The original migration sequence remains useful but must be reframed under the br
 
 Before creating a new route, package, table or workflow, confirm:
 
-1. Which L0 capability does it support?
-2. Which enterprise object does it create, update, read or govern?
-3. Does an existing object already represent this concept?
-4. Is this core ERP behaviour or framework-specific behaviour?
-5. Is this a workspace concern or package concern?
-6. Does it require workflow?
-7. Does it require immutable events?
-8. Does it require document or evidence attachment?
-9. Does it require compliance controls?
-10. Can it report across the shared enterprise model?
+1. Which meta concept does it derive from?
+2. Which L0 capability does it support?
+3. Which enterprise object does it create, update, read or govern?
+4. Does an existing object already represent this concept?
+5. Is this core ERP behaviour or framework-specific behaviour?
+6. Is this a workspace concern or package concern?
+7. Does it require workflow?
+8. Does it require immutable events?
+9. Does it require document or evidence attachment?
+10. Does it require compliance controls?
+11. Can it report across the shared enterprise model?
 
 ## Summary
 
 PBM is one coherent ERP platform.
+
+The architecture starts with the Enterprise Meta Model.
 
 The user sees familiar ERP workspaces.
 
