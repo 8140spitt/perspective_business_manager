@@ -35,6 +35,7 @@
 					<th>Title</th>
 					<th>Stage</th>
 					<th>Expected decision</th>
+					<th>Actions</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -48,6 +49,16 @@
 						<td>{enquiry.title}</td>
 						<td>{enquiry.stageCode}</td>
 						<td>{enquiry.expectedDecisionDate ?? '—'}</td>
+						<td>
+							{#if enquiry.stageCode === 'converted'}
+								<span class="status-pill">Converted</span>
+							{:else}
+								<form method="POST" action="?/convertToOpportunity">
+									<input type="hidden" name="enquiryId" value={enquiry.id} />
+									<button type="submit">Convert to opportunity</button>
+								</form>
+							{/if}
+						</td>
 					</tr>
 				{/each}
 			</tbody>
@@ -84,15 +95,24 @@
 		margin-block: 0.25rem;
 	}
 
-	.button {
+	.button,
+	button {
 		display: inline-flex;
 		align-items: center;
+		border: 0;
 		border-radius: 0.65rem;
 		padding: 0.65rem 0.9rem;
 		background: #171717;
 		color: white;
 		text-decoration: none;
+		font: inherit;
 		font-weight: 700;
+		cursor: pointer;
+	}
+
+	button {
+		padding: 0.45rem 0.7rem;
+		font-size: 0.85rem;
 	}
 
 	.empty-state {
@@ -102,6 +122,15 @@
 		border-radius: 1rem;
 		padding: 1.25rem;
 		background: white;
+	}
+
+	.status-pill {
+		display: inline-flex;
+		border-radius: 999px;
+		padding: 0.35rem 0.6rem;
+		background: rgba(0, 0, 0, 0.08);
+		font-size: 0.8rem;
+		font-weight: 700;
 	}
 
 	td a {
