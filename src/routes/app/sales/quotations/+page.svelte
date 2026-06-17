@@ -1,18 +1,82 @@
+<script lang="ts">
+	let { data } = $props();
+
+	const formatCurrency = (value: number | string | null, currencyCode: string | null) => {
+		if (value === null) return '—';
+
+		const numericValue = Number(value);
+
+		if (Number.isNaN(numericValue)) return '—';
+
+		return new Intl.NumberFormat('en-GB', {
+			style: 'currency',
+			currency: currencyCode ?? 'GBP',
+			maximumFractionDigits: 0
+		}).format(numericValue);
+	};
+</script>
+
 <svelte:head>
-	<title>App / Sales / Quotations | Perspective Business Manager</title>
+	<title>Sales / Quotations | Perspective Business Manager</title>
 </svelte:head>
 
 <section class="page">
-	<p class="eyebrow">Perspective Business Manager</p>
-	<h1>App / Sales / Quotations</h1>
-	<p>This screen is wired into the ERP structure and ready to build.</p>
+	<header>
+		<div>
+			<p class="eyebrow">Sales</p>
+			<h1>Quotations</h1>
+			<p>
+				Quotations are priced commercial offers that may become tenders, contracts and authorised
+				work.
+			</p>
+		</div>
+
+		<span class="button disabled" aria-disabled="true">New quotation</span>
+	</header>
+
+	{#if data.quotations.length === 0}
+		<section class="empty-state">
+			<h2>No quotations found</h2>
+			<p>Create a quotation to continue the commercial lifecycle from real data.</p>
+		</section>
+	{:else}
+		<table>
+			<thead>
+				<tr>
+					<th>Reference</th>
+					<th>Title</th>
+					<th>Status</th>
+					<th>Estimated value</th>
+					<th>Expected decision</th>
+				</tr>
+			</thead>
+			<tbody>
+				{#each data.quotations as quotation}
+					<tr>
+						<td>{quotation.reference}</td>
+						<td>{quotation.title}</td>
+						<td>{quotation.stageCode}</td>
+						<td>{formatCurrency(quotation.estimatedValue, quotation.estimatedCurrencyCode)}</td>
+						<td>{quotation.expectedDecisionDate ?? '—'}</td>
+					</tr>
+				{/each}
+			</tbody>
+		</table>
+	{/if}
 </section>
 
 <style>
 	.page {
 		display: grid;
-		gap: 0.75rem;
+		gap: 1.5rem;
 		padding: 2rem;
+	}
+
+	header {
+		display: flex;
+		justify-content: space-between;
+		gap: 1rem;
+		align-items: start;
 	}
 
 	.eyebrow {
@@ -24,7 +88,34 @@
 		opacity: 0.65;
 	}
 
-	h1 {
-		margin: 0;
+	h1,
+	h2,
+	p {
+		margin-block: 0.25rem;
+	}
+
+	.button {
+		display: inline-flex;
+		align-items: center;
+		border-radius: 0.65rem;
+		padding: 0.65rem 0.9rem;
+		background: #171717;
+		color: white;
+		text-decoration: none;
+		font-weight: 700;
+	}
+
+	.button.disabled {
+		opacity: 0.45;
+		cursor: not-allowed;
+	}
+
+	.empty-state {
+		display: grid;
+		gap: 0.5rem;
+		border: 1px solid rgba(0, 0, 0, 0.08);
+		border-radius: 1rem;
+		padding: 1.25rem;
+		background: white;
 	}
 </style>
