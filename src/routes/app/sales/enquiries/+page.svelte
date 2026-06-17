@@ -33,7 +33,6 @@
 				<tr>
 					<th>Reference</th>
 					<th>Title</th>
-					<th>Status</th>
 					<th>Stage</th>
 					<th>Expected decision</th>
 				</tr>
@@ -47,7 +46,6 @@
 							</a>
 						</td>
 						<td>{enquiry.title}</td>
-						<td>{enquiry.statusCode}</td>
 						<td>{enquiry.stageCode}</td>
 						<td>{enquiry.expectedDecisionDate ?? '—'}</td>
 					</tr>
