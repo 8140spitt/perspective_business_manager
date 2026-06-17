@@ -5,26 +5,40 @@ import {
 	validateTransitionSalesLifecycleInput
 } from './commercial.validators';
 
-export const commercialService = {
-	list(): SalesLifecycleRecord[] {
-		return commercialRepository.list();
-	},
+export async function listSalesLifecycleRecords(): Promise<SalesLifecycleRecord[]> {
+	return commercialRepository.list();
+}
 
-	create(input: CreateSalesLifecycleInput): SalesLifecycleRecord {
-		const validation = validateCreateSalesLifecycleInput(input);
+export async function getSalesLifecycleRecordById(
+	objectType: CreateSalesLifecycleInput['objectType'],
+	id: number
+): Promise<SalesLifecycleRecord | null> {
+	return commercialRepository.getById(objectType, id);
+}
 
-		if (!validation.success) {
-			throw new Error(validation.issues.join(' '));
-		}
+export async function createSalesLifecycleRecord(input: CreateSalesLifecycleInput): Promise<number> {
+	const validation = validateCreateSalesLifecycleInput(input);
 
-		return commercialRepository.create(input);
-	},
-
-	transition(input: TransitionSalesLifecycleInput): void {
-		const validation = validateTransitionSalesLifecycleInput(input);
-
-		if (!validation.success) {
-			throw new Error(validation.issues.join(' '));
-		}
+	if (!validation.success) {
+		throw new Error(validation.issues.join(' '));
 	}
+
+	return commercialRepository.create(input);
+}
+
+export async function transitionSalesLifecycleRecord(input: TransitionSalesLifecycleInput): Promise<void> {
+	const validation = validateTransitionSalesLifecycleInput(input);
+
+	if (!validation.success) {
+		throw new Error(validation.issues.join(' '));
+	}
+
+	await commercialRepository.transition(input);
+}
+
+export const commercialService = {
+	list: listSalesLifecycleRecords,
+	getById: getSalesLifecycleRecordById,
+	create: createSalesLifecycleRecord,
+	transition: transitionSalesLifecycleRecord
 };
