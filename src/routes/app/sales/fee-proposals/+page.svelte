@@ -1,6 +1,4 @@
 <script lang="ts">
-	import { resolve } from '$app/paths';
-
 	let { data } = $props();
 
 	const formatCurrency = (value: number | string | null, currencyCode: string | null) => {
@@ -33,7 +31,7 @@
 			</p>
 		</div>
 
-		<a class="button" href={resolve('/app/sales/fee-proposals/new')}>New fee proposal</a>
+		<span class="button disabled" aria-disabled="true">New fee proposal</span>
 	</header>
 
 	{#if data.proposals.length === 0}
@@ -55,11 +53,7 @@
 			<tbody>
 				{#each data.proposals as proposal}
 					<tr>
-						<td>
-							<a href={resolve(`/app/sales/fee-proposals/${proposal.id}`)}>
-								{proposal.reference}
-							</a>
-						</td>
+						<td>{proposal.reference}</td>
 						<td>{proposal.title}</td>
 						<td>{proposal.stageCode}</td>
 						<td>{formatCurrency(proposal.estimatedValue, proposal.estimatedCurrencyCode)}</td>
@@ -111,6 +105,11 @@
 		font-weight: 700;
 	}
 
+	.button.disabled {
+		opacity: 0.45;
+		cursor: not-allowed;
+	}
+
 	.empty-state {
 		display: grid;
 		gap: 0.5rem;
@@ -118,35 +117,5 @@
 		border-radius: 1rem;
 		padding: 1.25rem;
 		background: white;
-	}
-
-	td a {
-		color: inherit;
-		font-weight: 700;
-		text-decoration: none;
-	}
-
-	td a:hover {
-		text-decoration: underline;
-	}
-
-	table {
-		width: 100%;
-		border-collapse: collapse;
-		background: white;
-	}
-
-	th,
-	td {
-		text-align: left;
-		padding: 0.8rem;
-		border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-	}
-
-	th {
-		font-size: 0.8rem;
-		text-transform: uppercase;
-		letter-spacing: 0.05em;
-		opacity: 0.65;
 	}
 </style>
