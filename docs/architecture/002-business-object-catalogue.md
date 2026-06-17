@@ -2,904 +2,1353 @@
 
 ## Purpose
 
-The Business Object Catalogue is the authoritative inventory of enterprise objects in Perspective Business Manager.
+The Business Object Catalogue is the authoritative enterprise object dictionary for Perspective Business Manager (PBM).
 
-It links architecture, database design, API design, UI workspaces and reporting.
+It defines what each enterprise object means, which meta concept it derives from, which capability it supports, how it relates to other objects, whether it should support workflow/events/documents/frameworks, and how far the current implementation has progressed.
 
-A new object should not be introduced unless it is added to this catalogue or deliberately approved as an extension.
+This catalogue is not a database schema.
 
-## Object Classification
+It is not a route map.
 
-Objects are classified as:
+It is not a package map.
 
-- Foundation Object
-- Core Business Object
-- Workflow Object
-- Event Object
-- Activity Management Object
-- Financial Object
-- Document / Record Object
-- Extension Object
+It is the enterprise language that database schema, packages, routes, APIs, workflows, reports and integrations must align to.
 
-## Catalogue
+## Source Architecture
+
+This catalogue derives from:
+
+- [000-enterprise-meta-model.md](./000-enterprise-meta-model.md)
+- [001-enterprise-capability-model.md](./001-enterprise-capability-model.md)
+- [001-canonical-enterprise-data-model.md](./001-canonical-enterprise-data-model.md)
+
+## Object Status Values
+
+```text
+Implemented              Object exists materially in schema and/or package implementation.
+Partially Implemented    Object exists but is incomplete, thin, route-led or awaiting broader ERP alignment.
+Planned                  Object is required by the architecture but not yet implemented.
+Extension                Object belongs primarily to a framework or industry extension.
+Deprecated / Review      Object may be replaced, merged, renamed or reclassified.
+```
+
+## Object Template
+
+Each object should eventually be documented using this structure:
+
+```text
+Name
+Meta Concept
+Primary Capability
+Status
+Definition
+Purpose
+Lifecycle
+Key Relationships
+Documents / Evidence
+Workflow
+Events
+Framework Support
+Reporting Usage
+Current Implementation
+Future Implementation Notes
+```
+
+## Meta Concepts
+
+All objects must map to one or more of:
+
+```text
+Party
+Thing
+Agreement
+Work
+Transaction
+Information
+Control
+```
+
+---
+
+# 1. Party Domain
 
 ## Party
 
-Classification: Foundation Object
+Meta Concept: Party
 
-Purpose: Represents a person, organisation or legal/business entity.
+Primary Capability: Customer & Commercial, People & Workforce, Supply Chain & Procurement, Platform Administration
 
-Customer model note: The same party model must support both organisation customers and individual consumers.
+Status: Implemented
 
-Examples:
+Definition: The root identity object for any actor participating in the enterprise.
 
-- Client organisation
-- Individual client
-- Supplier
-- Employee
-- Contractor
-- Insurer
+Purpose: Provides one shared identity model for people, organisations, customers, suppliers, employees, contractors, regulators, partners and stakeholders.
 
-Parent Objects:
+Lifecycle: created, classified, related, activated, suspended, archived.
 
-- None
+Key Relationships:
 
-Child Objects:
+- Party may specialise into Person or Organisation.
+- Party may hold Party Roles.
+- Party may relate to other Parties.
+- Party may have Client Accounts, Supplier Accounts, Employee Records or Contractor Records.
+- Party may participate in Agreements.
+- Party may perform or receive Work.
+- Party may create or receive Transactions.
+- Party may own or use Things.
 
-- Person
-- Organisation
-- Party Role
-- Party Relationship
-- Contact Method
-- Party Address
-- Client Account
+Documents / Evidence: onboarding records, correspondence, identity evidence, contracts, compliance documents.
 
-Workflow Enabled: No by default
+Workflow: optional for onboarding, approval, due diligence and deactivation.
 
-Event Enabled: Yes
+Events: party created, party updated, role assigned, relationship created, party archived.
 
-Auditable: Yes
+Framework Support: client-specific onboarding, supplier qualification, workforce compliance.
 
-Current Tables:
+Reporting Usage: customer analysis, supplier analysis, workforce analysis, stakeholder analysis.
+
+Current Implementation:
 
 - `party`
-- `person`
-- `organisation`
 - `party_role`
 - `party_relationship`
 
-Industry Extensions:
+Future Notes: Party must remain the root identity model. Do not create separate master identity tables for customers, suppliers or employees.
 
-- RICS: landlord, tenant, managing agent, insurer, loss adjuster
-- Engineering: customer, design authority, supplier, approver
-- Quality: auditee, auditor, process owner
+## Person
+
+Meta Concept: Party
+
+Primary Capability: Customer & Commercial, People & Workforce
+
+Status: Implemented
+
+Definition: A human being represented as a Party specialisation.
+
+Purpose: Supports individual customers, contacts, employees, contractors, stakeholders, approvers and representatives.
+
+Lifecycle: created, maintained, linked to roles, archived.
+
+Key Relationships:
+
+- Person belongs to Party.
+- Person may be linked to Organisations through Party Relationships.
+- Person may be a user, employee, contact, contractor or customer depending on context.
+
+Current Implementation:
+
+- `person`
+
+Future Notes: Person should not duplicate User or Employee. User and Employee are context-specific extensions of Person / Party.
+
+## Organisation
+
+Meta Concept: Party
+
+Primary Capability: Customer & Commercial, Supply Chain & Procurement, People & Workforce
+
+Status: Implemented
+
+Definition: A legal, trading, operational or organisational entity represented as a Party specialisation.
+
+Purpose: Supports B2B customers, suppliers, contractors, partners, regulators, internal departments and business units.
+
+Lifecycle: created, classified, linked, active, inactive, archived.
+
+Key Relationships:
+
+- Organisation belongs to Party.
+- Organisation may have Client Account, Supplier Account or internal Business Unit roles.
+- Organisation may employ or represent Persons.
+
+Current Implementation:
+
+- `organisation`
+
+Future Notes: Organisation should support legal entity, trading name, registration, tax and hierarchy attributes through extensions as needed.
+
+## Client Account
+
+Meta Concept: Party / Agreement
+
+Primary Capability: Customer & Commercial, Finance & Accounting
+
+Status: Partially Implemented
+
+Definition: A commercial customer relationship between the enterprise and a Party.
+
+Purpose: Represents the customer account layer without duplicating Party identity. A Party may exist before becoming a client.
+
+Lifecycle: prospect, onboarding, active, suspended, closed, archived.
+
+Key Relationships:
+
+- Client Account belongs to Party.
+- Client Account may have Opportunities, Proposals, Contracts, Projects and Sales Invoices.
+- Client Account may have billing, representative and contact relationships.
+
+Current Implementation:
+
+- `client_account`
+- `src/lib/packages/client-accounts`
+
+Future Notes: Must support organisation-led and individual-led customers, bill-to parties, intermediaries and representatives.
+
+## Supplier Account
+
+Meta Concept: Party / Agreement
+
+Primary Capability: Supply Chain & Procurement, Finance & Accounting
+
+Status: Planned
+
+Definition: A supplier or subcontractor commercial relationship with a Party.
+
+Purpose: Supports procurement, subcontracting, supplier qualification, purchase orders and purchase invoices.
+
+Lifecycle: onboarding, qualified, active, suspended, closed, archived.
+
+Key Relationships:
+
+- Supplier Account belongs to Party.
+- Supplier Account may have RFQs, Supplier Quotes, Purchase Orders, Subcontracts and Purchase Invoices.
+
+Future Notes: Must reuse Party identity and avoid separate supplier master duplication.
+
+## Employee Record
+
+Meta Concept: Party
+
+Primary Capability: People & Workforce
+
+Status: Planned
+
+Definition: Employment relationship between a Person and the enterprise.
+
+Purpose: Supports workforce management, HR, competence, allocation, timesheets and cost rates.
+
+Key Relationships:
+
+- Employee Record belongs to Person / Party.
+- Employee may be allocated as a Resource to Work.
+
+Future Notes: Employee is not a separate identity root.
+
+## Contractor Record
+
+Meta Concept: Party
+
+Primary Capability: People & Workforce, Supply Chain & Procurement
+
+Status: Planned
+
+Definition: Contractor workforce relationship with a Party.
+
+Purpose: Supports external workforce allocation, competence, onboarding and compliance.
+
+Future Notes: Must distinguish contractor as workforce resource from supplier as commercial organisation where needed.
+
+## Team
+
+Meta Concept: Party
+
+Primary Capability: People & Workforce, Project & Delivery
+
+Status: Planned
+
+Definition: A group of Parties used for organisation, delivery, approval or allocation.
+
+Purpose: Supports project teams, departments, approval groups and resource pools.
+
+Future Notes: Team may be modelled as Party or a Party grouping depending on implementation design.
 
 ---
 
-## Address
+# 2. Thing Domain
 
-Classification: Foundation Object
+## Thing / Asset
 
-Purpose: Represents a postal or physical address.
+Meta Concept: Thing
 
-Parent Objects:
+Primary Capability: Assets, Property & Facilities; Project & Delivery; Operations & Work Execution
 
-- None
+Status: Planned
 
-Child Objects:
+Definition: A general object that exists, can be managed, worked on, used, maintained, inspected, delivered or referenced.
 
-- Party Address
-- Property
+Purpose: Provides the general asset model for property, equipment, plant, vehicles, products, materials and digital assets.
 
-Workflow Enabled: No
+Lifecycle: registered, active, maintained, inactive, disposed, archived.
 
-Event Enabled: Yes
+Key Relationships:
 
-Auditable: Yes
+- Thing may be affected by Work.
+- Thing may be used as a Resource.
+- Thing may have Documents, Evidence, Controls, Events and Transactions.
 
-Current Tables:
-
-- `address`
-- `party_address`
-
-Industry Extensions:
-
-- RICS: property address, site address, inspection address
-
----
-
-## Contact Method
-
-Classification: Foundation Object
-
-Purpose: Represents a way to contact a party.
-
-Examples:
-
-- Email
-- Phone
-- Mobile
-- Website
-
-Parent Objects:
-
-- Party
-
-Child Objects:
-
-- None
-
-Workflow Enabled: No
-
-Event Enabled: Yes
-
-Auditable: Yes
-
-Current Tables:
-
-- `contact_method`
-
----
+Future Notes: Property currently exists, but PBM needs a broader Asset / Thing model.
 
 ## Property
 
-Classification: Core Business Object
+Meta Concept: Thing
 
-Purpose: Represents a property, site, building or managed real estate object.
+Primary Capability: Assets, Property & Facilities; Project & Delivery
 
-Parent Objects:
+Status: Implemented / Needs Generalisation
 
-- Address
+Definition: A property, building, site or built-environment asset context.
 
-Child Objects:
+Purpose: Supports work performed on or related to property and built assets.
 
-- Property Unit
-- Property Party Role
-- Instruction Property
-- Activity
+Lifecycle: registered, active, inactive, archived.
 
-Workflow Enabled: Optional
+Key Relationships:
 
-Event Enabled: Yes
+- Property may have Address.
+- Property may have Property Units.
+- Property may relate to Parties through ownership, occupancy, management or interest roles.
+- Property may be linked to Agreements and Work.
 
-Auditable: Yes
-
-Current Tables:
+Current Implementation:
 
 - `property`
 - `property_unit`
 - `property_party_role`
+- `src/lib/packages/properties`
 
-Industry Extensions:
+Future Notes: Decide whether Property remains its own package or becomes an Asset specialisation.
 
-- RICS: subject property, comparable property, insured property
+## Address
+
+Meta Concept: Thing / Information
+
+Primary Capability: Customer & Commercial; Assets, Property & Facilities
+
+Status: Implemented
+
+Definition: A postal, physical or geographic address.
+
+Purpose: Supports party addresses, property addresses, site addresses and location context.
+
+Current Implementation:
+
+- `address`
+- `party_address`
+
+Future Notes: May need generalised Location and geospatial support.
+
+## Location
+
+Meta Concept: Thing
+
+Primary Capability: Assets, Property & Facilities; Operations
+
+Status: Planned
+
+Definition: A physical, geospatial, operational or logical location.
+
+Purpose: Supports sites, stores, regions, rooms, GIS, work locations and asset placement.
+
+## Equipment
+
+Meta Concept: Thing
+
+Primary Capability: Assets, Resources, Operations
+
+Status: Planned
+
+Definition: Equipment used, maintained, allocated or worked on.
+
+Purpose: Supports equipment asset management and resource allocation.
+
+## Plant
+
+Meta Concept: Thing
+
+Primary Capability: Assets, Resources, Procurement
+
+Status: Planned
+
+Definition: Plant used in work execution, operations or maintenance.
+
+## Vehicle
+
+Meta Concept: Thing
+
+Primary Capability: Assets, Resources
+
+Status: Planned
+
+Definition: A managed vehicle.
+
+## Material
+
+Meta Concept: Thing
+
+Primary Capability: Supply Chain & Procurement, Operations
+
+Status: Planned
+
+Definition: Material consumed or used in work.
+
+## Inventory Item
+
+Meta Concept: Thing
+
+Primary Capability: Supply Chain & Procurement, Finance
+
+Status: Planned
+
+Definition: An item held in stock or inventory.
+
+## Software Asset
+
+Meta Concept: Thing
+
+Primary Capability: Information, Platform Administration, Assets
+
+Status: Planned
+
+Definition: A software licence, application, environment or digital asset.
 
 ---
 
-## Client Account
+# 3. Agreement Domain
 
-Classification: Core Business Object
+## Lead
 
-Purpose: Represents a commercial client relationship with a party.
+Meta Concept: Agreement
 
-Customer model note: A client account may belong to either an organisation or an individual person and must not imply B2B-only behavior.
+Primary Capability: Customer & Commercial
 
-Parent Objects:
+Status: Planned
 
-- Party
+Definition: Early-stage potential commercial interest.
 
-Child Objects:
+Purpose: Captures weak or unqualified sales demand before it becomes an Enquiry or Opportunity.
 
-- Instruction
-- Sales Invoice
+## Enquiry
 
-Workflow Enabled: Optional
+Meta Concept: Agreement
 
-Event Enabled: Yes
+Primary Capability: Customer & Commercial
 
-Auditable: Yes
+Status: Planned
 
-Current Tables:
+Definition: A request for information, price, proposal, support or service.
 
-- `client_account`
+Purpose: Captures incoming demand before qualification.
 
-Industry Extensions:
+## Opportunity
 
-- RICS: client account for surveying instructions
-- Engineering: customer account
-- Quality: external customer or audit client
+Meta Concept: Agreement
 
----
+Primary Capability: Customer & Commercial
+
+Status: Planned
+
+Definition: A qualified potential commercial outcome.
+
+Purpose: Supports pipeline, forecasting, qualification and conversion to Proposal, Quotation, Tender or Contract.
+
+Lifecycle: identified, qualified, proposal, negotiation, won, lost, abandoned.
+
+Relationships:
+
+- Opportunity belongs to Client Account or Party.
+- Opportunity may relate to Things.
+- Opportunity may generate Proposal, Quotation, Tender or Contract.
+
+## Proposal
+
+Meta Concept: Agreement
+
+Primary Capability: Customer & Commercial
+
+Status: Planned
+
+Definition: An offer to perform work, provide goods or deliver services.
+
+Purpose: Records scope, price, assumptions, exclusions, deliverables and acceptance requirements.
+
+## Quotation
+
+Meta Concept: Agreement / Transaction
+
+Primary Capability: Customer & Commercial, Finance
+
+Status: Planned
+
+Definition: A priced offer.
+
+Purpose: Supports pricing and acceptance into Contract or Project.
+
+## Tender / Bid
+
+Meta Concept: Agreement
+
+Primary Capability: Customer & Commercial
+
+Status: Planned
+
+Definition: Formal competitive procurement or response process.
+
+Purpose: Supports tender submissions, bid/no-bid decisions, scoring, clarifications and award.
+
+## Contract
+
+Meta Concept: Agreement
+
+Primary Capability: Customer & Commercial, Project & Delivery, Finance
+
+Status: Planned
+
+Definition: An accepted agreement between parties.
+
+Purpose: Provides commercial authority for Work, billing, obligations, deliverables and controls.
+
+Lifecycle: draft, issued, negotiated, accepted, active, varied, completed, terminated, archived.
+
+Relationships:
+
+- Contract belongs to Parties.
+- Contract may create Project or Work.
+- Contract may govern Transactions.
+- Contract may require Documents, Controls and Compliance.
+
+## Framework Agreement
+
+Meta Concept: Agreement
+
+Primary Capability: Customer & Commercial, Procurement
+
+Status: Planned
+
+Definition: A reusable agreement structure under which multiple contracts, orders or projects may be created.
 
 ## Instruction
 
-Classification: Core Business Object
+Meta Concept: Agreement / Work
 
-Purpose: Represents a formal request, commission or accepted scope of work.
+Primary Capability: Customer & Commercial, Project & Delivery, Operations
 
-Customer model note: Instructions must support party roles for customer-of-record, billing party, primary contact and intermediary relationships across both B2B and B2C cases.
+Status: Implemented / Review
 
-Parent Objects:
+Definition: A request, authorisation, trigger or instruction to perform work.
 
-- Client Account
+Purpose: Existing object from earlier consultancy-centred model. Still valid, but must be reclassified under Agreement or Work Authorisation rather than treated as the ERP centre.
 
-Child Objects:
-
-- Instruction Party Role
-- Instruction Property
-- Project
-- Activity
-- Fee Agreement
-- Sales Invoice
-
-Workflow Enabled: Yes
-
-Event Enabled: Yes
-
-Auditable: Yes
-
-Current Tables:
+Current Implementation:
 
 - `instruction`
 - `instruction_party_role`
 - `instruction_property`
+- `src/lib/packages/instructions`
 
-Industry Extensions:
+Future Notes: Decide whether Instruction remains canonical, becomes a specialised Agreement, or becomes a Work Request / Authorisation pattern.
 
-- RICS: building survey instruction, dilapidations instruction, reinstatement cost assessment instruction
-- Engineering: investigation request, design change instruction
+## Purchase Order
+
+Meta Concept: Agreement / Transaction
+
+Primary Capability: Supply Chain & Procurement, Finance
+
+Status: Planned
+
+Definition: Supplier-side commitment to buy goods or services.
+
+Purpose: Authorises supplier fulfilment and creates financial commitment.
+
+## Change Order / Variation
+
+Meta Concept: Agreement / Control
+
+Primary Capability: Project & Delivery, Customer & Commercial, Procurement, Finance
+
+Status: Planned
+
+Definition: Agreed change to scope, time, price, deliverables or obligations.
 
 ---
 
+# 4. Work Domain
+
+## Portfolio
+
+Meta Concept: Work
+
+Primary Capability: Strategy & Governance, Project & Delivery
+
+Status: Planned
+
+Definition: Collection of programmes, projects and work aligned to strategic objectives.
+
+## Programme
+
+Meta Concept: Work
+
+Primary Capability: Project & Delivery
+
+Status: Planned
+
+Definition: Coordinated group of projects and related work managed to achieve outcomes or benefits.
+
 ## Project
 
-Classification: Core Business Object
+Meta Concept: Work
 
-Purpose: Represents a managed delivery structure used to coordinate work, people, time, risk and cost.
+Primary Capability: Project & Delivery, Finance, Resources, Procurement, Compliance, Reporting
 
-Parent Objects:
+Status: Partially Implemented / Underdeveloped
 
-- Instruction
+Definition: Controlled delivery container used to plan, execute, control and complete authorised work.
 
-Child Objects:
+Purpose: Project should be the central delivery object after commercial or internal authorisation.
 
-- Deliverable
-- Activity
-- Work Item
-- Task
-- Risk
-- Issue
+Lifecycle: proposed, initiated, planned, active, controlled, completed, closed, archived.
 
-Workflow Enabled: Yes
+Key Relationships:
 
-Event Enabled: Yes
+- Project may originate from Opportunity, Proposal, Contract, Instruction, Service Request or internal approval.
+- Project may relate to Client Account, Parties and Things.
+- Project may contain Work Packages, Activities, Tasks and Deliverables.
+- Project may have Budgets, Costs, Purchase Orders, Invoices and WIP.
+- Project may have Documents, Evidence, Risks, Issues, Changes, Controls and Frameworks.
 
-Auditable: Yes
-
-Current Tables:
+Current Implementation:
 
 - `project`
 - `project_instruction`
 
-Industry Extensions:
+Future Notes: Project must be elevated from secondary object to core ERP delivery container.
 
-- RICS: surveying project, portfolio instruction project
-- Engineering: design project, change project
+## Work Package
 
----
+Meta Concept: Work
+
+Primary Capability: Project & Delivery
+
+Status: Planned
+
+Definition: A manageable subdivision of project or programme scope.
+
+Purpose: Supports planning, delegation, control, costing and delivery structure.
+
+## Activity
+
+Meta Concept: Work
+
+Primary Capability: Operations & Work Execution
+
+Status: Implemented / Needs Repositioning
+
+Definition: A unit of executable work.
+
+Purpose: Supports operational execution, inspections, audits, reviews, investigations, workshops and technical work.
+
+Current Implementation:
+
+- `activity`
+- `activity_area`
+- `src/lib/packages/activities`
+
+Future Notes: Activity is valid but must not be treated as the centre of the ERP.
+
+## Task
+
+Meta Concept: Work
+
+Primary Capability: Project & Delivery, Operations, Resources
+
+Status: Planned
+
+Definition: Assignable piece of work.
+
+Purpose: Supports assignment, progress tracking, resource planning and execution.
+
+## Job / Work Order
+
+Meta Concept: Work
+
+Primary Capability: Operations & Work Execution
+
+Status: Planned
+
+Definition: Operational work order or job.
+
+Purpose: Supports maintenance, service delivery, field work and repeatable operational work.
+
+## Service Request
+
+Meta Concept: Work / Agreement
+
+Primary Capability: Operations, Customer & Commercial
+
+Status: Planned
+
+Definition: Request for service or operational support.
+
+## Milestone
+
+Meta Concept: Work
+
+Primary Capability: Project & Delivery
+
+Status: Planned
+
+Definition: Significant point in a work lifecycle.
 
 ## Deliverable
 
-Classification: Core Business Object
+Meta Concept: Work / Information / Agreement
 
-Purpose: Represents a committed output to be delivered to a client or stakeholder.
+Primary Capability: Project & Delivery, Customer & Commercial, Documents
 
-Examples:
+Status: Implemented / Needs Expansion
 
-- Report
-- Certificate
-- Schedule
-- Drawing pack
-- Assessment pack
+Definition: Output to be produced, submitted, accepted or delivered.
 
-Parent Objects:
-
-- Project
-- Instruction
-
-Child Objects:
-
-- Outcome
-- Outcome Revision
-- Document
-- Sales Invoice
-
-Workflow Enabled: Yes
-
-Event Enabled: Yes
-
-Auditable: Yes
-
-Current Tables:
+Current Implementation:
 
 - `deliverable`
 
-Industry Extensions:
+Future Notes: Deliverables should link to Project, Agreement, Work Package, Activity, Documents, acceptance, invoicing and frameworks.
 
-- RICS: building survey report, schedule of condition, dilapidations schedule
-- Engineering: technical report, design package
+## Observation
+
+Meta Concept: Work / Information
+
+Primary Capability: Operations, Compliance, Quality
+
+Status: Implemented
+
+Definition: Something identified during work.
+
+Current Implementation:
+
+- `observation`
+
+## Assessment
+
+Meta Concept: Work / Control
+
+Primary Capability: Operations, Compliance, Quality, Risk
+
+Status: Implemented
+
+Definition: Evaluation of an observation, condition, issue, risk, defect or situation.
+
+Current Implementation:
+
+- `assessment`
+
+## Action
+
+Meta Concept: Work / Control
+
+Primary Capability: Operations, Compliance, Quality, Risk
+
+Status: Implemented
+
+Definition: Required, recommended or agreed response.
+
+Current Implementation:
+
+- `action`
+
+## Outcome
+
+Meta Concept: Work / Information
+
+Primary Capability: Operations, Project & Delivery, Reporting
+
+Status: Implemented
+
+Definition: Result of Work, Action or Activity.
+
+Current Implementation:
+
+- `outcome`
 
 ---
+
+# 5. Transaction Domain
+
+## Budget
+
+Meta Concept: Transaction
+
+Primary Capability: Finance, Project & Delivery
+
+Status: Planned
+
+Definition: Planned financial allocation.
+
+## Forecast
+
+Meta Concept: Transaction
+
+Primary Capability: Finance, Reporting
+
+Status: Planned
+
+Definition: Projected financial outcome.
+
+## Cost
+
+Meta Concept: Transaction
+
+Primary Capability: Finance, Projects, Procurement
+
+Status: Planned
+
+Definition: Planned, committed or actual cost.
+
+## Revenue
+
+Meta Concept: Transaction
+
+Primary Capability: Finance, Customer & Commercial
+
+Status: Planned
+
+Definition: Planned, recognised or actual income.
+
+## Commitment
+
+Meta Concept: Transaction / Agreement
+
+Primary Capability: Finance, Procurement
+
+Status: Planned
+
+Definition: Financial commitment, often created by Purchase Order or Contract.
 
 ## Fee Agreement
 
-Classification: Financial Object
+Meta Concept: Transaction / Agreement
 
-Purpose: Represents the agreed fee or commercial basis for an instruction.
+Primary Capability: Finance, Customer & Commercial
 
-Parent Objects:
+Status: Implemented / Review
 
-- Instruction
+Definition: Fee arrangement governing billing and revenue.
 
-Child Objects:
-
-- Sales Invoice
-- WIP Item
-
-Workflow Enabled: Optional
-
-Event Enabled: Yes
-
-Auditable: Yes
-
-Current Tables:
+Current Implementation:
 
 - `fee_agreement`
 
----
+Future Notes: Review relationship to Proposal, Contract, Project and Sales Invoice.
 
 ## Sales Invoice
 
-Classification: Financial Object
+Meta Concept: Transaction
 
-Purpose: Represents an invoice issued to a client account.
+Primary Capability: Finance
 
-Parent Objects:
+Status: Implemented / Thin
 
-- Client Account
-- Instruction
-- Project
+Definition: Customer-facing invoice.
 
-Child Objects:
-
-- Payment
-- Credit Note
-
-Workflow Enabled: Yes
-
-Event Enabled: Yes
-
-Auditable: Yes
-
-Current Tables:
+Current Implementation:
 
 - `sales_invoice`
 
+## Purchase Invoice
+
+Meta Concept: Transaction
+
+Primary Capability: Finance, Procurement
+
+Status: Planned
+
+Definition: Supplier-facing invoice.
+
+## Payment
+
+Meta Concept: Transaction
+
+Primary Capability: Finance
+
+Status: Planned
+
+Definition: Payment made or received.
+
+## Receipt
+
+Meta Concept: Transaction
+
+Primary Capability: Finance
+
+Status: Planned
+
+Definition: Money received.
+
+## Credit Note
+
+Meta Concept: Transaction
+
+Primary Capability: Finance
+
+Status: Planned
+
+Definition: Credit adjustment.
+
+## Journal Entry
+
+Meta Concept: Transaction
+
+Primary Capability: Finance
+
+Status: Planned
+
+Definition: Accounting journal.
+
+## WIP Item
+
+Meta Concept: Transaction
+
+Primary Capability: Finance, Project & Delivery
+
+Status: Planned
+
+Definition: Work-in-progress financial record.
+
+## Expense
+
+Meta Concept: Transaction
+
+Primary Capability: Finance, People & Workforce, Projects
+
+Status: Planned
+
+Definition: Business or workforce expense.
+
 ---
+
+# 6. Information Domain
+
+## Document
+
+Meta Concept: Information
+
+Primary Capability: Information, Documents & Knowledge
+
+Status: Planned
+
+Definition: Controlled information object.
+
+Purpose: Provides document control across all enterprise objects.
+
+## Document Revision
+
+Meta Concept: Information
+
+Primary Capability: Documents
+
+Status: Planned
+
+Definition: Version or revision of a Document.
+
+## Record
+
+Meta Concept: Information
+
+Primary Capability: Documents, Compliance
+
+Status: Planned
+
+Definition: Retained business record.
+
+## Evidence Item
+
+Meta Concept: Information
+
+Primary Capability: Documents, Compliance, Operations
+
+Status: Planned / Partially Represented
+
+Definition: Supporting evidence attached to an enterprise object.
+
+Future Notes: Evidence should support Activity, Observation, Assessment, Action, Outcome, Project, Compliance Requirement, Audit and more.
+
+## Correspondence
+
+Meta Concept: Information
+
+Primary Capability: Customer & Commercial, Documents
+
+Status: Planned
+
+Definition: Communication record such as email, letter or message.
+
+## Template
+
+Meta Concept: Information / Control
+
+Primary Capability: Documents, Frameworks, Administration
+
+Status: Planned
+
+Definition: Reusable structure for generating information.
+
+## Report
+
+Meta Concept: Information
+
+Primary Capability: Reporting & Analytics
+
+Status: Planned
+
+Definition: Produced or generated information output.
+
+## Certificate
+
+Meta Concept: Information / Control
+
+Primary Capability: Compliance, Documents
+
+Status: Planned
+
+Definition: Formal certificate or attestation.
+
+## Drawing / Specification
+
+Meta Concept: Information
+
+Primary Capability: Documents, Assets, Projects
+
+Status: Planned
+
+Definition: Technical information object.
+
+## Knowledge Article
+
+Meta Concept: Information
+
+Primary Capability: Information & Knowledge
+
+Status: Planned
+
+Definition: Knowledge-base content.
+
+---
+
+# 7. Control Domain
+
+## Risk
+
+Meta Concept: Control
+
+Primary Capability: Compliance, Risk & Quality; Project & Delivery
+
+Status: Planned
+
+Definition: Uncertain event or condition that may affect objectives.
+
+## Issue
+
+Meta Concept: Control
+
+Primary Capability: Compliance, Risk & Quality; Project & Delivery
+
+Status: Planned
+
+Definition: Known problem or matter requiring management.
+
+## Change
+
+Meta Concept: Control / Agreement / Work
+
+Primary Capability: Project & Delivery, Governance, Finance
+
+Status: Planned
+
+Definition: Controlled change to scope, time, cost, design, requirement, agreement, work or information.
+
+## Compliance Requirement
+
+Meta Concept: Control
+
+Primary Capability: Compliance, Risk & Quality
+
+Status: Planned
+
+Definition: Requirement that must be satisfied.
+
+## Control
+
+Meta Concept: Control
+
+Primary Capability: Compliance, Governance, Quality
+
+Status: Planned
+
+Definition: Mechanism used to govern or assure behaviour.
+
+## Audit
+
+Meta Concept: Control / Work
+
+Primary Capability: Compliance, Risk & Quality
+
+Status: Planned
+
+Definition: Review, assurance or audit activity.
+
+## Non-Conformance
+
+Meta Concept: Control
+
+Primary Capability: Quality, Compliance
+
+Status: Planned
+
+Definition: Failure to meet a requirement.
+
+## Corrective Action
+
+Meta Concept: Control / Work
+
+Primary Capability: Quality, Compliance, Operations
+
+Status: Planned / May Reuse Action
+
+Definition: Action to correct a non-conformance, issue or defect.
 
 ## Workflow Definition
 
-Classification: Workflow Object
+Meta Concept: Control
 
-Purpose: Defines a reusable lifecycle model.
+Primary Capability: Workflow & Automation, Platform Administration
 
-Parent Objects:
+Status: Implemented
 
-- None
+Definition: Metadata defining lifecycle behaviour.
 
-Child Objects:
-
-- Workflow State
-- Workflow Transition
-- Workflow Instance
-
-Workflow Enabled: No
-
-Event Enabled: Yes
-
-Auditable: Yes
-
-Current Tables:
+Current Implementation:
 
 - `workflow_definition`
-
----
-
-## Workflow State
-
-Classification: Workflow Object
-
-Purpose: Defines a valid state within a workflow.
-
-Parent Objects:
-
-- Workflow Definition
-
-Child Objects:
-
-- Workflow Transition
-- Workflow Instance State
-
-Workflow Enabled: No
-
-Event Enabled: Yes
-
-Auditable: Yes
-
-Current Tables:
-
 - `workflow_state`
-
----
-
-## Workflow Transition
-
-Classification: Workflow Object
-
-Purpose: Defines a permitted movement from one workflow state to another.
-
-Parent Objects:
-
-- Workflow Definition
-- Workflow State
-
-Child Objects:
-
-- Workflow Action
-- Business Event
-
-Workflow Enabled: No
-
-Event Enabled: Yes
-
-Auditable: Yes
-
-Current Tables:
-
 - `workflow_transition`
-
----
+- `workflow_action`
 
 ## Workflow Instance
 
-Classification: Workflow Object
+Meta Concept: Control
 
-Purpose: Connects a workflow definition to a specific business object.
+Primary Capability: Workflow & Automation
 
-Parent Objects:
+Status: Implemented
 
-- Workflow Definition
-- Business Object
+Definition: Live workflow attached to a business object.
 
-Child Objects:
-
-- Workflow Instance State
-- Business Event
-
-Workflow Enabled: No
-
-Event Enabled: Yes
-
-Auditable: Yes
-
-Current Tables:
+Current Implementation:
 
 - `workflow_instance`
 - `workflow_instance_state`
 
+## Approval
+
+Meta Concept: Control
+
+Primary Capability: Governance, Workflow
+
+Status: Planned
+
+Definition: Formal approval decision or approval step.
+
+## Policy
+
+Meta Concept: Control
+
+Primary Capability: Strategy & Governance, Compliance
+
+Status: Planned
+
+Definition: Governance rule or policy.
+
+## Framework
+
+Meta Concept: Control
+
+Primary Capability: Framework & Extension Management, Compliance, Project & Delivery
+
+Status: Planned
+
+Definition: A methodology, standard or governance framework applied to business objects.
+
+Examples:
+
+- PRINCE2
+- PMBOK
+- Agile
+- Six Sigma
+- Lean
+- CMII
+- RICS
+- CDM
+- NEC
+- JCT
+- ISO 9001
+- ISO 14001
+- ISO 45001
+- ISO 27001
+- Client-specific governance
+
+Future Notes: Framework is one of PBM's key differentiators and must be implemented as configurable metadata, not hard-coded industry logic.
+
 ---
+
+# 8. Platform Domain
 
 ## Business Event
 
-Classification: Event Object
+Meta Concept: Cross-Cutting
 
-Purpose: Records immutable business history.
+Primary Capability: Integration & Automation, Audit, Reporting
 
-Examples:
+Status: Implemented
 
-- Client created
-- Instruction accepted
-- Workflow state changed
-- Document uploaded
-- Invoice paid
+Definition: Immutable record of business fact, action or state change.
 
-Parent Objects:
-
-- Any business object via `entity_type_code` and `entity_id`
-
-Child Objects:
-
-- None
-
-Workflow Enabled: No
-
-Event Enabled: No; it is the event store
-
-Auditable: Yes; append-only
-
-Current Tables:
+Current Implementation:
 
 - `business_event`
 
----
+## Audit Event
 
-## Activity
+Meta Concept: Control / Information
 
-Classification: Activity Management Object
+Primary Capability: Compliance, Platform Administration
 
-Purpose: Represents a unit of work performed by the enterprise.
+Status: Planned
 
-Examples:
+Definition: Record of user, system or security-relevant action.
 
-- Inspection
-- Audit
-- Investigation
-- Risk review
-- Workshop
-- Meeting
-- Survey
+## Reference Code Set
 
-Parent Objects:
+Meta Concept: Cross-Cutting Configuration
 
-- Instruction
-- Project
-- Contract
-- Property
+Primary Capability: Platform Administration
 
-Child Objects:
+Status: Implemented
 
-- Activity Area
-- Observation
-- Assessment
-- Action
-- Outcome
-- Evidence Item
+Definition: Controlled set of reference codes.
 
-Workflow Enabled: Yes
+Current Implementation:
 
-Event Enabled: Yes
+- `ref_code_set`
+- `ref_code_value`
 
-Auditable: Yes
+## User
 
-Planned Tables:
+Meta Concept: Party / Control
 
-- `activity`
-- `activity_area`
+Primary Capability: Platform Administration
 
-Industry Extensions:
+Status: Planned / Auth Dependent
 
-- RICS: building survey inspection, schedule of condition inspection, dilapidations inspection
-- Quality: audit
-- Engineering: investigation
-- Risk: risk review
+Definition: Authenticated system user.
 
----
+## Role
 
-## Activity Area
+Meta Concept: Control
 
-Classification: Activity Management Object
+Primary Capability: Platform Administration
 
-Purpose: Represents a defined area, zone, scope segment or location within an activity.
+Status: Planned / Auth Dependent
 
-Examples:
+Definition: Security or business role.
 
-- Roof
-- External elevation
-- Level 01
-- Plant room
-- Process area
-- System boundary
+## Permission
 
-Parent Objects:
+Meta Concept: Control
 
-- Activity
-- Activity Area
+Primary Capability: Platform Administration
 
-Child Objects:
+Status: Planned / Auth Dependent
 
-- Observation
-- Evidence Item
+Definition: Authorisation grant.
 
-Workflow Enabled: No
+## Numbering Scheme
 
-Event Enabled: Yes
+Meta Concept: Control / Configuration
 
-Auditable: Yes
+Primary Capability: Platform Administration
 
-Planned Tables:
+Status: Planned
 
-- `activity_area`
+Definition: Configurable identifier generation rule.
+
+## Integration Endpoint
+
+Meta Concept: Information / Control
+
+Primary Capability: Integration & Automation
+
+Status: Planned
+
+Definition: External integration point.
+
+## Automation Rule
+
+Meta Concept: Control
+
+Primary Capability: Integration & Automation, Workflow
+
+Status: Planned
+
+Definition: Configured automation trigger and action.
 
 ---
 
-## Observation
-
-Classification: Activity Management Object
-
-Purpose: Represents something observed or recorded during an activity.
-
-Examples:
-
-- Crack observed
-- Water staining
-- Missing record
-- Process deviation
-- Configuration mismatch
-
-Parent Objects:
-
-- Activity
-- Activity Area
-
-Child Objects:
-
-- Assessment
-- Evidence Item
-
-Workflow Enabled: Optional
-
-Event Enabled: Yes
-
-Auditable: Yes
-
-Planned Tables:
-
-- `observation`
-
----
-
-## Assessment
-
-Classification: Activity Management Object
-
-Purpose: Represents professional evaluation of an observation, issue, condition or risk.
-
-Examples:
-
-- Defect assessment
-- Risk assessment
-- Compliance assessment
-- Technical assessment
-- Non-conformance assessment
-
-Parent Objects:
-
-- Activity
-- Observation
-
-Child Objects:
-
-- Action
-- Outcome
-- Evidence Item
-
-Workflow Enabled: Yes
-
-Event Enabled: Yes
-
-Auditable: Yes
-
-Planned Tables:
-
-- `assessment`
-
----
-
-## Action
-
-Classification: Activity Management Object
-
-Purpose: Represents a required, recommended or completed response to an assessment.
-
-Examples:
-
-- Repair recommendation
-- Corrective action
-- Mitigation action
-- Engineering action
-- Follow-up action
-
-Parent Objects:
-
-- Assessment
-- Activity
-
-Child Objects:
-
-- Outcome
-- Evidence Item
-- Work Item
-- Task
-
-Workflow Enabled: Yes
-
-Event Enabled: Yes
-
-Auditable: Yes
-
-Planned Tables:
-
-- `action`
-
----
-
-## Outcome
-
-Classification: Activity Management Object
-
-Purpose: Represents the result or output of an activity, assessment or action.
-
-Examples:
-
-- Survey report
-- Audit report
-- Engineering report
-- Risk decision
-- Completion statement
-
-Parent Objects:
-
-- Activity
-- Assessment
-- Action
-- Deliverable
-
-Child Objects:
-
-- Outcome Revision
-- Document
-- Evidence Item
-
-Workflow Enabled: Yes
-
-Event Enabled: Yes
-
-Auditable: Yes
-
-Planned Tables:
-
-- `outcome`
-- `outcome_revision`
-
----
-
-## Evidence Item
-
-Classification: Activity Management Object / Document Object
-
-Purpose: Represents supporting evidence attached to a business object.
-
-Examples:
-
-- Photo
-- Video
-- Drawing
-- PDF
-- Email
-- Measurement
-- Calculation
-
-Parent Objects:
-
-- Activity
-- Activity Area
-- Observation
-- Assessment
-- Action
-- Outcome
-
-Child Objects:
-
-- Document
-- File Storage Reference
-
-Workflow Enabled: No
-
-Event Enabled: Yes
-
-Auditable: Yes
-
-Planned Tables:
-
-- `evidence_item`
-
----
-
-## Work Item
-
-Classification: Work Management Object
-
-Purpose: Represents a package of work to be planned, assigned and tracked.
-
-Parent Objects:
-
-- Instruction
-- Project
-- Activity
-- Action
-
-Child Objects:
-
-- Task
-- Assignment
-- Resource Allocation
-
-Workflow Enabled: Yes
-
-Event Enabled: Yes
-
-Auditable: Yes
-
-Planned Tables:
-
-- `work_item`
-
----
-
-## Task
-
-Classification: Work Management Object
-
-Purpose: Represents an actionable unit of work.
-
-Parent Objects:
-
-- Work Item
-
-Child Objects:
-
-- Assignment
-- Business Event
-
-Workflow Enabled: Yes
-
-Event Enabled: Yes
-
-Auditable: Yes
-
-Planned Tables:
-
-- `task`
-
----
-
-## Document
-
-Classification: Document / Record Object
-
-Purpose: Represents controlled information attached to a business object.
-
-Parent Objects:
-
-- Any business object
-
-Child Objects:
-
-- Document Revision
-- Record
-
-Workflow Enabled: Optional
-
-Event Enabled: Yes
-
-Auditable: Yes
-
-Planned Tables:
-
-- `document`
-- `document_revision`
-- `record`
-
-## Governance Rule
-
-If a developer wants to add a table, route, API endpoint or report that does not map to an object in this catalogue, the catalogue must be updated first.
+# Catalogue Governance Rules
+
+1. No new enterprise object may be added without mapping to a meta concept.
+2. No new table may be added without mapping to a catalogue object, relationship, event, workflow state or configuration object.
+3. No route may imply ownership of an object.
+4. No package may duplicate an object owned by another package.
+5. Framework-specific objects must extend the core model rather than fork it.
+6. Documents, evidence, workflow, events and controls should be considered for every major object.
+7. Object status must be reviewed as the implementation evolves.
+
+# Immediate Catalogue Gaps
+
+The most important missing or underdeveloped objects are:
+
+```text
+Opportunity
+Proposal
+Contract
+Purchase Order
+Project
+Work Package
+Task
+Resource Allocation
+Supplier Account
+Budget
+Cost
+Purchase Invoice
+Document
+Framework
+Compliance Requirement
+Risk
+Issue
+Change
+```
+
+# Summary
+
+This catalogue is the PBM enterprise dictionary.
+
+It should be used to decide:
+
+- what objects exist
+- what packages should own
+- what routes should expose
+- what workflows should govern
+- what reports should measure
+- what frameworks may extend
+
+The implementation should now be reviewed and refactored against this catalogue object by object.
