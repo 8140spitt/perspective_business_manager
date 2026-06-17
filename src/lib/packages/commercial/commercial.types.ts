@@ -10,6 +10,7 @@ export type SalesLifecycleRecord = {
 	stageCode: SalesStageCode;
 	reference: string;
 	title: string;
+	summary: string | null;
 	clientAccountId: number | null;
 	partyId: number | null;
 	estimatedValue: number | null;
@@ -23,6 +24,7 @@ export type CreateSalesLifecycleInput = {
 	objectType: SalesObjectType;
 	reference?: string;
 	title: string;
+	summary?: string | null;
 	clientAccountId?: number | null;
 	partyId?: number | null;
 	estimatedValue?: number | null;
