@@ -66,6 +66,7 @@ const commercialLifecycleSelect = `
 		status_code AS stageCode,
 		lead_reference AS reference,
 		title,
+		summary,
 		client_account_id AS clientAccountId,
 		party_id AS partyId,
 		estimated_value AS estimatedValue,
@@ -81,6 +82,7 @@ const commercialLifecycleSelect = `
 		status_code AS stageCode,
 		enquiry_reference AS reference,
 		title,
+		summary,
 		client_account_id AS clientAccountId,
 		party_id AS partyId,
 		estimated_value AS estimatedValue,
@@ -96,6 +98,7 @@ const commercialLifecycleSelect = `
 		status_code AS stageCode,
 		opportunity_reference AS reference,
 		title,
+		summary,
 		client_account_id AS clientAccountId,
 		party_id AS partyId,
 		estimated_value AS estimatedValue,
@@ -111,6 +114,7 @@ const commercialLifecycleSelect = `
 		status_code AS stageCode,
 		proposal_reference AS reference,
 		title,
+		summary,
 		client_account_id AS clientAccountId,
 		party_id AS partyId,
 		net_amount AS estimatedValue,
@@ -126,6 +130,7 @@ const commercialLifecycleSelect = `
 		status_code AS stageCode,
 		quotation_reference AS reference,
 		title,
+		summary,
 		client_account_id AS clientAccountId,
 		party_id AS partyId,
 		net_amount AS estimatedValue,
@@ -141,6 +146,7 @@ const commercialLifecycleSelect = `
 		status_code AS stageCode,
 		tender_reference AS reference,
 		title,
+		summary,
 		client_account_id AS clientAccountId,
 		party_id AS partyId,
 		NULL AS estimatedValue,
@@ -168,7 +174,6 @@ export async function getSalesLifecycleRecordById(
 	objectType: SalesObjectType,
 	id: number
 ): Promise<SalesLifecycleRecord | null> {
-	const config = getConfig(objectType);
 	const [rows] = await db.query(
 		`
 		SELECT *
@@ -194,14 +199,16 @@ export async function createSalesLifecycleRecord(input: CreateSalesLifecycleInpu
 			client_account_id,
 			party_id,
 			status_code,
-			title
+			title,
+			summary
 		)
 		VALUES (
 			:reference,
 			:clientAccountId,
 			:partyId,
 			:stageCode,
-			:title
+			:title,
+			:summary
 		)
 		`,
 		{
@@ -209,7 +216,8 @@ export async function createSalesLifecycleRecord(input: CreateSalesLifecycleInpu
 			clientAccountId: input.clientAccountId ?? null,
 			partyId: input.partyId ?? null,
 			stageCode: config.defaultStageCode,
-			title: input.title
+			title: input.title,
+			summary: input.summary ?? null
 		}
 	);
 
