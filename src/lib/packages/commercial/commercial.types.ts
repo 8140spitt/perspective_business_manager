@@ -10,27 +10,30 @@ export type SalesLifecycleRecord = {
 	stageCode: SalesStageCode;
 	reference: string;
 	title: string;
-	clientAccountId?: number;
-	partyId?: number;
-	estimatedValue?: number;
-	estimatedCurrencyCode?: string;
-	expectedDecisionDate?: string;
-	createdAt?: string;
-	updatedAt?: string;
+	clientAccountId: number | null;
+	partyId: number | null;
+	estimatedValue: number | null;
+	estimatedCurrencyCode: string | null;
+	expectedDecisionDate: string | null;
+	createdAt: string | null;
+	updatedAt: string | null;
 };
 
 export type CreateSalesLifecycleInput = {
 	objectType: SalesObjectType;
+	reference?: string;
 	title: string;
-	clientAccountId?: number;
-	partyId?: number;
-	estimatedValue?: number;
-	estimatedCurrencyCode?: string;
-	expectedDecisionDate?: string;
+	clientAccountId?: number | null;
+	partyId?: number | null;
+	estimatedValue?: number | null;
+	estimatedCurrencyCode?: string | null;
+	expectedDecisionDate?: string | null;
 };
 
 export type TransitionSalesLifecycleInput = {
 	id: number;
+	objectType: SalesObjectType;
 	stageCode: SalesStageCode;
-	reason?: string;
+	reason?: string | null;
+	changedBy?: number | null;
 };
