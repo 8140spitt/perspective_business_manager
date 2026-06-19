@@ -50,18 +50,6 @@ export async function createWorkInstruction(input: CreateWorkInstructionInput): 
 	return workRepository.createInstruction(input);
 }
 
-export async function activateWorkContainer(id: number): Promise<void> {
-	const current = await workRepository.getContainerById(id);
-
-	await workRepository.recordStatusTransition({
-		objectTypeCode: 'work_container',
-		objectId: id,
-		fromStatusCode: current?.statusCode ?? null,
-		toStatusCode: 'active',
-		reason: 'Work container activated.'
-	});
-}
-
 export const workService = {
 	listContainers: listWorkContainers,
 	getContainerById: getWorkContainerById,
@@ -69,6 +57,5 @@ export const workService = {
 	listServices: listWorkServices,
 	createService: createWorkService,
 	listInstructions: listWorkInstructions,
-	createInstruction: createWorkInstruction,
-	activateContainer: activateWorkContainer
+	createInstruction: createWorkInstruction
 };
