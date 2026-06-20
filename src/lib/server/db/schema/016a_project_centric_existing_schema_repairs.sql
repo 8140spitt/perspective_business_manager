@@ -5,6 +5,82 @@
 SET @schema_name := DATABASE();
 
 -- ------------------------------------------------------------
+-- project repairs
+-- ------------------------------------------------------------
+
+SELECT COUNT(*) INTO @has_col FROM information_schema.columns WHERE table_schema = @schema_name AND table_name = 'project' AND column_name = 'project_type_code';
+SET @sql := IF(@has_col = 0, 'ALTER TABLE project ADD COLUMN project_type_code VARCHAR(100) NULL', 'SELECT ''project.project_type_code exists'' AS message');
+PREPARE stmt FROM @sql;
+EXECUTE stmt;
+DEALLOCATE PREPARE stmt;
+
+SELECT COUNT(*) INTO @has_col FROM information_schema.columns WHERE table_schema = @schema_name AND table_name = 'project' AND column_name = 'project_state_code';
+SET @sql := IF(@has_col = 0, 'ALTER TABLE project ADD COLUMN project_state_code VARCHAR(100) NOT NULL DEFAULT ''enquiry''', 'SELECT ''project.project_state_code exists'' AS message');
+PREPARE stmt FROM @sql;
+EXECUTE stmt;
+DEALLOCATE PREPARE stmt;
+
+SELECT COUNT(*) INTO @has_col FROM information_schema.columns WHERE table_schema = @schema_name AND table_name = 'project' AND column_name = 'primary_client_business_partner_id';
+SET @sql := IF(@has_col = 0, 'ALTER TABLE project ADD COLUMN primary_client_business_partner_id BIGINT UNSIGNED NULL', 'SELECT ''project.primary_client_business_partner_id exists'' AS message');
+PREPARE stmt FROM @sql;
+EXECUTE stmt;
+DEALLOCATE PREPARE stmt;
+
+SELECT COUNT(*) INTO @has_col FROM information_schema.columns WHERE table_schema = @schema_name AND table_name = 'project' AND column_name = 'enquiry_date';
+SET @sql := IF(@has_col = 0, 'ALTER TABLE project ADD COLUMN enquiry_date DATE NULL', 'SELECT ''project.enquiry_date exists'' AS message');
+PREPARE stmt FROM @sql;
+EXECUTE stmt;
+DEALLOCATE PREPARE stmt;
+
+SELECT COUNT(*) INTO @has_col FROM information_schema.columns WHERE table_schema = @schema_name AND table_name = 'project' AND column_name = 'expected_start_date';
+SET @sql := IF(@has_col = 0, 'ALTER TABLE project ADD COLUMN expected_start_date DATE NULL', 'SELECT ''project.expected_start_date exists'' AS message');
+PREPARE stmt FROM @sql;
+EXECUTE stmt;
+DEALLOCATE PREPARE stmt;
+
+SELECT COUNT(*) INTO @has_col FROM information_schema.columns WHERE table_schema = @schema_name AND table_name = 'project' AND column_name = 'expected_completion_date';
+SET @sql := IF(@has_col = 0, 'ALTER TABLE project ADD COLUMN expected_completion_date DATE NULL', 'SELECT ''project.expected_completion_date exists'' AS message');
+PREPARE stmt FROM @sql;
+EXECUTE stmt;
+DEALLOCATE PREPARE stmt;
+
+SELECT COUNT(*) INTO @has_col FROM information_schema.columns WHERE table_schema = @schema_name AND table_name = 'project' AND column_name = 'actual_start_date';
+SET @sql := IF(@has_col = 0, 'ALTER TABLE project ADD COLUMN actual_start_date DATE NULL', 'SELECT ''project.actual_start_date exists'' AS message');
+PREPARE stmt FROM @sql;
+EXECUTE stmt;
+DEALLOCATE PREPARE stmt;
+
+SELECT COUNT(*) INTO @has_col FROM information_schema.columns WHERE table_schema = @schema_name AND table_name = 'project' AND column_name = 'actual_completion_date';
+SET @sql := IF(@has_col = 0, 'ALTER TABLE project ADD COLUMN actual_completion_date DATE NULL', 'SELECT ''project.actual_completion_date exists'' AS message');
+PREPARE stmt FROM @sql;
+EXECUTE stmt;
+DEALLOCATE PREPARE stmt;
+
+SELECT COUNT(*) INTO @has_col FROM information_schema.columns WHERE table_schema = @schema_name AND table_name = 'project' AND column_name = 'description';
+SET @sql := IF(@has_col = 0, 'ALTER TABLE project ADD COLUMN description TEXT NULL', 'SELECT ''project.description exists'' AS message');
+PREPARE stmt FROM @sql;
+EXECUTE stmt;
+DEALLOCATE PREPARE stmt;
+
+SELECT COUNT(*) INTO @has_col FROM information_schema.columns WHERE table_schema = @schema_name AND table_name = 'project' AND column_name = 'notes';
+SET @sql := IF(@has_col = 0, 'ALTER TABLE project ADD COLUMN notes TEXT NULL', 'SELECT ''project.notes exists'' AS message');
+PREPARE stmt FROM @sql;
+EXECUTE stmt;
+DEALLOCATE PREPARE stmt;
+
+SELECT COUNT(*) INTO @has_col FROM information_schema.columns WHERE table_schema = @schema_name AND table_name = 'project' AND column_name = 'created_at';
+SET @sql := IF(@has_col = 0, 'ALTER TABLE project ADD COLUMN created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP', 'SELECT ''project.created_at exists'' AS message');
+PREPARE stmt FROM @sql;
+EXECUTE stmt;
+DEALLOCATE PREPARE stmt;
+
+SELECT COUNT(*) INTO @has_col FROM information_schema.columns WHERE table_schema = @schema_name AND table_name = 'project' AND column_name = 'updated_at';
+SET @sql := IF(@has_col = 0, 'ALTER TABLE project ADD COLUMN updated_at TIMESTAMP NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP', 'SELECT ''project.updated_at exists'' AS message');
+PREPARE stmt FROM @sql;
+EXECUTE stmt;
+DEALLOCATE PREPARE stmt;
+
+-- ------------------------------------------------------------
 -- project_quote repairs
 -- ------------------------------------------------------------
 
