@@ -1,3 +1,21 @@
+export type BusinessProfileRecord = {
+	businessPartnerId: number;
+	businessEntityId: number | null;
+	partnerReference: string | null;
+	partnerName: string;
+	partnerStatusCode: string;
+	legalName: string | null;
+	tradingName: string | null;
+	companyNumber: string | null;
+	vatNumber: string | null;
+	taxReference: string | null;
+	industryCode: string | null;
+	website: string | null;
+	notes: string | null;
+	createdAt: string | null;
+	updatedAt: string | null;
+};
+
 export type BusinessFunctionRecord = {
 	businessFunctionId: number;
 	parentBusinessFunctionId: number | null;
@@ -82,6 +100,7 @@ export type EmployeePositionRecord = {
 };
 
 export type OrganisationDashboard = {
+	businessProfile: BusinessProfileRecord | null;
 	businessFunctions: BusinessFunctionRecord[];
 	organisationUnits: OrganisationUnitRecord[];
 	positions: PositionRecord[];
