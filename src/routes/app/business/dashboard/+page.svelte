@@ -4,12 +4,12 @@
 	let { data } = $props();
 	let workspace = $derived(data.workspace);
 
-	const businessSetupAreas = [
+	const businessSetupAreas = $derived([
 		{
 			title: 'Business profile',
 			description: 'The tenant business record, legal identity, trading names and operating context.',
 			route: '/app/business/profile',
-			status: 'Next'
+			status: workspace.businessProfile ? 'Configured' : 'Required'
 		},
 		{
 			title: 'Business functions',
@@ -29,7 +29,7 @@
 			route: '/app/business/positions',
 			status: `${workspace.positions.length} configured`
 		}
-	] as const;
+	]);
 </script>
 
 <svelte:head>
@@ -49,6 +49,10 @@
 	</header>
 
 	<section class="metrics" aria-label="Business setup summary">
+		<div class="metric">
+			<span>Business profile</span>
+			<strong>{workspace.businessProfile ? '1' : '0'}</strong>
+		</div>
 		<div class="metric">
 			<span>Business functions</span>
 			<strong>{workspace.businessFunctions.length}</strong>
@@ -79,7 +83,7 @@
 			<li>Organisation units</li>
 			<li>Positions</li>
 			<li>Employees assigned by HR</li>
-			<li>Projects, commercial and finance consume this structure</li>
+			<li>Projects, commercial, procurement and finance consume this structure</li>
 		</ol>
 	</section>
 
