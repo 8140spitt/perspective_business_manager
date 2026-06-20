@@ -1,4 +1,5 @@
 import {
+	getBusinessProfile,
 	getOrganisationDashboard,
 	listBusinessFunctions,
 	listEmployeePositions,
@@ -9,6 +10,10 @@ import {
 
 export async function getOrganisationWorkspace() {
 	return getOrganisationDashboard();
+}
+
+export async function getTenantBusinessProfile() {
+	return getBusinessProfile();
 }
 
 export async function listFunctions() {
@@ -33,6 +38,7 @@ export async function listOrgEmployeePositions() {
 
 export const organisationService = {
 	getOrganisationWorkspace,
+	getTenantBusinessProfile,
 	listFunctions,
 	listUnits,
 	listOrgPositions,
