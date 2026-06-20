@@ -1,12 +1,39 @@
 import { db } from '$lib/server/db/connection';
 import type {
 	BusinessFunctionRecord,
+	BusinessProfileRecord,
 	EmployeePositionRecord,
 	EmployeeRecord,
 	OrganisationDashboard,
 	OrganisationUnitRecord,
 	PositionRecord
 } from './organisation.types';
+
+const businessProfileSelect = `
+	SELECT
+		bp.business_partner_id AS businessPartnerId,
+		be.business_entity_id AS businessEntityId,
+		bp.partner_reference AS partnerReference,
+		bp.partner_name AS partnerName,
+		bp.status_code AS partnerStatusCode,
+		be.legal_name AS legalName,
+		be.trading_name AS tradingName,
+		be.company_number AS companyNumber,
+		be.vat_number AS vatNumber,
+		be.tax_reference AS taxReference,
+		be.industry_code AS industryCode,
+		be.website,
+		COALESCE(be.notes, bp.notes) AS notes,
+		bp.created_at AS createdAt,
+		bp.updated_at AS updatedAt
+	FROM business_partner bp
+	JOIN business_partner_role bpr
+		ON bpr.business_partner_id = bp.business_partner_id
+		AND bpr.role_code = 'tenant_business'
+		AND bpr.is_active = TRUE
+	LEFT JOIN business_entity be
+		ON be.business_entity_id = bp.business_entity_id
+`;
 
 const businessFunctionSelect = `
 	SELECT
@@ -129,6 +156,12 @@ const employeePositionSelect = `
 		ON bf.business_function_id = p.business_function_id
 `;
 
+export async function getBusinessProfile(): Promise<BusinessProfileRecord | null> {
+	const [rows] = await db.query(`${businessProfileSelect} ORDER BY bpr.is_primary DESC, bp.business_partner_id LIMIT 1`);
+	const profiles = rows as BusinessProfileRecord[];
+	return profiles[0] ?? null;
+}
+
 export async function listBusinessFunctions(): Promise<BusinessFunctionRecord[]> {
 	const [rows] = await db.query(`${businessFunctionSelect} ORDER BY bf.function_level, bf.function_code`);
 	return rows as BusinessFunctionRecord[];
@@ -155,7 +188,8 @@ export async function listEmployeePositions(): Promise<EmployeePositionRecord[]>
 }
 
 export async function getOrganisationDashboard(): Promise<OrganisationDashboard> {
-	const [businessFunctions, organisationUnits, positions, employees, employeePositions] = await Promise.all([
+	const [businessProfile, businessFunctions, organisationUnits, positions, employees, employeePositions] = await Promise.all([
+		getBusinessProfile(),
 		listBusinessFunctions(),
 		listOrganisationUnits(),
 		listPositions(),
@@ -164,6 +198,7 @@ export async function getOrganisationDashboard(): Promise<OrganisationDashboard>
 	]);
 
 	return {
+		businessProfile,
 		businessFunctions,
 		organisationUnits,
 		positions,
@@ -173,6 +208,7 @@ export async function getOrganisationDashboard(): Promise<OrganisationDashboard>
 }
 
 export const organisationRepository = {
+	getBusinessProfile,
 	listBusinessFunctions,
 	listOrganisationUnits,
 	listPositions,
