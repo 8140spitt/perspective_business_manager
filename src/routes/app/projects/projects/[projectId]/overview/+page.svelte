@@ -1,6 +1,9 @@
 <script lang="ts">
+	import type { ProjectCommercialSummary } from '$lib/packages/projects/projects.types';
+
 	let { data } = $props();
-	const summary = data.dashboard.summary;
+	let dashboard = $derived(data.dashboard);
+	let summary = $derived(data.dashboard.summary as ProjectCommercialSummary);
 </script>
 
 <svelte:head>
@@ -42,11 +45,11 @@
 	<section class="grid">
 		<article class="card">
 			<h2>Internal responsibility</h2>
-			{#if data.dashboard.responsibilities.length === 0}
+			{#if dashboard.responsibilities.length === 0}
 				<p>No internal assignments found.</p>
 			{:else}
 				<ul>
-					{#each data.dashboard.responsibilities as responsibility}
+					{#each dashboard.responsibilities as responsibility}
 						<li>
 							<strong>{responsibility.projectRoleCode}</strong>
 							<span>
@@ -61,11 +64,11 @@
 
 		<article class="card">
 			<h2>External contacts</h2>
-			{#if data.dashboard.externalContacts.length === 0}
+			{#if dashboard.externalContacts.length === 0}
 				<p>No external contacts found.</p>
 			{:else}
 				<ul>
-					{#each data.dashboard.externalContacts as contact}
+					{#each dashboard.externalContacts as contact}
 						<li>
 							<strong>{contact.projectContactRoleCode}</strong>
 							<span>{contact.firstName} {contact.lastName} · {contact.partnerName} · {contact.jobTitle ?? 'No job title'}</span>
@@ -78,7 +81,7 @@
 
 	<section class="card">
 		<h2>Scope</h2>
-		{#if data.dashboard.scope.length === 0}
+		{#if dashboard.scope.length === 0}
 			<p>No locations or services found.</p>
 		{:else}
 			<table>
@@ -91,7 +94,7 @@
 					</tr>
 				</thead>
 				<tbody>
-					{#each data.dashboard.scope as item}
+					{#each dashboard.scope as item}
 						<tr>
 							<td>{item.locationName ?? '—'}</td>
 							<td>{item.addressLine1 ?? '—'} {item.postcode ?? ''}</td>
