@@ -2,33 +2,35 @@
 
 ## Purpose
 
-Define the platform requirements that apply across all enterprise modules.
+Define requirements that apply across every PBM workspace, business object and route doorway.
 
-## Canonical Data Requirements
+These requirements protect the shared data spine and prevent workspace-specific implementations from creating duplicate versions of the truth.
+
+## Shared Data Spine Requirements
 
 ### CR-000 Shared Customer Model
 
-The platform shall support both B2B and B2C customer relationships using the same shared party, person, organisation, client account and contact model.
+The platform shall support organisation-led, individual-led and intermediary-led customer relationships using the same shared party, person, business, client account and contact model.
 
-### CR-001 Single Object Ownership Rule
+### CR-001 Single Object Definition Rule
 
-The platform shall maintain a canonical definition for each enterprise object and reuse it across all modules.
+The platform shall maintain one canonical definition for each business object and reuse it across all workspaces.
 
-### CR-002 Shared Identity
+### CR-002 Stable Identity
 
-The platform shall assign stable identifiers and references for parties, instructions, properties, projects, activities, outcomes, invoices and documents.
+The platform shall assign stable identifiers and references for parties, instructions, properties, projects, activities, outcomes, invoices, supplier records, documents and controls.
 
 ### CR-003 Reference Data Governance
 
 The platform shall manage status codes, type codes, workflow mappings, numbering sequences and reporting classifications as controlled reference data.
 
-The platform shall manage customer classification, customer role and intermediary role codes as controlled reference data where needed.
+Customer classification, customer role and intermediary role codes must also be controlled reference data where required.
 
 ## Workflow Requirements
 
 ### WF-001 Workflow Metadata
 
-The platform shall define lifecycle states and transitions as metadata rather than hard-coded module logic wherever practical.
+The platform shall define lifecycle states and transitions as metadata wherever practical, rather than hard-coding workflow logic into individual routes.
 
 ### WF-002 Workflow Instance Traceability
 
@@ -42,17 +44,17 @@ The platform shall support approvals, technical reviews and gated transitions fo
 
 ### AU-001 Immutable Events
 
-The platform shall store append-only business events for significant create, update, transition and issue actions.
+The platform shall store append-only business events for significant create, update, transition, approval, issue and exception actions.
 
 ### AU-002 Audit Queryability
 
-The platform shall support audit tracing by entity, user, date, workflow state and event type.
+The platform shall support audit tracing by business object, user, date, workflow state and event type.
 
 ## Security And Access Requirements
 
 ### SEC-001 Role-Based Access Control
 
-The platform shall support role-based access by module, business object, action and data sensitivity.
+The platform shall support role-based access by workspace, business object, action and data sensitivity.
 
 ### SEC-002 Segregation Of Duties
 
@@ -80,23 +82,23 @@ The platform shall support retention rules by record type, service line, matter 
 
 ### REP-001 Operational Reporting
 
-The platform shall provide reports across pipeline, workload, project status, findings, actions, invoices, debt and utilisation.
+The platform shall provide reports across pipeline, workload, project status, findings, actions, invoices, supplier cost, debt and utilisation.
 
 ### REP-002 Dimensional Analysis
 
-The platform shall analyse data by client, property, instruction, project, service line, office, team, surveyor and time period.
+The platform shall analyse data by client, property, instruction, project, service line, office, team, employee and time period.
 
-The platform shall support reporting dimensions that distinguish B2B and B2C customer activity without splitting the underlying customer model.
+The platform shall support reporting dimensions that distinguish organisation-led and individual-led customer activity without splitting the underlying customer model.
 
 ### REP-003 Defensible Outputs
 
-The platform shall support evidence-backed reporting suitable for client delivery and regulatory review.
+The platform shall support evidence-backed reporting suitable for client delivery, management review and regulatory or professional audit.
 
 ## Integration Requirements
 
 ### INT-001 API-First Services
 
-The platform shall expose stable service interfaces for core objects and workflows.
+The platform shall expose stable service interfaces for core business objects and workflows.
 
 ### INT-002 Event Integration
 
@@ -106,23 +108,23 @@ The platform shall publish business events suitable for integration with documen
 
 The platform shall support controlled migration of clients, properties, instructions, historical projects, invoices and documents.
 
-The platform shall support import and migration of both organisation customers and individual consumers into the same canonical customer structure.
+Organisation-led and individual-led customer records must migrate into the same shared customer structure.
 
 ## User Experience Requirements
 
 ### UX-001 Workspace Navigation
 
-The application shall provide user-facing workspaces aligned to role and module concerns while preserving shared object relationships.
+The application shall provide business workspaces aligned to user jobs while preserving shared object relationships.
 
-The application shall preserve consistent navigation and record views for both organisation-based and individual-based customer journeys.
+The application shall preserve consistent navigation and record views for both organisation-led and individual-led customer journeys.
 
 ### UX-002 Fast Context Switching
 
-Users shall be able to move quickly between client, instruction, property, project, activity, deliverable and invoice context.
+Users shall be able to move quickly between client, instruction, property, project, activity, deliverable, invoice and supplier cost context.
 
 ### UX-003 Exception Visibility
 
-Users shall be able to identify overdue actions, blocked approvals, unbilled WIP, expiring accreditations and compliance exceptions.
+Users shall be able to identify overdue actions, blocked approvals, unbilled WIP, unpaid invoices, supplier exceptions, expiring accreditations and compliance exceptions.
 
 ## Non-Functional Requirements
 
