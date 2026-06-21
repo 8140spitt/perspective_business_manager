@@ -10,6 +10,14 @@ Perspective Business Manager will not copy SAP's module experience, but it will 
 
 PBM routes are therefore organised as **functional workspaces**. A workspace gathers the activities a person performs in a business function. The route structure should not mirror database tables and should not force users into another function's workspace simply because the underlying data is related.
 
+## Naming rule
+
+Do not use **tenant** in the user-facing application language.
+
+The business using PBM is called the **owning business**, **business profile**, or simply **the business** depending on context.
+
+`Tenant` may remain only as a private technical concept if PBM later becomes multi-organisation SaaS. It must not appear in normal route labels, page headings, help text, or setup flows.
+
 ## Core principle
 
 ```text
@@ -29,7 +37,7 @@ A project manager can see finance, HR and procurement context inside `/app/proje
 | Workspace | Route root | Purpose |
 | --- | --- | --- |
 | Command centre | `/app/dashboard` | Overall operating model, navigation and cross-functional visibility. |
-| Business setup | `/app/business` | Tenant business profile, business functions, operating model, organisation units and positions. |
+| Business setup | `/app/business` | Owning business profile, business functions, operating model, organisation units and positions. |
 | HR / workforce | `/app/hr` | People, employees, employee positions, competence, authority and workforce records. |
 | CRM | `/app/crm` | Clients, contacts, prospects and relationships. |
 | Commercial | `/app/commercial` or existing sales routes | Enquiries, opportunities, quotes, proposals, tenders and sales pipeline. |
@@ -90,6 +98,7 @@ HR user:
 
 Business/admin user:
 /app/business/dashboard
+/app/business/profile
 /app/business/functions
 /app/business/organisation-units
 /app/business/positions
@@ -108,9 +117,9 @@ Do not create `/app/organisation` as a primary workspace.
 Use:
 
 ```text
-/app/business/dashboard  -> tenant business, business functions, organisation units, positions
-/app/hr/dashboard        -> people, employees, employee positions, competence, authority
-/app/projects/dashboard  -> project delivery
-/app/finance/dashboard   -> finance processing and reporting
+/app/business/dashboard   -> business profile, business functions, organisation units, positions
+/app/hr/dashboard         -> people, employees, employee positions, competence, authority
+/app/projects/dashboard   -> project delivery
+/app/finance/dashboard    -> finance processing and reporting
 /app/procurement/dashboard -> procurement processing
 ```
