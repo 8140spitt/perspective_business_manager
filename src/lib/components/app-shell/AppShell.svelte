@@ -118,6 +118,11 @@
 		display: grid;
 		grid-template-columns: 18rem minmax(0, 1fr);
 		min-height: 100vh;
+		position: fixed;
+		inset: 0;
+		& > * {
+			overflow: auto;
+		}
 	}
 
 	.sidebar {

@@ -1,0 +1,570 @@
+<mxfile host="app.diagrams.net" agent="ChatGPT" pages="5">
+  <diagram id="sap-to-pbm-mapping" name="SAP to PBM mapping">
+    <mxGraphModel dx="1200" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1900" pageHeight="1320" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" parent="1" value="PBM ERP — SAP coverage to modern functional workspaces" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=none;fontSize=28;fontStyle=1;align=center;" vertex="1">
+          <mxGeometry x="230" y="30" width="1440" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="sub" parent="1" value="SAP module breadth is retained as coverage; PBM exposes it as clearer workspaces, routes and activities." style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=none;fontSize=14;align=center;fontColor=#555555;" vertex="1">
+          <mxGeometry x="350" y="85" width="1200" height="36" as="geometry" />
+        </mxCell>
+        <mxCell id="h1" parent="1" value="SAP coverage / source modules" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1F2937;strokeColor=#111827;fontColor=#FFFFFF;fontStyle=1;fontSize=15;align=center;verticalAlign=middle;" vertex="1">
+          <mxGeometry x="60" y="150" width="360" height="44" as="geometry" />
+        </mxCell>
+        <mxCell id="h2" parent="1" value="PBM capability workspace" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1F2937;strokeColor=#111827;fontColor=#FFFFFF;fontStyle=1;fontSize=15;align=center;verticalAlign=middle;" vertex="1">
+          <mxGeometry x="535" y="150" width="420" height="44" as="geometry" />
+        </mxCell>
+        <mxCell id="h3" parent="1" value="Primary application route" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1F2937;strokeColor=#111827;fontColor=#FFFFFF;fontStyle=1;fontSize=15;align=center;verticalAlign=middle;" vertex="1">
+          <mxGeometry x="1080" y="150" width="380" height="44" as="geometry" />
+        </mxCell>
+        <mxCell id="h4" parent="1" value="What the user actually does" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1F2937;strokeColor=#111827;fontColor=#FFFFFF;fontStyle=1;fontSize=15;align=center;verticalAlign=middle;" vertex="1">
+          <mxGeometry x="1560" y="150" width="280" height="44" as="geometry" />
+        </mxCell>
+        <mxCell id="sap0" parent="1" value="Enterprise Structure&lt;br&gt;Organisational Management&lt;br&gt;Reference Data" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EFF6FF;strokeColor=#60A5FA;fontSize=12;align=center;verticalAlign=middle;" vertex="1">
+          <mxGeometry x="60" y="220" width="360" height="86" as="geometry" />
+        </mxCell>
+        <mxCell id="ws0" parent="1" value="&lt;b&gt;Business Setup&lt;/b&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ECFDF5;strokeColor=#34D399;fontStyle=1;fontSize=13;align=center;verticalAlign=middle;" vertex="1">
+          <mxGeometry x="535" y="220" width="420" height="86" as="geometry" />
+        </mxCell>
+        <mxCell id="route0" parent="1" value="/app/business/dashboard" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FEF3C7;strokeColor=#F59E0B;fontSize=12;fontFamily=Courier New;align=center;verticalAlign=middle;" vertex="1">
+          <mxGeometry x="1080" y="220" width="380" height="86" as="geometry" />
+        </mxCell>
+        <mxCell id="act0" parent="1" value="• Business profile&lt;br&gt;• Legal entities&lt;br&gt;• Business functions&lt;br&gt;• Organisation units&lt;br&gt;• …" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F8FAFC;strokeColor=#CBD5E1;fontSize=11;align=left;verticalAlign=middle;spacingLeft=8;" vertex="1">
+          <mxGeometry x="1560" y="220" width="280" height="86" as="geometry" />
+        </mxCell>
+        <mxCell id="e0a" parent="1" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeColor=#6B7280;" edge="1" source="sap0" target="ws0">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e0b" parent="1" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeColor=#6B7280;" edge="1" source="ws0" target="route0">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e0c" parent="1" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeColor=#6B7280;" edge="1" source="route0" target="act0">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="sap1" parent="1" value="FI&lt;br&gt;CO&lt;br&gt;FSCM&lt;br&gt;AA" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EFF6FF;strokeColor=#60A5FA;fontSize=12;align=center;verticalAlign=middle;" vertex="1">
+          <mxGeometry x="60" y="326" width="360" height="86" as="geometry" />
+        </mxCell>
+        <mxCell id="ws1" parent="1" value="&lt;b&gt;Finance &amp;amp; Control&lt;/b&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ECFDF5;strokeColor=#34D399;fontStyle=1;fontSize=13;align=center;verticalAlign=middle;" vertex="1">
+          <mxGeometry x="535" y="326" width="420" height="86" as="geometry" />
+        </mxCell>
+        <mxCell id="route1" parent="1" value="/app/finance/dashboard" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FEF3C7;strokeColor=#F59E0B;fontSize=12;fontFamily=Courier New;align=center;verticalAlign=middle;" vertex="1">
+          <mxGeometry x="1080" y="326" width="380" height="86" as="geometry" />
+        </mxCell>
+        <mxCell id="act1" parent="1" value="• General ledger&lt;br&gt;• Accounts receivable&lt;br&gt;• Accounts payable&lt;br&gt;• Bank and cash&lt;br&gt;• …" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F8FAFC;strokeColor=#CBD5E1;fontSize=11;align=left;verticalAlign=middle;spacingLeft=8;" vertex="1">
+          <mxGeometry x="1560" y="326" width="280" height="86" as="geometry" />
+        </mxCell>
+        <mxCell id="e1a" parent="1" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeColor=#6B7280;" edge="1" source="sap1" target="ws1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e1b" parent="1" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeColor=#6B7280;" edge="1" source="ws1" target="route1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e1c" parent="1" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeColor=#6B7280;" edge="1" source="route1" target="act1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="sap2" parent="1" value="HR&lt;br&gt;HCM&lt;br&gt;Org Management&lt;br&gt;Personnel Admin&lt;br&gt;Time Management" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EFF6FF;strokeColor=#60A5FA;fontSize=12;align=center;verticalAlign=middle;" vertex="1">
+          <mxGeometry x="60" y="432" width="360" height="86" as="geometry" />
+        </mxCell>
+        <mxCell id="ws2" parent="1" value="&lt;b&gt;People &amp;amp; Workforce&lt;/b&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ECFDF5;strokeColor=#34D399;fontStyle=1;fontSize=13;align=center;verticalAlign=middle;" vertex="1">
+          <mxGeometry x="535" y="432" width="420" height="86" as="geometry" />
+        </mxCell>
+        <mxCell id="route2" parent="1" value="/app/hr/dashboard" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FEF3C7;strokeColor=#F59E0B;fontSize=12;fontFamily=Courier New;align=center;verticalAlign=middle;" vertex="1">
+          <mxGeometry x="1080" y="432" width="380" height="86" as="geometry" />
+        </mxCell>
+        <mxCell id="act2" parent="1" value="• People records&lt;br&gt;• Employees&lt;br&gt;• Employee positions&lt;br&gt;• Recruitment&lt;br&gt;• …" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F8FAFC;strokeColor=#CBD5E1;fontSize=11;align=left;verticalAlign=middle;spacingLeft=8;" vertex="1">
+          <mxGeometry x="1560" y="432" width="280" height="86" as="geometry" />
+        </mxCell>
+        <mxCell id="e2a" parent="1" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeColor=#6B7280;" edge="1" source="sap2" target="ws2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2b" parent="1" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeColor=#6B7280;" edge="1" source="ws2" target="route2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2c" parent="1" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeColor=#6B7280;" edge="1" source="route2" target="act2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="sap3" parent="1" value="SD&lt;br&gt;CRM&lt;br&gt;Sales Information System" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EFF6FF;strokeColor=#60A5FA;fontSize=12;align=center;verticalAlign=middle;" vertex="1">
+          <mxGeometry x="60" y="538" width="360" height="86" as="geometry" />
+        </mxCell>
+        <mxCell id="ws3" parent="1" value="&lt;b&gt;Clients &amp;amp; Commercial&lt;/b&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ECFDF5;strokeColor=#34D399;fontStyle=1;fontSize=13;align=center;verticalAlign=middle;" vertex="1">
+          <mxGeometry x="535" y="538" width="420" height="86" as="geometry" />
+        </mxCell>
+        <mxCell id="route3" parent="1" value="/app/crm/dashboard" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FEF3C7;strokeColor=#F59E0B;fontSize=12;fontFamily=Courier New;align=center;verticalAlign=middle;" vertex="1">
+          <mxGeometry x="1080" y="538" width="380" height="86" as="geometry" />
+        </mxCell>
+        <mxCell id="act3" parent="1" value="• Clients&lt;br&gt;• Contacts&lt;br&gt;• Leads&lt;br&gt;• Enquiries&lt;br&gt;• …" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F8FAFC;strokeColor=#CBD5E1;fontSize=11;align=left;verticalAlign=middle;spacingLeft=8;" vertex="1">
+          <mxGeometry x="1560" y="538" width="280" height="86" as="geometry" />
+        </mxCell>
+        <mxCell id="e3a" parent="1" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeColor=#6B7280;" edge="1" source="sap3" target="ws3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3b" parent="1" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeColor=#6B7280;" edge="1" source="ws3" target="route3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3c" parent="1" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeColor=#6B7280;" edge="1" source="route3" target="act3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="sap4" parent="1" value="PS&lt;br&gt;WBS&lt;br&gt;Project Planning&lt;br&gt;Project Tracking&lt;br&gt;Project Costs" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EFF6FF;strokeColor=#60A5FA;fontSize=12;align=center;verticalAlign=middle;" vertex="1">
+          <mxGeometry x="60" y="644" width="360" height="86" as="geometry" />
+        </mxCell>
+        <mxCell id="ws4" parent="1" value="&lt;b&gt;Project Delivery&lt;/b&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ECFDF5;strokeColor=#34D399;fontStyle=1;fontSize=13;align=center;verticalAlign=middle;" vertex="1">
+          <mxGeometry x="535" y="644" width="420" height="86" as="geometry" />
+        </mxCell>
+        <mxCell id="route4" parent="1" value="/app/projects/dashboard" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FEF3C7;strokeColor=#F59E0B;fontSize=12;fontFamily=Courier New;align=center;verticalAlign=middle;" vertex="1">
+          <mxGeometry x="1080" y="644" width="380" height="86" as="geometry" />
+        </mxCell>
+        <mxCell id="act4" parent="1" value="• Projects&lt;br&gt;• WBS / phases&lt;br&gt;• Scope&lt;br&gt;• Services&lt;br&gt;• …" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F8FAFC;strokeColor=#CBD5E1;fontSize=11;align=left;verticalAlign=middle;spacingLeft=8;" vertex="1">
+          <mxGeometry x="1560" y="644" width="280" height="86" as="geometry" />
+        </mxCell>
+        <mxCell id="e4a" parent="1" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeColor=#6B7280;" edge="1" source="sap4" target="ws4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e4b" parent="1" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeColor=#6B7280;" edge="1" source="ws4" target="route4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e4c" parent="1" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeColor=#6B7280;" edge="1" source="route4" target="act4">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="sap5" parent="1" value="MM&lt;br&gt;SRM&lt;br&gt;WM&lt;br&gt;Invoice Verification&lt;br&gt;Logistics Execution" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EFF6FF;strokeColor=#60A5FA;fontSize=12;align=center;verticalAlign=middle;" vertex="1">
+          <mxGeometry x="60" y="750" width="360" height="86" as="geometry" />
+        </mxCell>
+        <mxCell id="ws5" parent="1" value="&lt;b&gt;Procurement, Materials &amp;amp; Logistics&lt;/b&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ECFDF5;strokeColor=#34D399;fontStyle=1;fontSize=13;align=center;verticalAlign=middle;" vertex="1">
+          <mxGeometry x="535" y="750" width="420" height="86" as="geometry" />
+        </mxCell>
+        <mxCell id="route5" parent="1" value="/app/procurement/dashboard" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FEF3C7;strokeColor=#F59E0B;fontSize=12;fontFamily=Courier New;align=center;verticalAlign=middle;" vertex="1">
+          <mxGeometry x="1080" y="750" width="380" height="86" as="geometry" />
+        </mxCell>
+        <mxCell id="act5" parent="1" value="• Suppliers&lt;br&gt;• Purchase requests&lt;br&gt;• Supplier quotes&lt;br&gt;• Purchase orders&lt;br&gt;• …" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F8FAFC;strokeColor=#CBD5E1;fontSize=11;align=left;verticalAlign=middle;spacingLeft=8;" vertex="1">
+          <mxGeometry x="1560" y="750" width="280" height="86" as="geometry" />
+        </mxCell>
+        <mxCell id="e5a" parent="1" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeColor=#6B7280;" edge="1" source="sap5" target="ws5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e5b" parent="1" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeColor=#6B7280;" edge="1" source="ws5" target="route5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e5c" parent="1" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeColor=#6B7280;" edge="1" source="route5" target="act5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="sap6" parent="1" value="PP&lt;br&gt;MRP&lt;br&gt;Capacity Planning&lt;br&gt;Work Centres&lt;br&gt;Shop Floor Control" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EFF6FF;strokeColor=#60A5FA;fontSize=12;align=center;verticalAlign=middle;" vertex="1">
+          <mxGeometry x="60" y="856" width="360" height="86" as="geometry" />
+        </mxCell>
+        <mxCell id="ws6" parent="1" value="&lt;b&gt;Operations &amp;amp; Planning&lt;/b&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ECFDF5;strokeColor=#34D399;fontStyle=1;fontSize=13;align=center;verticalAlign=middle;" vertex="1">
+          <mxGeometry x="535" y="856" width="420" height="86" as="geometry" />
+        </mxCell>
+        <mxCell id="route6" parent="1" value="/app/operations/dashboard" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FEF3C7;strokeColor=#F59E0B;fontSize=12;fontFamily=Courier New;align=center;verticalAlign=middle;" vertex="1">
+          <mxGeometry x="1080" y="856" width="380" height="86" as="geometry" />
+        </mxCell>
+        <mxCell id="act6" parent="1" value="• Work planning&lt;br&gt;• Demand view&lt;br&gt;• Capacity planning&lt;br&gt;• Resource planning&lt;br&gt;• …" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F8FAFC;strokeColor=#CBD5E1;fontSize=11;align=left;verticalAlign=middle;spacingLeft=8;" vertex="1">
+          <mxGeometry x="1560" y="856" width="280" height="86" as="geometry" />
+        </mxCell>
+        <mxCell id="e6a" parent="1" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeColor=#6B7280;" edge="1" source="sap6" target="ws6">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e6b" parent="1" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeColor=#6B7280;" edge="1" source="ws6" target="route6">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e6c" parent="1" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeColor=#6B7280;" edge="1" source="route6" target="act6">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="sap7" parent="1" value="QM&lt;br&gt;GRC&lt;br&gt;EHS" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EFF6FF;strokeColor=#60A5FA;fontSize=12;align=center;verticalAlign=middle;" vertex="1">
+          <mxGeometry x="60" y="962" width="360" height="86" as="geometry" />
+        </mxCell>
+        <mxCell id="ws7" parent="1" value="&lt;b&gt;Quality &amp;amp; Compliance&lt;/b&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ECFDF5;strokeColor=#34D399;fontStyle=1;fontSize=13;align=center;verticalAlign=middle;" vertex="1">
+          <mxGeometry x="535" y="962" width="420" height="86" as="geometry" />
+        </mxCell>
+        <mxCell id="route7" parent="1" value="/app/compliance/dashboard" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FEF3C7;strokeColor=#F59E0B;fontSize=12;fontFamily=Courier New;align=center;verticalAlign=middle;" vertex="1">
+          <mxGeometry x="1080" y="962" width="380" height="86" as="geometry" />
+        </mxCell>
+        <mxCell id="act7" parent="1" value="• Quality plans&lt;br&gt;• Inspections&lt;br&gt;• Review gates&lt;br&gt;• Non-conformance&lt;br&gt;• …" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F8FAFC;strokeColor=#CBD5E1;fontSize=11;align=left;verticalAlign=middle;spacingLeft=8;" vertex="1">
+          <mxGeometry x="1560" y="962" width="280" height="86" as="geometry" />
+        </mxCell>
+        <mxCell id="e7a" parent="1" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeColor=#6B7280;" edge="1" source="sap7" target="ws7">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e7b" parent="1" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeColor=#6B7280;" edge="1" source="ws7" target="route7">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e7c" parent="1" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeColor=#6B7280;" edge="1" source="route7" target="act7">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="sap8" parent="1" value="PM&lt;br&gt;EAM&lt;br&gt;RE" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EFF6FF;strokeColor=#60A5FA;fontSize=12;align=center;verticalAlign=middle;" vertex="1">
+          <mxGeometry x="60" y="1068" width="360" height="86" as="geometry" />
+        </mxCell>
+        <mxCell id="ws8" parent="1" value="&lt;b&gt;Assets, Property &amp;amp; Maintenance&lt;/b&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ECFDF5;strokeColor=#34D399;fontStyle=1;fontSize=13;align=center;verticalAlign=middle;" vertex="1">
+          <mxGeometry x="535" y="1068" width="420" height="86" as="geometry" />
+        </mxCell>
+        <mxCell id="route8" parent="1" value="/app/property/dashboard" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FEF3C7;strokeColor=#F59E0B;fontSize=12;fontFamily=Courier New;align=center;verticalAlign=middle;" vertex="1">
+          <mxGeometry x="1080" y="1068" width="380" height="86" as="geometry" />
+        </mxCell>
+        <mxCell id="act8" parent="1" value="• Asset register&lt;br&gt;• Equipment&lt;br&gt;• Facilities&lt;br&gt;• Properties&lt;br&gt;• …" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F8FAFC;strokeColor=#CBD5E1;fontSize=11;align=left;verticalAlign=middle;spacingLeft=8;" vertex="1">
+          <mxGeometry x="1560" y="1068" width="280" height="86" as="geometry" />
+        </mxCell>
+        <mxCell id="e8a" parent="1" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeColor=#6B7280;" edge="1" source="sap8" target="ws8">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e8b" parent="1" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeColor=#6B7280;" edge="1" source="ws8" target="route8">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e8c" parent="1" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeColor=#6B7280;" edge="1" source="route8" target="act8">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="sap9" parent="1" value="BW&lt;br&gt;BI&lt;br&gt;DMS&lt;br&gt;Basis&lt;br&gt;Access Control&lt;br&gt;Platform" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EFF6FF;strokeColor=#60A5FA;fontSize=12;align=center;verticalAlign=middle;" vertex="1">
+          <mxGeometry x="60" y="1174" width="360" height="86" as="geometry" />
+        </mxCell>
+        <mxCell id="ws9" parent="1" value="&lt;b&gt;Reporting, Documents &amp;amp; Admin&lt;/b&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ECFDF5;strokeColor=#34D399;fontStyle=1;fontSize=13;align=center;verticalAlign=middle;" vertex="1">
+          <mxGeometry x="535" y="1174" width="420" height="86" as="geometry" />
+        </mxCell>
+        <mxCell id="route9" parent="1" value="/app/reporting/dashboard" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FEF3C7;strokeColor=#F59E0B;fontSize=12;fontFamily=Courier New;align=center;verticalAlign=middle;" vertex="1">
+          <mxGeometry x="1080" y="1174" width="380" height="86" as="geometry" />
+        </mxCell>
+        <mxCell id="act9" parent="1" value="• Executive dashboards&lt;br&gt;• Finance reports&lt;br&gt;• Project reports&lt;br&gt;• HR reports&lt;br&gt;• …" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F8FAFC;strokeColor=#CBD5E1;fontSize=11;align=left;verticalAlign=middle;spacingLeft=8;" vertex="1">
+          <mxGeometry x="1560" y="1174" width="280" height="86" as="geometry" />
+        </mxCell>
+        <mxCell id="e9a" parent="1" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeColor=#6B7280;" edge="1" source="sap9" target="ws9">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e9b" parent="1" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeColor=#6B7280;" edge="1" source="ws9" target="route9">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e9c" parent="1" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=1;strokeColor=#6B7280;" edge="1" source="route9" target="act9">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rule" parent="1" value="Rule: SAP module codes are coverage evidence, not user-facing navigation. PBM routes are activity-first workspaces." style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F3F4F6;strokeColor=#D1D5DB;fontSize=13;fontStyle=1;align=center;" vertex="1">
+          <mxGeometry x="280" y="1300" width="1300" height="50" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="pbm-capability-detail" name="PBM capability detail">
+    <mxGraphModel dx="1003" dy="684" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1900" pageHeight="1120" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title2" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=none;fontSize=26;fontStyle=1;align=center;" value="PBM capability detail — what sits inside each workspace" vertex="1">
+          <mxGeometry height="50" width="1380" x="260" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="d0" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#94A3B8;fontSize=11;align=left;verticalAlign=top;spacing=10;" value="&lt;b&gt;Business Setup&lt;/b&gt;&lt;br&gt;&lt;span style=&#39;font-size:10px;color:#6B7280&#39;&gt;/app/business/dashboard&lt;/span&gt;&lt;br&gt;&lt;br&gt;&lt;b&gt;SAP coverage:&lt;/b&gt; Enterprise Structure, Organisational Management, Reference Data&lt;br&gt;&lt;br&gt;&lt;b&gt;Capabilities&lt;/b&gt;&lt;br&gt;• Business profile&lt;br&gt;• Legal entities&lt;br&gt;• Business functions&lt;br&gt;• Organisation units&lt;br&gt;• Positions&lt;br&gt;• Settings&lt;br&gt;• Reference data" vertex="1">
+          <mxGeometry height="240" width="400" x="60" y="110" as="geometry" />
+        </mxCell>
+        <mxCell id="d1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#94A3B8;fontSize=11;align=left;verticalAlign=top;spacing=10;" value="&lt;b&gt;Finance &amp;amp; Control&lt;/b&gt;&lt;br&gt;&lt;span style=&#39;font-size:10px;color:#6B7280&#39;&gt;/app/finance/dashboard&lt;/span&gt;&lt;br&gt;&lt;br&gt;&lt;b&gt;SAP coverage:&lt;/b&gt; FI, CO, FSCM, AA&lt;br&gt;&lt;br&gt;&lt;b&gt;Capabilities&lt;/b&gt;&lt;br&gt;• General ledger&lt;br&gt;• Accounts receivable&lt;br&gt;• Accounts payable&lt;br&gt;• Bank and cash&lt;br&gt;• Tax / VAT&lt;br&gt;• Credit control&lt;br&gt;• Cost centres&lt;br&gt;• Profit centres&lt;br&gt;• Project costing&lt;br&gt;• Margin" vertex="1">
+          <mxGeometry height="240" width="400" x="510" y="110" as="geometry" />
+        </mxCell>
+        <mxCell id="d2" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#94A3B8;fontSize=11;align=left;verticalAlign=top;spacing=10;" value="&lt;b&gt;People &amp;amp; Workforce&lt;/b&gt;&lt;br&gt;&lt;span style=&#39;font-size:10px;color:#6B7280&#39;&gt;/app/hr/dashboard&lt;/span&gt;&lt;br&gt;&lt;br&gt;&lt;b&gt;SAP coverage:&lt;/b&gt; HR, HCM, Org Management, Personnel Admin, Time Management&lt;br&gt;&lt;br&gt;&lt;b&gt;Capabilities&lt;/b&gt;&lt;br&gt;• People records&lt;br&gt;• Employees&lt;br&gt;• Employee positions&lt;br&gt;• Recruitment&lt;br&gt;• Onboarding&lt;br&gt;• Time and attendance&lt;br&gt;• Leave / absence&lt;br&gt;• Competence&lt;br&gt;• Training&lt;br&gt;• Authority limits" vertex="1">
+          <mxGeometry height="240" width="400" x="960" y="110" as="geometry" />
+        </mxCell>
+        <mxCell id="d3" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#94A3B8;fontSize=11;align=left;verticalAlign=top;spacing=10;" value="&lt;b&gt;Clients &amp;amp; Commercial&lt;/b&gt;&lt;br&gt;&lt;span style=&#39;font-size:10px;color:#6B7280&#39;&gt;/app/crm/dashboard&lt;/span&gt;&lt;br&gt;&lt;br&gt;&lt;b&gt;SAP coverage:&lt;/b&gt; SD, CRM, Sales Information System&lt;br&gt;&lt;br&gt;&lt;b&gt;Capabilities&lt;/b&gt;&lt;br&gt;• Clients&lt;br&gt;• Contacts&lt;br&gt;• Leads&lt;br&gt;• Enquiries&lt;br&gt;• Opportunities&lt;br&gt;• Quotes&lt;br&gt;• Fee proposals&lt;br&gt;• Pricing&lt;br&gt;• Instructions&lt;br&gt;• Billing triggers" vertex="1">
+          <mxGeometry height="240" width="400" x="1410" y="110" as="geometry" />
+        </mxCell>
+        <mxCell id="d4" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#94A3B8;fontSize=11;align=left;verticalAlign=top;spacing=10;" value="&lt;b&gt;Project Delivery&lt;/b&gt;&lt;br&gt;&lt;span style=&#39;font-size:10px;color:#6B7280&#39;&gt;/app/projects/dashboard&lt;/span&gt;&lt;br&gt;&lt;br&gt;&lt;b&gt;SAP coverage:&lt;/b&gt; PS, WBS, Project Planning, Project Tracking, Project Costs&lt;br&gt;&lt;br&gt;&lt;b&gt;Capabilities&lt;/b&gt;&lt;br&gt;• Projects&lt;br&gt;• WBS / phases&lt;br&gt;• Scope&lt;br&gt;• Services&lt;br&gt;• Activities&lt;br&gt;• Milestones&lt;br&gt;• Assignments&lt;br&gt;• Risks&lt;br&gt;• Issues&lt;br&gt;• Change&lt;br&gt;• Evidence&lt;br&gt;• …" vertex="1">
+          <mxGeometry height="240" width="400" x="60" y="390" as="geometry" />
+        </mxCell>
+        <mxCell id="d5" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#94A3B8;fontSize=11;align=left;verticalAlign=top;spacing=10;" value="&lt;b&gt;Procurement, Materials &amp;amp; Logistics&lt;/b&gt;&lt;br&gt;&lt;span style=&#39;font-size:10px;color:#6B7280&#39;&gt;/app/procurement/dashboard&lt;/span&gt;&lt;br&gt;&lt;br&gt;&lt;b&gt;SAP coverage:&lt;/b&gt; MM, SRM, WM, Invoice Verification, Logistics Execution&lt;br&gt;&lt;br&gt;&lt;b&gt;Capabilities&lt;/b&gt;&lt;br&gt;• Suppliers&lt;br&gt;• Purchase requests&lt;br&gt;• Supplier quotes&lt;br&gt;• Purchase orders&lt;br&gt;• Goods / service receipt&lt;br&gt;• Invoice verification&lt;br&gt;• Materials&lt;br&gt;• Stock&lt;br&gt;• Inventory&lt;br&gt;• Warehouse" vertex="1">
+          <mxGeometry height="240" width="400" x="510" y="390" as="geometry" />
+        </mxCell>
+        <mxCell id="d6" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#94A3B8;fontSize=11;align=left;verticalAlign=top;spacing=10;" value="&lt;b&gt;Operations &amp;amp; Planning&lt;/b&gt;&lt;br&gt;&lt;span style=&#39;font-size:10px;color:#6B7280&#39;&gt;/app/operations/dashboard&lt;/span&gt;&lt;br&gt;&lt;br&gt;&lt;b&gt;SAP coverage:&lt;/b&gt; PP, MRP, Capacity Planning, Work Centres, Shop Floor Control&lt;br&gt;&lt;br&gt;&lt;b&gt;Capabilities&lt;/b&gt;&lt;br&gt;• Work planning&lt;br&gt;• Demand view&lt;br&gt;• Capacity planning&lt;br&gt;• Resource planning&lt;br&gt;• Scheduling&lt;br&gt;• Work orders&lt;br&gt;• Service orders&lt;br&gt;• Operational instructions&lt;br&gt;• Effort capture" vertex="1">
+          <mxGeometry height="240" width="400" x="960" y="390" as="geometry" />
+        </mxCell>
+        <mxCell id="d7" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#94A3B8;fontSize=11;align=left;verticalAlign=top;spacing=10;" value="&lt;b&gt;Quality &amp;amp; Compliance&lt;/b&gt;&lt;br&gt;&lt;span style=&#39;font-size:10px;color:#6B7280&#39;&gt;/app/compliance/dashboard&lt;/span&gt;&lt;br&gt;&lt;br&gt;&lt;b&gt;SAP coverage:&lt;/b&gt; QM, GRC, EHS&lt;br&gt;&lt;br&gt;&lt;b&gt;Capabilities&lt;/b&gt;&lt;br&gt;• Quality plans&lt;br&gt;• Inspections&lt;br&gt;• Review gates&lt;br&gt;• Non-conformance&lt;br&gt;• Corrective actions&lt;br&gt;• Lessons learned&lt;br&gt;• Risk register&lt;br&gt;• Controls&lt;br&gt;• Audit evidence&lt;br&gt;• H&amp;amp;S" vertex="1">
+          <mxGeometry height="240" width="400" x="1410" y="390" as="geometry" />
+        </mxCell>
+        <mxCell id="d8" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#94A3B8;fontSize=11;align=left;verticalAlign=top;spacing=10;" value="&lt;b&gt;Assets, Property &amp;amp; Maintenance&lt;/b&gt;&lt;br&gt;&lt;span style=&#39;font-size:10px;color:#6B7280&#39;&gt;/app/property/dashboard&lt;/span&gt;&lt;br&gt;&lt;br&gt;&lt;b&gt;SAP coverage:&lt;/b&gt; PM, EAM, RE&lt;br&gt;&lt;br&gt;&lt;b&gt;Capabilities&lt;/b&gt;&lt;br&gt;• Asset register&lt;br&gt;• Equipment&lt;br&gt;• Facilities&lt;br&gt;• Properties&lt;br&gt;• Sites&lt;br&gt;• Buildings&lt;br&gt;• Maintenance plans&lt;br&gt;• Maintenance orders&lt;br&gt;• Defects&lt;br&gt;• Lifecycle costs" vertex="1">
+          <mxGeometry height="240" width="400" x="60" y="670" as="geometry" />
+        </mxCell>
+        <mxCell id="d9" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#94A3B8;fontSize=11;align=left;verticalAlign=top;spacing=10;" value="&lt;b&gt;Reporting, Documents &amp;amp; Admin&lt;/b&gt;&lt;br&gt;&lt;span style=&#39;font-size:10px;color:#6B7280&#39;&gt;/app/reporting/dashboard&lt;/span&gt;&lt;br&gt;&lt;br&gt;&lt;b&gt;SAP coverage:&lt;/b&gt; BW, BI, DMS, Basis, Access Control, Platform&lt;br&gt;&lt;br&gt;&lt;b&gt;Capabilities&lt;/b&gt;&lt;br&gt;• Executive dashboards&lt;br&gt;• Finance reports&lt;br&gt;• Project reports&lt;br&gt;• HR reports&lt;br&gt;• KPI definitions&lt;br&gt;• Document register&lt;br&gt;• Templates&lt;br&gt;• Controlled docs&lt;br&gt;• Users&lt;br&gt;• Roles&lt;br&gt;• Settings" vertex="1">
+          <mxGeometry height="240" width="400" x="510" y="670" as="geometry" />
+        </mxCell>
+        <mxCell id="note" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ECFDF5;strokeColor=#10B981;fontSize=14;align=center;verticalAlign=middle;" value="&lt;b&gt;Design rule&lt;/b&gt;&lt;br&gt;The data spine is shared; the route doorway is role and activity based." vertex="1">
+          <mxGeometry height="70" width="1380" x="260" y="960" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram name="Shared data spine" id="v5UiLDZkSQhy_EeqBpw1">
+    <mxGraphModel dx="1204" dy="821" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1900" pageHeight="1400" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="t" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=none;fontSize=28;fontStyle=1;align=center;" value="PBM ERP — shared enterprise data spine" vertex="1">
+          <mxGeometry height="50" width="1440" x="230" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="s" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=none;fontSize=14;align=center;fontColor=#555555;" value="Routes are job-focused views. The same records are reused across workspaces." vertex="1">
+          <mxGeometry height="35" width="1200" x="350" y="85" as="geometry" />
+        </mxCell>
+        <mxCell id="h1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1F2937;strokeColor=#111827;fontColor=#FFFFFF;fontStyle=1;fontSize=15;align=center;" value="Data layer" vertex="1">
+          <mxGeometry height="44" width="320" x="60" y="145" as="geometry" />
+        </mxCell>
+        <mxCell id="h2" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1F2937;strokeColor=#111827;fontColor=#FFFFFF;fontStyle=1;fontSize=15;align=center;" value="Core records / tables" vertex="1">
+          <mxGeometry height="44" width="620" x="490" y="145" as="geometry" />
+        </mxCell>
+        <mxCell id="h3" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#1F2937;strokeColor=#111827;fontColor=#FFFFFF;fontStyle=1;fontSize=15;align=center;" value="Used by workspaces" vertex="1">
+          <mxGeometry height="44" width="560" x="1240" y="145" as="geometry" />
+        </mxCell>
+        <mxCell id="l0" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ECFDF5;strokeColor=#10B981;fontSize=13;fontStyle=1;align=center;verticalAlign=middle;" value="&lt;b&gt;Foundation identity&lt;/b&gt;" vertex="1">
+          <mxGeometry height="110" width="320" x="60" y="220" as="geometry" />
+        </mxCell>
+        <mxCell id="tb0" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EFF6FF;strokeColor=#60A5FA;fontSize=11;align=left;verticalAlign=middle;spacingLeft=10;" value="• business_entity&lt;br&gt;• person_entity&lt;br&gt;• business_partner&lt;br&gt;• business_partner_role&lt;br&gt;• business_partner_person&lt;br&gt;• contact_method&lt;br&gt;• address" vertex="1">
+          <mxGeometry height="110" width="620" x="490" y="220" as="geometry" />
+        </mxCell>
+        <mxCell id="u0" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FEF3C7;strokeColor=#F59E0B;fontSize=11;align=left;verticalAlign=middle;spacingLeft=10;" value="• Business Setup&lt;br&gt;• People &amp;amp; Workforce&lt;br&gt;• Clients &amp;amp; Commercial&lt;br&gt;• Procurement&lt;br&gt;• Finance&lt;br&gt;• Projects" vertex="1">
+          <mxGeometry height="110" width="560" x="1240" y="220" as="geometry" />
+        </mxCell>
+        <mxCell id="e0a" edge="1" parent="1" source="l0" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#64748B;" target="tb0" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e0b" edge="1" parent="1" source="tb0" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#64748B;" target="u0" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="l1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ECFDF5;strokeColor=#10B981;fontSize=13;fontStyle=1;align=center;verticalAlign=middle;" value="&lt;b&gt;Business structure&lt;/b&gt;" vertex="1">
+          <mxGeometry height="110" width="320" x="60" y="360" as="geometry" />
+        </mxCell>
+        <mxCell id="tb1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EFF6FF;strokeColor=#60A5FA;fontSize=11;align=left;verticalAlign=middle;spacingLeft=10;" value="• business_function&lt;br&gt;• organisation_unit&lt;br&gt;• position" vertex="1">
+          <mxGeometry height="110" width="620" x="490" y="360" as="geometry" />
+        </mxCell>
+        <mxCell id="u1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FEF3C7;strokeColor=#F59E0B;fontSize=11;align=left;verticalAlign=middle;spacingLeft=10;" value="• Business Setup&lt;br&gt;• HR&lt;br&gt;• Projects&lt;br&gt;• Finance approvals&lt;br&gt;• Procurement approvals&lt;br&gt;• Compliance" vertex="1">
+          <mxGeometry height="110" width="560" x="1240" y="360" as="geometry" />
+        </mxCell>
+        <mxCell id="e1a" edge="1" parent="1" source="l1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#64748B;" target="tb1" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e1b" edge="1" parent="1" source="tb1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#64748B;" target="u1" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="l2" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ECFDF5;strokeColor=#10B981;fontSize=13;fontStyle=1;align=center;verticalAlign=middle;" value="&lt;b&gt;People &amp;amp; authority&lt;/b&gt;" vertex="1">
+          <mxGeometry height="110" width="320" x="60" y="500" as="geometry" />
+        </mxCell>
+        <mxCell id="tb2" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EFF6FF;strokeColor=#60A5FA;fontSize=11;align=left;verticalAlign=middle;spacingLeft=10;" value="• employee&lt;br&gt;• employee_position&lt;br&gt;• competence&lt;br&gt;• person_competence&lt;br&gt;• authority_limit" vertex="1">
+          <mxGeometry height="110" width="620" x="490" y="500" as="geometry" />
+        </mxCell>
+        <mxCell id="u2" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FEF3C7;strokeColor=#F59E0B;fontSize=11;align=left;verticalAlign=middle;spacingLeft=10;" value="• HR&lt;br&gt;• Projects&lt;br&gt;• Operations&lt;br&gt;• Quality&lt;br&gt;• Compliance" vertex="1">
+          <mxGeometry height="110" width="560" x="1240" y="500" as="geometry" />
+        </mxCell>
+        <mxCell id="e2a" edge="1" parent="1" source="l2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#64748B;" target="tb2" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2b" edge="1" parent="1" source="tb2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#64748B;" target="u2" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="l3" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ECFDF5;strokeColor=#10B981;fontSize=13;fontStyle=1;align=center;verticalAlign=middle;" value="&lt;b&gt;Project delivery&lt;/b&gt;" vertex="1">
+          <mxGeometry height="110" width="320" x="60" y="640" as="geometry" />
+        </mxCell>
+        <mxCell id="tb3" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EFF6FF;strokeColor=#60A5FA;fontSize=11;align=left;verticalAlign=middle;spacingLeft=10;" value="• project&lt;br&gt;• project_party&lt;br&gt;• project_contact&lt;br&gt;• project_assignment&lt;br&gt;• project_location&lt;br&gt;• project_service&lt;br&gt;• project_service_cost" vertex="1">
+          <mxGeometry height="110" width="620" x="490" y="640" as="geometry" />
+        </mxCell>
+        <mxCell id="u3" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FEF3C7;strokeColor=#F59E0B;fontSize=11;align=left;verticalAlign=middle;spacingLeft=10;" value="• Projects&lt;br&gt;• Commercial&lt;br&gt;• Procurement&lt;br&gt;• Finance&lt;br&gt;• Reporting" vertex="1">
+          <mxGeometry height="110" width="560" x="1240" y="640" as="geometry" />
+        </mxCell>
+        <mxCell id="e3a" edge="1" parent="1" source="l3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#64748B;" target="tb3" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3b" edge="1" parent="1" source="tb3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#64748B;" target="u3" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="l4" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ECFDF5;strokeColor=#10B981;fontSize=13;fontStyle=1;align=center;verticalAlign=middle;" value="&lt;b&gt;Commercial value&lt;/b&gt;" vertex="1">
+          <mxGeometry height="110" width="320" x="60" y="780" as="geometry" />
+        </mxCell>
+        <mxCell id="tb4" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EFF6FF;strokeColor=#60A5FA;fontSize=11;align=left;verticalAlign=middle;spacingLeft=10;" value="• project_quote&lt;br&gt;• project_quote_row" vertex="1">
+          <mxGeometry height="110" width="620" x="490" y="780" as="geometry" />
+        </mxCell>
+        <mxCell id="u4" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FEF3C7;strokeColor=#F59E0B;fontSize=11;align=left;verticalAlign=middle;spacingLeft=10;" value="• Commercial&lt;br&gt;• Projects&lt;br&gt;• Finance&lt;br&gt;• Reporting" vertex="1">
+          <mxGeometry height="110" width="560" x="1240" y="780" as="geometry" />
+        </mxCell>
+        <mxCell id="e4a" edge="1" parent="1" source="l4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#64748B;" target="tb4" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e4b" edge="1" parent="1" source="tb4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#64748B;" target="u4" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="l5" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ECFDF5;strokeColor=#10B981;fontSize=13;fontStyle=1;align=center;verticalAlign=middle;" value="&lt;b&gt;Procurement cost&lt;/b&gt;" vertex="1">
+          <mxGeometry height="110" width="320" x="60" y="920" as="geometry" />
+        </mxCell>
+        <mxCell id="tb5" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EFF6FF;strokeColor=#60A5FA;fontSize=11;align=left;verticalAlign=middle;spacingLeft=10;" value="• purchase_order&lt;br&gt;• purchase_order_row&lt;br&gt;• supplier_invoice&lt;br&gt;• supplier_invoice_row" vertex="1">
+          <mxGeometry height="110" width="620" x="490" y="920" as="geometry" />
+        </mxCell>
+        <mxCell id="u5" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FEF3C7;strokeColor=#F59E0B;fontSize=11;align=left;verticalAlign=middle;spacingLeft=10;" value="• Procurement&lt;br&gt;• Projects&lt;br&gt;• Finance&lt;br&gt;• Reporting" vertex="1">
+          <mxGeometry height="110" width="560" x="1240" y="920" as="geometry" />
+        </mxCell>
+        <mxCell id="e5a" edge="1" parent="1" source="l5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#64748B;" target="tb5" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e5b" edge="1" parent="1" source="tb5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#64748B;" target="u5" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="l6" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ECFDF5;strokeColor=#10B981;fontSize=13;fontStyle=1;align=center;verticalAlign=middle;" value="&lt;b&gt;Finance control&lt;/b&gt;" vertex="1">
+          <mxGeometry height="110" width="320" x="60" y="1060" as="geometry" />
+        </mxCell>
+        <mxCell id="tb6" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EFF6FF;strokeColor=#60A5FA;fontSize=11;align=left;verticalAlign=middle;spacingLeft=10;" value="• sales_invoice&lt;br&gt;• sales_invoice_row&lt;br&gt;• supplier_invoice&lt;br&gt;• supplier_invoice_row" vertex="1">
+          <mxGeometry height="110" width="620" x="490" y="1060" as="geometry" />
+        </mxCell>
+        <mxCell id="u6" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FEF3C7;strokeColor=#F59E0B;fontSize=11;align=left;verticalAlign=middle;spacingLeft=10;" value="• Finance&lt;br&gt;• Projects&lt;br&gt;• Commercial&lt;br&gt;• Reporting" vertex="1">
+          <mxGeometry height="110" width="560" x="1240" y="1060" as="geometry" />
+        </mxCell>
+        <mxCell id="e6a" edge="1" parent="1" source="l6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#64748B;" target="tb6" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e6b" edge="1" parent="1" source="tb6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#64748B;" target="u6" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="l7" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ECFDF5;strokeColor=#10B981;fontSize=13;fontStyle=1;align=center;verticalAlign=middle;" value="&lt;b&gt;Control &amp;amp; intelligence&lt;/b&gt;" vertex="1">
+          <mxGeometry height="110" width="320" x="60" y="1200" as="geometry" />
+        </mxCell>
+        <mxCell id="tb7" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EFF6FF;strokeColor=#60A5FA;fontSize=11;align=left;verticalAlign=middle;spacingLeft=10;" value="• risk&lt;br&gt;• control&lt;br&gt;• audit_evidence&lt;br&gt;• document_register&lt;br&gt;• reporting_views" vertex="1">
+          <mxGeometry height="110" width="620" x="490" y="1200" as="geometry" />
+        </mxCell>
+        <mxCell id="u7" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FEF3C7;strokeColor=#F59E0B;fontSize=11;align=left;verticalAlign=middle;spacingLeft=10;" value="• Compliance&lt;br&gt;• Reporting&lt;br&gt;• Admin&lt;br&gt;• All workspaces" vertex="1">
+          <mxGeometry height="110" width="560" x="1240" y="1200" as="geometry" />
+        </mxCell>
+        <mxCell id="e7a" edge="1" parent="1" source="l7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#64748B;" target="tb7" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e7b" edge="1" parent="1" source="tb7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#64748B;" target="u7" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="rule" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F3F4F6;strokeColor=#D1D5DB;fontSize=14;align=center;" value="&lt;b&gt;Core rule:&lt;/b&gt; records are not owned by pages. Workspaces read/write the same spine through different activity views." vertex="1">
+          <mxGeometry height="60" width="1380" x="260" y="1350" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram name="Workspace record use" id="Vui8jGztlxl_PrKNlFvq">
+    <mxGraphModel grid="1" page="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" pageScale="1" pageWidth="1900" pageHeight="1150" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="t2" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=none;fontSize=28;fontStyle=1;align=center;" value="PBM ERP — workspace record use" vertex="1">
+          <mxGeometry height="50" width="1440" x="230" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="c0" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#94A3B8;fontSize=11;align=left;verticalAlign=top;spacing=10;" value="&lt;b&gt;Business Setup&lt;/b&gt;&lt;br&gt;&lt;br&gt;&lt;b&gt;Reads / writes / consumes&lt;/b&gt;&lt;br&gt;• business_entity&lt;br&gt;• business_partner&lt;br&gt;• business_partner_role&lt;br&gt;• business_function&lt;br&gt;• organisation_unit&lt;br&gt;• position" vertex="1">
+          <mxGeometry height="230" width="400" x="60" y="120" as="geometry" />
+        </mxCell>
+        <mxCell id="c1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#94A3B8;fontSize=11;align=left;verticalAlign=top;spacing=10;" value="&lt;b&gt;People &amp;amp; Workforce&lt;/b&gt;&lt;br&gt;&lt;br&gt;&lt;b&gt;Reads / writes / consumes&lt;/b&gt;&lt;br&gt;• person_entity&lt;br&gt;• employee&lt;br&gt;• employee_position&lt;br&gt;• competence&lt;br&gt;• person_competence&lt;br&gt;• authority_limit" vertex="1">
+          <mxGeometry height="230" width="400" x="510" y="120" as="geometry" />
+        </mxCell>
+        <mxCell id="c2" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#94A3B8;fontSize=11;align=left;verticalAlign=top;spacing=10;" value="&lt;b&gt;Clients &amp;amp; Commercial&lt;/b&gt;&lt;br&gt;&lt;br&gt;&lt;b&gt;Reads / writes / consumes&lt;/b&gt;&lt;br&gt;• business_partner&lt;br&gt;• project&lt;br&gt;• project_party&lt;br&gt;• project_quote&lt;br&gt;• project_quote_row&lt;br&gt;• sales_invoice" vertex="1">
+          <mxGeometry height="230" width="400" x="960" y="120" as="geometry" />
+        </mxCell>
+        <mxCell id="c3" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#94A3B8;fontSize=11;align=left;verticalAlign=top;spacing=10;" value="&lt;b&gt;Project Delivery&lt;/b&gt;&lt;br&gt;&lt;br&gt;&lt;b&gt;Reads / writes / consumes&lt;/b&gt;&lt;br&gt;• project&lt;br&gt;• project_party&lt;br&gt;• project_assignment&lt;br&gt;• project_service&lt;br&gt;• project_service_cost&lt;br&gt;• project_quote_row&lt;br&gt;• purchase_order_row&lt;br&gt;• sales_invoice_row" vertex="1">
+          <mxGeometry height="230" width="400" x="1410" y="120" as="geometry" />
+        </mxCell>
+        <mxCell id="c4" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#94A3B8;fontSize=11;align=left;verticalAlign=top;spacing=10;" value="&lt;b&gt;Procurement, Materials &amp;amp; Logistics&lt;/b&gt;&lt;br&gt;&lt;br&gt;&lt;b&gt;Reads / writes / consumes&lt;/b&gt;&lt;br&gt;• business_partner&lt;br&gt;• purchase_order&lt;br&gt;• purchase_order_row&lt;br&gt;• supplier_invoice&lt;br&gt;• supplier_invoice_row&lt;br&gt;• project_service" vertex="1">
+          <mxGeometry height="230" width="400" x="60" y="390" as="geometry" />
+        </mxCell>
+        <mxCell id="c5" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#94A3B8;fontSize=11;align=left;verticalAlign=top;spacing=10;" value="&lt;b&gt;Finance &amp;amp; Control&lt;/b&gt;&lt;br&gt;&lt;br&gt;&lt;b&gt;Reads / writes / consumes&lt;/b&gt;&lt;br&gt;• sales_invoice&lt;br&gt;• sales_invoice_row&lt;br&gt;• supplier_invoice&lt;br&gt;• supplier_invoice_row&lt;br&gt;• project&lt;br&gt;• business_partner&lt;br&gt;• project_service_cost" vertex="1">
+          <mxGeometry height="230" width="400" x="510" y="390" as="geometry" />
+        </mxCell>
+        <mxCell id="c6" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#94A3B8;fontSize=11;align=left;verticalAlign=top;spacing=10;" value="&lt;b&gt;Operations &amp;amp; Planning&lt;/b&gt;&lt;br&gt;&lt;br&gt;&lt;b&gt;Reads / writes / consumes&lt;/b&gt;&lt;br&gt;• project&lt;br&gt;• project_assignment&lt;br&gt;• employee_position&lt;br&gt;• project_service&lt;br&gt;• work_order/service_order later" vertex="1">
+          <mxGeometry height="230" width="400" x="960" y="390" as="geometry" />
+        </mxCell>
+        <mxCell id="c7" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#94A3B8;fontSize=11;align=left;verticalAlign=top;spacing=10;" value="&lt;b&gt;Quality &amp;amp; Compliance&lt;/b&gt;&lt;br&gt;&lt;br&gt;&lt;b&gt;Reads / writes / consumes&lt;/b&gt;&lt;br&gt;• project&lt;br&gt;• employee_position&lt;br&gt;• competence&lt;br&gt;• risk&lt;br&gt;• control&lt;br&gt;• audit_evidence&lt;br&gt;• document_register" vertex="1">
+          <mxGeometry height="230" width="400" x="1410" y="390" as="geometry" />
+        </mxCell>
+        <mxCell id="c8" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#94A3B8;fontSize=11;align=left;verticalAlign=top;spacing=10;" value="&lt;b&gt;Assets, Property &amp;amp; Maintenance&lt;/b&gt;&lt;br&gt;&lt;br&gt;&lt;b&gt;Reads / writes / consumes&lt;/b&gt;&lt;br&gt;• asset/facility tables later&lt;br&gt;• project_location&lt;br&gt;• project&lt;br&gt;• maintenance orders later" vertex="1">
+          <mxGeometry height="230" width="400" x="60" y="660" as="geometry" />
+        </mxCell>
+        <mxCell id="c9" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFFFFF;strokeColor=#94A3B8;fontSize=11;align=left;verticalAlign=top;spacing=10;" value="&lt;b&gt;Reporting, Documents &amp;amp; Admin&lt;/b&gt;&lt;br&gt;&lt;br&gt;&lt;b&gt;Reads / writes / consumes&lt;/b&gt;&lt;br&gt;• all core records&lt;br&gt;• document_register&lt;br&gt;• reporting views&lt;br&gt;• users&lt;br&gt;• roles&lt;br&gt;• settings" vertex="1">
+          <mxGeometry height="230" width="400" x="510" y="660" as="geometry" />
+        </mxCell>
+        <mxCell id="ex" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ECFDF5;strokeColor=#10B981;fontSize=14;align=center;verticalAlign=middle;" value="&lt;b&gt;Example: supplier_invoice&lt;/b&gt;&lt;br&gt;Procurement checks PO match. Finance checks approval, due date and payment. Projects see actual cost. Reporting calculates margin and cash exposure." vertex="1">
+          <mxGeometry height="80" width="1380" x="260" y="950" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram name="Core record flow" id="hYf3AKa-tuQolw-Qxw1X">
+    <mxGraphModel grid="1" page="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" pageScale="1" pageWidth="1900" pageHeight="950" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="t3" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=none;fontSize=28;fontStyle=1;align=center;" value="PBM ERP — core record flow" vertex="1">
+          <mxGeometry height="50" width="1440" x="230" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="identity" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EFF6FF;strokeColor=#2563EB;fontSize=13;fontStyle=1;align=center;" value="Business + people + partners" vertex="1">
+          <mxGeometry height="70" width="210" x="80" y="170" as="geometry" />
+        </mxCell>
+        <mxCell id="identityt" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F8FAFC;strokeColor=#CBD5E1;fontSize=11;fontFamily=Courier New;align=center;" value="business_entity&lt;br&gt;person_entity&lt;br&gt;business_partner&lt;br&gt;business_partner_role" vertex="1">
+          <mxGeometry height="110" width="210" x="80" y="265" as="geometry" />
+        </mxCell>
+        <mxCell id="identityd" edge="1" parent="1" source="identity" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#64748B;" target="identityt" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="f0" edge="1" parent="1" source="identity" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#64748B;" target="structure" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="structure" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EFF6FF;strokeColor=#2563EB;fontSize=13;fontStyle=1;align=center;" value="Business structure" vertex="1">
+          <mxGeometry height="70" width="210" x="340" y="170" as="geometry" />
+        </mxCell>
+        <mxCell id="structuret" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F8FAFC;strokeColor=#CBD5E1;fontSize=11;fontFamily=Courier New;align=center;" value="business_function&lt;br&gt;organisation_unit&lt;br&gt;position&lt;br&gt;employee_position" vertex="1">
+          <mxGeometry height="110" width="210" x="340" y="265" as="geometry" />
+        </mxCell>
+        <mxCell id="structured" edge="1" parent="1" source="structure" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#64748B;" target="structuret" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="f1" edge="1" parent="1" source="structure" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#64748B;" target="delivery" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="delivery" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EFF6FF;strokeColor=#2563EB;fontSize=13;fontStyle=1;align=center;" value="Projects + services" vertex="1">
+          <mxGeometry height="70" width="210" x="600" y="170" as="geometry" />
+        </mxCell>
+        <mxCell id="deliveryt" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F8FAFC;strokeColor=#CBD5E1;fontSize=11;fontFamily=Courier New;align=center;" value="project&lt;br&gt;project_party&lt;br&gt;project_assignment&lt;br&gt;project_service" vertex="1">
+          <mxGeometry height="110" width="210" x="600" y="265" as="geometry" />
+        </mxCell>
+        <mxCell id="deliveryd" edge="1" parent="1" source="delivery" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#64748B;" target="deliveryt" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="f2" edge="1" parent="1" source="delivery" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#64748B;" target="commercial" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="commercial" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EFF6FF;strokeColor=#2563EB;fontSize=13;fontStyle=1;align=center;" value="Commercial value" vertex="1">
+          <mxGeometry height="70" width="210" x="860" y="170" as="geometry" />
+        </mxCell>
+        <mxCell id="commercialt" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F8FAFC;strokeColor=#CBD5E1;fontSize=11;fontFamily=Courier New;align=center;" value="project_quote&lt;br&gt;project_quote_row" vertex="1">
+          <mxGeometry height="110" width="210" x="860" y="265" as="geometry" />
+        </mxCell>
+        <mxCell id="commerciald" edge="1" parent="1" source="commercial" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#64748B;" target="commercialt" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="f3" edge="1" parent="1" source="commercial" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#64748B;" target="procurement" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="procurement" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EFF6FF;strokeColor=#2563EB;fontSize=13;fontStyle=1;align=center;" value="Supplier cost" vertex="1">
+          <mxGeometry height="70" width="210" x="1120" y="170" as="geometry" />
+        </mxCell>
+        <mxCell id="procurementt" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F8FAFC;strokeColor=#CBD5E1;fontSize=11;fontFamily=Courier New;align=center;" value="purchase_order&lt;br&gt;supplier_invoice" vertex="1">
+          <mxGeometry height="110" width="210" x="1120" y="265" as="geometry" />
+        </mxCell>
+        <mxCell id="procurementd" edge="1" parent="1" source="procurement" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#64748B;" target="procurementt" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="f4" edge="1" parent="1" source="procurement" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#64748B;" target="finance" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="finance" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EFF6FF;strokeColor=#2563EB;fontSize=13;fontStyle=1;align=center;" value="Finance control" vertex="1">
+          <mxGeometry height="70" width="210" x="1380" y="170" as="geometry" />
+        </mxCell>
+        <mxCell id="financet" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F8FAFC;strokeColor=#CBD5E1;fontSize=11;fontFamily=Courier New;align=center;" value="sales_invoice&lt;br&gt;supplier_invoice" vertex="1">
+          <mxGeometry height="110" width="210" x="1380" y="265" as="geometry" />
+        </mxCell>
+        <mxCell id="financed" edge="1" parent="1" source="finance" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#64748B;" target="financet" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="f5" edge="1" parent="1" source="finance" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#64748B;" target="reporting" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="reporting" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#EFF6FF;strokeColor=#2563EB;fontSize=13;fontStyle=1;align=center;" value="Control + reporting" vertex="1">
+          <mxGeometry height="70" width="210" x="1640" y="170" as="geometry" />
+        </mxCell>
+        <mxCell id="reportingt" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F8FAFC;strokeColor=#CBD5E1;fontSize=11;fontFamily=Courier New;align=center;" value="risk/control/evidence&lt;br&gt;documents&lt;br&gt;reporting views" vertex="1">
+          <mxGeometry height="110" width="210" x="1640" y="265" as="geometry" />
+        </mxCell>
+        <mxCell id="reportingd" edge="1" parent="1" source="reporting" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;endArrow=block;endFill=1;strokeColor=#64748B;" target="reportingt" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="note" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FEF3C7;strokeColor=#F59E0B;fontSize=14;align=center;verticalAlign=middle;" value="&lt;b&gt;Route rule&lt;/b&gt;&lt;br&gt;/app/finance, /app/projects and /app/procurement can all show the same supplier invoice, but each shows it for a different job." vertex="1">
+          <mxGeometry height="90" width="1380" x="260" y="520" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
