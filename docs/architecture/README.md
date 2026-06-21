@@ -20,6 +20,8 @@ Implementation packages
 Shared data spine
 Framework extensions
 Reporting views
+Table CRUD APIs
+Workflow engine
 ```
 
 ## Product language rule
@@ -40,6 +42,9 @@ Implementation package
 Operating model
 Coverage audit
 Framework extension
+Workflow transition
+Table registry
+CRUD API
 ```
 
 Avoid using external vendor/module language as PBM identity. External enterprise software lists may be used as completeness references, but they must not become PBM navigation, product naming or data ownership language.
@@ -56,6 +61,8 @@ Avoid using external vendor/module language as PBM identity. External enterprise
 8. Frameworks extend behaviour without duplicating the core model.
 9. Industry-specific behaviour belongs in framework or extension layers.
 10. Every new feature must trace from capability to object to route to data.
+11. CRUD APIs provide controlled table access.
+12. Workflow owns lifecycle transitions and business actions.
 
 ## Reading order
 
@@ -72,6 +79,7 @@ Read the architecture documents in this order:
                             -> 007 Architecture Remediation Backlog
                                 -> 008 Repository Alignment Review
                                     -> 009 Route Workspace Alignment
+                                        -> 010 Table CRUD API and Workflow Engine
 ```
 
 ## Key documents
@@ -86,6 +94,7 @@ Read the architecture documents in this order:
 - [007-architecture-remediation-backlog.md](./007-architecture-remediation-backlog.md)
 - [008-repository-alignment-review.md](./008-repository-alignment-review.md)
 - [009-route-workspace-alignment.md](./009-route-workspace-alignment.md)
+- [010-table-crud-api-and-workflow-engine.md](./010-table-crud-api-and-workflow-engine.md)
 - [012-enterprise-capability-coverage-catalogue.md](./012-enterprise-capability-coverage-catalogue.md)
 - [013-enterprise-sub-capability-coverage-audit.md](./013-enterprise-sub-capability-coverage-audit.md)
 
@@ -214,6 +223,25 @@ workspace-specific versions of truth
 
 The data spine lets each workspace perform a different job using the same underlying record.
 
+## CRUD and workflow direction
+
+PBM should expose table data through controlled CRUD APIs and should place business rules above those APIs in workflows.
+
+The core pattern is:
+
+```text
+Database table
+    -> CRUD API
+        -> workflow rule
+            -> workspace screen
+```
+
+CRUD APIs provide controlled access to registered tables.
+
+Workflow decides lifecycle transitions, business actions, permissions, audit events and next available actions.
+
+Workspace screens should use workflow actions for business decisions and CRUD reads for lists and details.
+
 ## Framework extensions
 
 PBM must support different industries, standards, methods and client-specific governance without forking the core product.
@@ -308,6 +336,7 @@ Before creating a new route, package, table, service or workflow, confirm:
 9. Does it require document or evidence attachment?
 10. Does it require compliance controls?
 11. Can it report across the shared data spine?
+12. Does the change use table CRUD directly or a workflow action?
 
 ## Summary
 
@@ -320,6 +349,10 @@ The platform should maintain shared business objects and one data spine.
 Packages should implement reusable behaviour.
 
 Routes should provide activity views.
+
+CRUD APIs should provide controlled table access.
+
+Workflows should govern business transitions.
 
 Frameworks should adapt how work is governed and executed.
 
