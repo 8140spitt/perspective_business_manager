@@ -2,20 +2,22 @@
 
 ## Purpose
 
-Trace requirements coverage from enterprise modules to current capability areas, routes, package boundaries and core business objects.
+Trace requirements from PBM capability areas to business workspaces, route doorways, implementation packages and shared business objects.
+
+This matrix exists to prove that PBM is being built as one integrated enterprise platform rather than as separate route or package silos.
 
 ## Traceability Rules
 
-1. Every enterprise module should map to one or more requirement documents.
-2. Every requirement area should map to one or more routes or planned routes.
-3. Every route family should map to one or more domain packages or platform packages.
-4. Every package should map back to canonical business objects.
-5. B2B and B2C support should be traceable across all customer-facing and commercially relevant modules.
-6. Gaps between requirement coverage and implementation surfaces should be made explicit rather than implied.
+1. Every PBM capability area should map to one or more requirement documents.
+2. Every requirement area should map to one or more current or planned route doorways.
+3. Every route family should map to one or more implementation package families.
+4. Every package should map back to shared business objects.
+5. Organisation-led and individual-led customer support should be traceable across all customer-facing and commercially relevant workspaces.
+6. Gaps between requirement coverage and implementation surfaces should be explicit.
 
 ## Shared Control Documents
 
-- enterprise module coverage: [02-enterprise-module-coverage.md](./02-enterprise-module-coverage.md)
+- enterprise capability coverage: [02-enterprise-capability-coverage.md](./02-enterprise-capability-coverage.md)
 - cross-cutting platform requirements: [03-cross-cutting-platform-requirements.md](./03-cross-cutting-platform-requirements.md)
 - customer model rules: [06-customer-model-rules.md](./06-customer-model-rules.md)
 
@@ -29,61 +31,61 @@ Trace requirements coverage from enterprise modules to current capability areas,
 - package relationship appendix: [../architecture/006-package-object-relationship-appendix.md](../architecture/006-package-object-relationship-appendix.md)
 - architecture remediation backlog: [../architecture/007-architecture-remediation-backlog.md](../architecture/007-architecture-remediation-backlog.md)
 
-## Module To Implementation Matrix
+## Capability To Implementation Matrix
 
-| Enterprise module                    | Requirement document                                                                       | Current capability areas                                        | Current route families                                                   | Current package families                                                       | Core objects                                                                          | Current maturity |
-| ------------------------------------ | ------------------------------------------------------------------------------------------ | --------------------------------------------------------------- | ------------------------------------------------------------------------ | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------- | ---------------- |
-| Sales and Client Management          | [modules/sales-client-management.md](./modules/sales-client-management.md)                 | sales-client-management                                         | `/app/crm/*`, `/app/sales/*`                                             | `parties`, `instructions`, `core`                                              | party, person, organisation, client_account, instruction                              | foundation       |
-| Service Delivery and Projects        | [modules/service-delivery-projects.md](./modules/service-delivery-projects.md)             | operations-service-delivery, projects-portfolio                 | `/app/operations/*`, `/app/activities/*`, `/app/projects/*`              | `activities`, `inspections`, `instructions`, `building-surveying`, `workflows` | instruction, project, activity, observation, assessment, action, outcome, deliverable | scaffolded       |
-| Property and Asset Management        | [modules/property-asset-management.md](./modules/property-asset-management.md)             | property-technical-asset                                        | `/app/property/*`, `/app/properties/*`                                   | `properties`, `core`, `documents`                                              | property, property_unit, address, building_element, property_party_role               | foundation       |
-| Finance and Commercial Control       | [modules/finance-commercial-control.md](./modules/finance-commercial-control.md)           | finance-capital                                                 | `/app/finance/*`                                                         | `finance`, `reports`, `core`                                                   | fee_agreement, wip_item, sales_invoice, payment, instruction, project                 | scaffolded       |
-| Procurement and Supply Chain         | [modules/procurement-supply-chain.md](./modules/procurement-supply-chain.md)               | supply-chain-procurement                                        | `/app/procurement/*`                                                     | `core`, `finance`                                                              | supplier, supplier_party_role, purchase_order                                         | scaffolded       |
-| Workforce and Resource Planning      | [modules/workforce-resource-planning.md](./modules/workforce-resource-planning.md)         | people-workforce                                                | `/app/hr/*`, `/app/resource-planning/*`                                  | `core`, `reference-data`                                                       | person, employee, role, competency, allocation                                        | scaffolded       |
-| Quality, Risk and Compliance         | [modules/quality-risk-compliance.md](./modules/quality-risk-compliance.md)                 | governance-risk-compliance                                      | `/app/compliance/*`                                                      | `compliance`, `audit`, `workflows`, `documents`                                | risk, control, compliance_check, complaint, audit_event, action                       | scaffolded       |
-| Documents, Analytics and Integration | [modules/documents-analytics-integration.md](./modules/documents-analytics-integration.md) | knowledge-records, information-data-digital, strategy-direction | `/app/documents/*`, `/app/reporting/*`, `/app/admin/*`, `/app/dashboard` | `documents`, `evidence`, `reports`, `reference-data`, `workflows`              | document, evidence_item, workflow_definition, business_event, report_definition       | scaffolded       |
+| PBM capability area | Requirement document | Current workspace families | Current route families | Current package families | Core business objects | Current maturity |
+| --- | --- | --- | --- | --- | --- | --- |
+| Clients & Commercial | [modules/sales-client-management.md](./modules/sales-client-management.md) | CRM, Sales | `/app/crm/*`, `/app/sales/*` | `parties`, `client-accounts`, `instructions`, `core` | party, person, business, client account, instruction, quote | foundation |
+| Project Delivery | [modules/service-delivery-projects.md](./modules/service-delivery-projects.md) | Operations, Activities, Projects | `/app/operations/*`, `/app/activities/*`, `/app/projects/*` | `activities`, `inspections`, `instructions`, `building-surveying`, `workflows` | instruction, project, activity, observation, assessment, action, outcome, deliverable | scaffolded |
+| Property & Assets | [modules/property-asset-management.md](./modules/property-asset-management.md) | Property | `/app/property/*`, `/app/properties/*` | `properties`, `core`, `documents` | property, site, building, unit, address, asset, property-party role | foundation |
+| Finance & Control | [modules/finance-commercial-control.md](./modules/finance-commercial-control.md) | Finance | `/app/finance/*` | `finance`, `reports`, `core` | fee agreement, WIP item, sales invoice, supplier invoice, payment, project | scaffolded |
+| Procurement & Supply | [modules/procurement-supply-chain.md](./modules/procurement-supply-chain.md) | Procurement | `/app/procurement/*` | `core`, `finance`, planned procurement package | supplier, supplier role, purchase order, supplier invoice, supplier compliance record | scaffolded |
+| People & Workforce | [modules/workforce-resource-planning.md](./modules/workforce-resource-planning.md) | HR, Resource Planning | `/app/hr/*`, `/app/resource-planning/*` | `core`, `reference-data`, planned workforce package | person, employee, position, competence, allocation, authority limit | scaffolded |
+| Quality, Risk & Compliance | [modules/quality-risk-compliance.md](./modules/quality-risk-compliance.md) | Compliance | `/app/compliance/*` | `compliance`, `audit`, `workflows`, `documents` | risk, control, compliance check, complaint, audit event, corrective action | scaffolded |
+| Documents, Reporting & Administration | [modules/documents-analytics-integration.md](./modules/documents-analytics-integration.md) | Documents, Reporting, Admin, Dashboard | `/app/documents/*`, `/app/reporting/*`, `/app/admin/*`, `/app/dashboard` | `documents`, `evidence`, `reports`, `reference-data`, `workflows` | document, evidence item, workflow definition, business event, report definition | scaffolded |
 
 ## Object Spine Traceability
 
-| Canonical object        | Primary modules                                                                                     | Example routes                                                             | Example packages                                 |
-| ----------------------- | --------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------- | ------------------------------------------------ |
-| party                   | Sales and Client Management, Workforce and Resource Planning, Procurement and Supply Chain          | `/app/crm/clients`, `/app/parties`, `/app/procurement/suppliers`           | `parties`, `core`                                |
-| client_account          | Sales and Client Management, Finance and Commercial Control                                         | `/app/crm/*`, `/app/finance/*`                                             | `core`, `finance`                                |
-| instruction             | Sales and Client Management, Service Delivery and Projects, Finance and Commercial Control          | `/app/instructions/*`, `/app/operations/instructions`, `/app/activities/*` | `instructions`, `activities`, `finance`          |
-| property                | Property and Asset Management, Service Delivery and Projects                                        | `/app/property/*`, `/app/properties/*`, `/app/operations/*`                | `properties`, `building-surveying`, `activities` |
-| project                 | Service Delivery and Projects, Finance and Commercial Control                                       | `/app/projects/*`                                                          | `core`, `finance`, `activities`                  |
-| activity                | Service Delivery and Projects, Documents, Analytics and Integration                                 | `/app/activities/*`                                                        | `activities`, `inspections`, `evidence`          |
-| assessment and action   | Service Delivery and Projects, Quality, Risk and Compliance                                         | `/app/activities/*`, `/app/compliance/*`                                   | `activities`, `compliance`, `audit`              |
-| outcome and deliverable | Service Delivery and Projects, Documents, Analytics and Integration, Finance and Commercial Control | `/app/activities/*`, `/app/documents/*`, `/app/finance/*`                  | `activities`, `documents`, `finance`, `reports`  |
+| Business object | Primary capability areas | Example route doorways | Example package families |
+| --- | --- | --- | --- |
+| party | Clients & Commercial, People & Workforce, Procurement & Supply | `/app/crm/clients`, `/app/parties`, `/app/procurement/suppliers` | `parties`, `core` |
+| client account | Clients & Commercial, Finance & Control | `/app/crm/*`, `/app/finance/*` | `client-accounts`, `finance` |
+| instruction | Clients & Commercial, Project Delivery, Finance & Control | `/app/instructions/*`, `/app/operations/instructions`, `/app/activities/*` | `instructions`, `activities`, `finance` |
+| property | Property & Assets, Project Delivery | `/app/property/*`, `/app/properties/*`, `/app/operations/*` | `properties`, `building-surveying`, `activities` |
+| project | Project Delivery, Finance & Control, Procurement & Supply | `/app/projects/*`, `/app/finance/*`, `/app/procurement/*` | `core`, `finance`, `activities`, planned procurement package |
+| activity | Project Delivery, Documents, Reporting & Administration | `/app/activities/*` | `activities`, `inspections`, `evidence` |
+| assessment and action | Project Delivery, Quality Risk & Compliance | `/app/activities/*`, `/app/compliance/*` | `activities`, `compliance`, `audit` |
+| outcome and deliverable | Project Delivery, Documents, Reporting & Administration, Finance & Control | `/app/activities/*`, `/app/documents/*`, `/app/finance/*` | `activities`, `documents`, `finance`, `reports` |
+| supplier invoice | Procurement & Supply, Finance & Control, Project Delivery, Reporting | `/app/procurement/*`, `/app/finance/*`, `/app/projects/*`, `/app/reporting/*` | `finance`, planned procurement package, `reports` |
 
 ## Current Gaps And Tensions
 
 ### Customer Model Coverage Gaps
 
-- B2B and B2C support is now stated in requirements but is not yet explicitly traced to route-level behavior in every module
-- finance, property and compliance routes will need explicit customer-type handling without splitting the party model
-- customer-model rules now exist centrally, but package and route implementation still needs explicit conformance checks against [06-customer-model-rules.md](./06-customer-model-rules.md)
-- reporting surfaces will need consistent customer classification dimensions across pipeline, delivery, debt and complaints
+- organisation-led and individual-led support is stated in requirements but needs explicit route-level behaviour in every relevant workspace
+- finance, property and compliance routes need customer-type handling without splitting the party model
+- reporting surfaces need consistent customer classification dimensions across pipeline, delivery, debt and complaints
 
 ### Route Coverage Gaps
 
-- delivery routes are broader than the current domain package names in some areas, especially for projects and procurement
+- delivery routes are broader than some current package names, especially projects and procurement
 - property routes are split between `/app/property/*` and `/app/properties/*`, which may need deliberate consolidation
-- `/app/instructions/*` and `/app/operations/instructions/*` need a deliberate separation rule to avoid duplicate ownership narratives
-- reporting and dashboard surfaces exist in the capability map but are less explicit in package segmentation
+- instruction routes need a separation rule to avoid duplicate ownership narratives
+- reporting and dashboard surfaces exist conceptually but need stronger package and data-view definition
 
 ### Package Coverage Gaps
 
-- `client-accounts` exists as a package family and should be reflected more explicitly in higher-level traceability references
-- there is no dedicated workforce package family yet for employee, competency and allocation concerns
-- procurement currently appears route-led more than package-led
+- `client-accounts` should be reflected more explicitly in high-level traceability references
+- workforce needs a dedicated package family for employee, competence and allocation concerns
+- procurement needs a dedicated package family instead of relying only on finance/core structures
 - integration and admin concerns are distributed across `core`, `reference-data`, `reports` and `workflows`
 
 ### Architecture Watchpoints
 
-- avoid creating route-specific data models that bypass canonical business objects
+- avoid creating route-specific data models that bypass shared business objects
 - keep documents and evidence attached to business objects rather than route silos
-- keep workflow and audit services reusable across modules
+- keep workflow and audit services reusable across workspaces
 
 ## Traceability Maintenance Rule
 
-Any new module, route family, package family or core object must update this matrix in the same change that introduces it.
+Any new capability area, route family, package family or business object must update this matrix in the same change that introduces it.
