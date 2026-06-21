@@ -38,16 +38,17 @@ Avoid using external vendor or legacy module language as PBM product language.
 
 ### Workspace Requirement Documents
 
-These documents describe workspace-level requirements. They are implementation planning documents, not product module boundaries.
+These documents describe workspace-level requirements. They are implementation planning documents, not product boundaries and not data ownership boundaries.
 
-- [modules/sales-client-management.md](./modules/sales-client-management.md)
-- [modules/service-delivery-projects.md](./modules/service-delivery-projects.md)
-- [modules/property-asset-management.md](./modules/property-asset-management.md)
-- [modules/finance-commercial-control.md](./modules/finance-commercial-control.md)
-- [modules/procurement-supply-chain.md](./modules/procurement-supply-chain.md)
-- [modules/workforce-resource-planning.md](./modules/workforce-resource-planning.md)
-- [modules/quality-risk-compliance.md](./modules/quality-risk-compliance.md)
-- [modules/documents-analytics-integration.md](./modules/documents-analytics-integration.md)
+- [workspaces/README.md](./workspaces/README.md)
+- [workspaces/clients-commercial.md](./workspaces/clients-commercial.md)
+- [workspaces/project-delivery.md](./workspaces/project-delivery.md)
+- [workspaces/property-assets.md](./workspaces/property-assets.md)
+- [workspaces/finance-control.md](./workspaces/finance-control.md)
+- [workspaces/procurement-supplier-control.md](./workspaces/procurement-supplier-control.md)
+- [workspaces/people-workforce.md](./workspaces/people-workforce.md)
+- [workspaces/quality-risk-compliance.md](./workspaces/quality-risk-compliance.md)
+- [workspaces/documents-reporting-administration.md](./workspaces/documents-reporting-administration.md)
 
 ## How To Use This Suite
 
