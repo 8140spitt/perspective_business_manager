@@ -2,13 +2,15 @@
 
 ## Purpose
 
-Define the target scope of Perspective Business Manager as an ERP platform for surveying, engineering, compliance, property and related built-environment services businesses.
+Define the target scope of Perspective Business Manager as a business-first enterprise platform for built-environment service businesses.
+
+PBM is not a copy of an external ERP suite. It is an operating system for a business that uses clear workspaces, shared business objects and one integrated data spine.
 
 ## Product Position
 
-Perspective Business Manager is a sector ERP for firms that need to manage the full lifecycle from lead and instruction through site activity, deliverable, invoice, audit trail and retained records.
+Perspective Business Manager supports the full lifecycle from enquiry and client acceptance through work planning, delivery, evidence, deliverables, invoicing, governance and retained records.
 
-The platform shall support both business-to-business and business-to-consumer customer models without changing the underlying commercial, operational or reporting architecture.
+The platform must support organisation-led and individual-led customer journeys without changing the underlying commercial, operational or reporting architecture.
 
 ## Primary Business Types
 
@@ -26,18 +28,20 @@ The platform shall support both business-to-business and business-to-consumer cu
 - plan and execute professional service delivery
 - capture defensible evidence and technical findings
 - produce auditable deliverables and records
-- control fees, WIP, invoices and margin
+- control fees, WIP, invoices, supplier cost, cash position and margin
 - maintain compliance, governance and retention obligations
+- report the true operational and financial position of the business
 
 ## In Scope
 
-### Commercial
+### Commercial Work
 
-- CRM and client account management
+- client and relationship management
 - enquiries, opportunities, fee proposals and quotations
 - instruction conversion and commercial acceptance
+- client account and billing context
 
-### Delivery
+### Delivery Work
 
 - instruction management
 - project and programme management
@@ -54,35 +58,36 @@ The platform shall support both business-to-business and business-to-consumer cu
 
 ### Enterprise Control
 
-- finance and controlling
+- finance and commercial control
 - procurement and supplier management
-- workforce and competency management
+- people, competence and resource planning
 - quality, risk and compliance management
 - document, evidence and record control
 - analytics, dashboards and management reporting
 
 ## Out Of Scope For Initial Releases
 
-- general manufacturing and production planning
-- plant-floor execution
+- general manufacturing and plant-floor execution
 - retail point of sale
 - deep payroll engine replacement
-- full statutory accounting localisation for every jurisdiction on day one
+- statutory accounting localisation for every jurisdiction on day one
+- fully automated advanced planning before core work, finance and reporting are stable
 
 ## Product Design Rules
 
-1. The application must model enterprise business objects once and reuse them across modules.
-2. Every user-facing workspace must map back to canonical objects and events.
-3. Customer and client workflows must support both organisation-based and individual-based customers as first-class records.
+1. The application must model business objects once and reuse them across workspaces.
+2. Every user-facing workspace must map back to shared business objects, workflow states and business events.
+3. Customer workflows must support both organisation-led and individual-led customers as first-class records.
 4. Built-environment workflows must support inspection, evidence, review and issue lifecycles.
-5. All commercially relevant work must flow from client and instruction to invoice and reporting.
+5. All commercially relevant work must flow from client and instruction to invoice, cost and reporting.
 6. All regulated or professionally sensitive records must be auditable and retainable.
+7. Route doorways must not create separate versions of the same business truth.
 
 ## Release Shape
 
 ### Foundation Release
 
-- enterprise foundation objects
+- shared party, person, business and partner objects
 - client and instruction model
 - property model
 - reference data, users, roles and workflows
@@ -95,8 +100,8 @@ The platform shall support both business-to-business and business-to-consumer cu
 
 ### Commercial Control Release
 
-- fee agreements, WIP, invoicing, payments, margin and profitability
+- fee agreements, WIP, invoicing, payments, supplier cost, margin and profitability
 
 ### Control And Scale Release
 
-- procurement, workforce, compliance, analytics, integrations and automation
+- procurement, people/resource planning, compliance, analytics, integrations and automation
