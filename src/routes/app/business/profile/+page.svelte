@@ -13,7 +13,7 @@
 		<div>
 			<p class="eyebrow">Business workspace</p>
 			<h1>Business profile</h1>
-			<p>The tenant business record anchors the operating model, HR, projects, procurement and finance.</p>
+			<p>The owning business record anchors the operating model, HR, projects, procurement and finance.</p>
 		</div>
 		<a href={resolve('/app/business/dashboard')}>Back to business dashboard</a>
 	</header>
@@ -21,7 +21,7 @@
 	{#if data.profile}
 		<section class="panel">
 			<div>
-				<p class="eyebrow">Tenant business</p>
+				<p class="eyebrow">Owning business</p>
 				<h2>{data.profile.tradingName ?? data.profile.legalName ?? data.profile.partnerName}</h2>
 				<p>{data.profile.legalName ?? data.profile.partnerName}</p>
 			</div>
@@ -57,13 +57,13 @@
 		<section class="panel">
 			<p class="eyebrow">Operating model role</p>
 			<p>
-				This business profile is the internal tenant account. Business functions, organisation units,
+				This business profile is the organisation using PBM. Business functions, organisation units,
 				positions and employees sit underneath this business setup.
 			</p>
 		</section>
 	{:else}
 		<section class="panel warning">
-			<h2>No tenant business profile found</h2>
+			<h2>No business profile found</h2>
 			<p>Run the database migrations so the seed profile can be created.</p>
 		</section>
 	{/if}
