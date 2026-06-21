@@ -5,22 +5,22 @@
 </script>
 
 <svelte:head>
-	<title>Projects | Perspective Business Manager</title>
+	<title>Project Delivery | Perspective Business Manager</title>
 </svelte:head>
 
 <section class="page">
 	<header>
 		<div>
-			<p class="eyebrow">Projects</p>
-			<h1>Project dashboard</h1>
-			<p>Project-centric ERP control across client, scope, quote, procurement and finance.</p>
+			<p class="eyebrow">Project Delivery workspace</p>
+			<h1>Project delivery control</h1>
+			<p>Control client, scope, quote, procurement, cost, evidence and finance views from one project record.</p>
 		</div>
 	</header>
 
 	{#if data.projects.length === 0}
 		<section class="empty-state">
 			<h2>No projects found</h2>
-			<p>Create or migrate a project to begin using the project-centric ERP spine.</p>
+			<p>Create or migrate a project to begin using the PBM project delivery spine.</p>
 		</section>
 	{:else}
 		<table>
