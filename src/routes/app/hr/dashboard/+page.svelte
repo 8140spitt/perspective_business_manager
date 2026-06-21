@@ -1,20 +1,19 @@
 <svelte:head>
-	<title>HR & Workforce | Perspective Business Manager</title>
+	<title>People & Workforce | Perspective Business Manager</title>
 </svelte:head>
 
 <section class="page">
-	<p class="eyebrow">HR & Workforce</p>
+	<p class="eyebrow">People & Workforce workspace</p>
 	<h1>People, employees and workforce structure</h1>
 	<p>
-		This workspace is for people records, employees, employee positions, competence and authority.
-		It may feed project delivery, finance and procurement, but HR users should not need to work from
-		the project workspace to maintain workforce data.
+		Maintain people records, employees, positions, competence, training, authority and workforce
+		planning data used by the rest of the business.
 	</p>
 
-	<section class="cards" aria-label="HR workspace areas">
+	<section class="cards" aria-label="People and workforce activity areas">
 		<article>
 			<h2>People</h2>
-			<p>Human beings known to the tenant business.</p>
+			<p>Human beings known to the owning business.</p>
 		</article>
 		<article>
 			<h2>Employees</h2>
@@ -26,7 +25,7 @@
 		</article>
 		<article>
 			<h2>Competence and authority</h2>
-			<p>Skills, approvals and delegated limits for future controlled workflows.</p>
+			<p>Skills, approvals and delegated limits for controlled workflows.</p>
 		</article>
 	</section>
 </section>
