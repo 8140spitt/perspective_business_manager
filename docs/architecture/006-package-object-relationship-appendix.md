@@ -1,171 +1,178 @@
-# Package To Object Relationship Appendix
+# Package To Business Object Relationship Appendix
 
 ## Purpose
 
-Map package boundaries in `src/lib/packages` to canonical business objects, relationship chains and route families.
+This appendix explains how implementation packages in `src/lib/packages` should support PBM business objects, workspaces and route activity views.
 
-This appendix explains what each package family should own, what it should not own, and how packages should align to the enterprise object model.
+Packages are not product modules. They are implementation boundaries that protect the shared data spine from duplication.
 
 ## Design Rule
 
-Packages are implementation boundaries over shared enterprise objects.
-
-They are not permission to create parallel object models or route-specific data ownership.
+A package may own implementation behaviour, but it must not invent a second version of a business object that already exists elsewhere.
 
 Every package should be explainable through:
 
 - [001-canonical-enterprise-data-model.md](./001-canonical-enterprise-data-model.md)
+- [002-business-object-catalogue.md](./002-business-object-catalogue.md)
 - [003-enterprise-relationship-model.md](./003-enterprise-relationship-model.md)
 - [004-schema-relationship-appendix.md](./004-schema-relationship-appendix.md)
 - [005-route-object-relationship-appendix.md](./005-route-object-relationship-appendix.md)
 
 ## Package Mapping Matrix
 
-| Package family       | Primary purpose                                      | Primary objects                                                             | Common linked objects                                            | Main route families                                                     | Boundary note                               |
-| -------------------- | ---------------------------------------------------- | --------------------------------------------------------------------------- | ---------------------------------------------------------------- | ----------------------------------------------------------------------- | ------------------------------------------- |
-| `activities`         | delivery work execution chain                        | activity, observation, assessment, action, outcome                          | instruction, project, property, evidence_item, workflow_instance | `/app/activities/*`, `/app/operations/*`                                | core technical work chain                   |
-| `audit`              | immutable assurance and review support               | audit_event, business_event                                                 | workflow_instance, party, complaint, action                      | `/app/compliance/*`                                                     | cross-cutting governance support            |
-| `building-surveying` | sector-specific delivery extensions                  | instruction, property, inspection, defect, outcome                          | evidence_item, deliverable, party                                | `/app/operations/building-surveys`, related operations routes           | industry package over core objects          |
-| `client-accounts`    | commercial customer relationship layer               | client_account                                                              | party, instruction, sales_invoice                                | `/app/crm/*`, `/app/finance/*`                                          | shared customer-account service layer       |
-| `compliance`         | governance, complaints and risk                      | compliance_check, complaint, risk, control                                  | instruction, party, outcome, document, action                    | `/app/compliance/*`                                                     | cross-cutting control package               |
-| `core`               | shared core primitives and reusable business support | party, organisation, person, address, shared helpers                        | most enterprise objects                                          | many route families                                                     | should stay generic and reusable            |
-| `documents`          | controlled record support                            | document, document_revision, template                                       | party, property, instruction, activity, outcome, deliverable     | `/app/documents/*`                                                      | attached record layer                       |
-| `evidence`           | supporting material capture                          | evidence_item                                                               | activity, observation, assessment, action, outcome, party        | `/app/documents/evidence-library`, `/app/evidence`, `/app/operations/*` | evidence is attached, not root-owned        |
-| `finance`            | commercial control and billing                       | fee_agreement, sales_invoice, payment, WIP, expense                         | client_account, instruction, project                             | `/app/finance/*`                                                        | downstream of customer and delivery context |
-| `inspections`        | inspection-oriented delivery support                 | inspection, activity, evidence, defect                                      | property, instruction, party, outcome                            | `/app/operations/*`, `/app/surveys`                                     | specialised activity support                |
-| `instructions`       | operational instruction workspace logic              | instruction, instruction_party_role, instruction_property                   | client_account, property, party, project, fee_agreement          | `/app/instructions/*`, `/app/operations/instructions/*`                 | instruction-centric orchestration package   |
-| `parties`            | shared party and relationship services               | party, person, organisation, party_relationship, contact_method             | client_account, property_party_role, instruction_party_role      | `/app/parties/*`, `/app/crm/*`, `/app/procurement/*`                    | root identity package for B2B and B2C       |
-| `properties`         | asset and property context                           | property, property_unit, property_party_role                                | address, instruction_property, activity                          | `/app/property/*`, `/app/properties/*`                                  | shared asset context package                |
-| `reference-data`     | controlled code sets and classification              | ref_code_set, ref_code_value                                                | all business objects through codes                               | `/app/admin/reference-data`                                             | metadata governance layer                   |
-| `reports`            | reporting definitions and projections                | report_definition, aggregates, exports                                      | all major business objects                                       | `/app/reporting/*`, `/app/reports`                                      | derived analytical layer                    |
-| `workflows`          | lifecycle metadata and runtime                       | workflow_definition, workflow_state, workflow_transition, workflow_instance | business_event, instruction, project, activity, invoice          | `/app/admin/workflows`, cross-cutting                                   | shared lifecycle engine                     |
+| Package family | Implementation purpose | Primary business objects | Common linked objects | Main route families | Boundary rule |
+| --- | --- | --- | --- | --- | --- |
+| `core` | shared primitives and technical helpers | shared identifiers, result types, common utilities | most objects | many route families | must stay generic and not become a dumping ground |
+| `parties` | shared identity and relationship behaviour | party, person, organisation, relationship, contact method | client account, supplier role, employee, property role | `/app/crm/*`, `/app/procurement/*`, `/app/hr/*` | owns identity behaviour, not workspace-specific client/supplier/employee rules |
+| `client-accounts` | commercial account behaviour | client account | party, instruction, project, sales invoice | `/app/crm/*`, `/app/finance/*` | bridges identity and commercial control |
+| `business-setup` | owning business structure and operating model | business profile, business function, organisation unit, position | employee position, authority limit, reference data | `/app/business/*`, `/app/admin/*` | defines structure used by all other workspaces |
+| `people` / `hr` | workforce administration | person, employee, employee position, competence, authority limit | project assignment, training, organisation unit, position | `/app/hr/*`, `/app/resource-planning/*` | must use shared person and position records |
+| `projects` | project delivery coordination | project, project service, assignment, milestone, issue, project cost | client account, party, purchase order row, quote row, invoice row, evidence | `/app/projects/*` | owns project coordination, not client identity or finance ownership |
+| `activities` | reusable work-chain behaviour | activity, activity area, observation, assessment, action, outcome | project, instruction, property, evidence, workflow instance | `/app/activities/*`, `/app/operations/*` | owns the work-chain used by many service types |
+| `operations` | live work planning and execution | instruction, work/service order, schedule, allocation | project, activity, employee, property, evidence | `/app/operations/*`, `/app/resource-planning/*` | coordinates work without duplicating projects or activities |
+| `properties` | property and asset context | property, property unit, property role | address, party, project, activity, evidence | `/app/property/*`, `/app/properties/*` | owns asset context, not delivery ownership |
+| `procurement` | supplier and external buying behaviour | supplier role, purchase order, purchase order row, supplier invoice | party, project, project service, finance status | `/app/procurement/*` | must attach spend to delivery and finance context |
+| `finance` | financial control behaviour | fee agreement, sales invoice, supplier invoice, payment, ledger entry, WIP | client account, party, project, instruction, purchase order | `/app/finance/*` | owns financial state, not client/project identity |
+| `compliance` | governance, risk and assurance | risk, control, compliance check, complaint, action | party, project, instruction, document, evidence, outcome | `/app/compliance/*` | cross-cutting attachment to governed records |
+| `audit` | event and assurance history | audit event, business event | workflow instance, party, action, complaint, controlled record | `/app/compliance/*`, `/app/admin/*` | append-only history and review support |
+| `documents` | controlled document behaviour | document, document revision, template | party, project, property, instruction, activity, outcome | `/app/documents/*` | attached information layer |
+| `evidence` | supporting material capture | evidence item | activity, observation, assessment, action, outcome, party | `/app/evidence/*`, `/app/documents/*`, `/app/operations/*` | evidence supports records; it does not own them |
+| `reports` | analytical and export behaviour | report definition, metric, export | all major business objects | `/app/reporting/*`, `/app/reports` | derived read model over the data spine |
+| `workflows` | lifecycle metadata and runtime state | workflow definition, state, transition, instance | business event, project, activity, invoice, document | `/app/admin/workflows`, cross-cutting | shared lifecycle engine |
+| `reference-data` | controlled lists and classifications | reference code set, reference code value | all typed/stateful objects | `/app/admin/reference-data` | governs meaning, status and classification |
 
 ## Package Family Notes
 
-### Parties And Client Accounts
-
-The `parties` and `client-accounts` packages together express the shared customer model:
+### Identity And Commercial Account Packages
 
 ```text
-Party -> Person/Organisation -> Client Account -> Instruction
+Party -> Person / Organisation -> Role or Account -> Workspace activity
 ```
 
 Rules:
 
-- `parties` should own root identity behavior and relationships
-- `client-accounts` should own commercial account behavior
-- neither package should split B2B and B2C into separate data structures
+- `parties` owns root identity behaviour.
+- `client-accounts` owns commercial account behaviour.
+- supplier, employee, contact and client views must not create separate identity roots.
 
-### Instructions, Activities And Industry Packages
-
-The delivery chain should flow through:
+### Business Setup And Workforce Packages
 
 ```text
-Instruction -> Activity -> Observation -> Assessment -> Action -> Outcome
+Business function -> Organisation unit -> Position -> Employee position -> Authority / competence
 ```
 
 Rules:
 
-- `instructions` owns instruction-centric orchestration
-- `activities` owns the technical work chain
-- industry packages such as `building-surveying` and `inspections` should extend, not replace, that chain
+- business structure packages define the operating model.
+- workforce packages consume that structure.
+- approval, authority and competence should attach to positions and people deliberately.
 
-### Properties And Evidence
-
-Property and evidence packages should remain attached to the core delivery chain:
+### Delivery Packages
 
 ```text
-Property -> Instruction Property -> Activity -> Evidence
+Project / instruction -> Activity -> Observation -> Assessment -> Action -> Outcome
 ```
 
 Rules:
 
-- `properties` owns asset context and relationships
-- `evidence` owns supporting material behavior
-- neither package should become a duplicate instruction or activity engine
+- `projects` owns delivery coordination.
+- `activities` owns the reusable work-chain.
+- `operations` owns live planning and execution flow.
+- service-specific packages may extend the chain but must not fork it.
 
-### Finance And Compliance
-
-Finance and compliance packages are cross-cutting but still rooted in shared objects:
+### Property, Document And Evidence Packages
 
 ```text
-Client Account -> Instruction -> Fee Agreement / Invoice
-Instruction / Outcome / Document -> Compliance / Audit
+Property / project / activity -> Document / Evidence
 ```
 
 Rules:
 
-- `finance` must consume customer and instruction context rather than recreate it
-- `compliance` and `audit` must attach controls and history to existing objects
+- property provides asset context.
+- documents and evidence support business records.
+- none of these packages should become duplicate workflow, project or activity engines.
 
-### Workflows And Reports
+### Procurement And Finance Packages
 
-These are platform packages rather than business-domain owners:
+```text
+Supplier party -> Purchase order -> Supplier invoice -> Payment
+Client account -> Project / instruction -> Sales invoice -> Receipt
+```
 
-- `workflows` should manage lifecycle metadata and runtime state
-- `reports` should derive projections from business objects
-- `reference-data` should manage the codes that govern state, type and classification behavior
+Rules:
 
-## Expected Package Responsibilities
+- procurement owns supplier buying behaviour.
+- finance owns financial control behaviour.
+- both must attach to the shared party, project and service records.
 
-### Root Identity Packages
+### Governance And Reporting Packages
 
+```text
+Any governed object -> Risk / Control / Event / Evidence -> Report
+```
+
+Rules:
+
+- compliance and audit are cross-cutting packages.
+- reports are derived views and must not become source-of-truth objects.
+- workflows provide lifecycle behaviour for many object types.
+
+## Expected Package Groups
+
+### Foundation Packages
+
+- `core`
 - `parties`
-- `client-accounts`
+- `business-setup`
 - `reference-data`
-
-These should provide reusable services used by many route families.
+- `workflows`
 
 ### Delivery Spine Packages
 
-- `instructions`
+- `client-accounts`
+- `projects`
+- `operations`
 - `activities`
 - `properties`
+
+### Commercial And Control Packages
+
+- `procurement`
 - `finance`
-
-These should carry the end-to-end commercial and operational chain.
-
-### Extension Packages
-
-- `building-surveying`
-- `inspections`
 - `compliance`
 - `audit`
 
-These should enrich or govern the shared model rather than fork it.
-
-### Platform Packages
+### Information Packages
 
 - `documents`
 - `evidence`
 - `reports`
-- `workflows`
-- `core`
-
-These should remain reusable across modules.
 
 ## Current Package-Level Tensions
 
-1. `client-accounts` now exists as a package family but is not yet fully reflected in all higher-level matrices and route narratives.
-2. procurement appears more route-led than package-led; a dedicated supplier or procurement package may need to deepen over time.
-3. workforce concerns are still thin at package level compared to route coverage under HR and resource planning.
-4. industry packages and core delivery packages must be kept separate so sector extensions do not become duplicate core logic.
-5. `core` can easily become a dumping ground unless its responsibilities stay constrained to truly shared concerns.
+1. Procurement appears more route-led than package-led and needs deeper package support.
+2. Workforce concerns are still thin at package level compared with workspace coverage.
+3. `core` can become a dumping ground unless it stays constrained.
+4. Property route/package naming still needs consolidation.
+5. Cross-cutting packages must avoid owning the records they attach to.
+6. Sector-specific packages must extend shared work-chain behaviour rather than create parallel engines.
 
 ## Package Relationship Rules
 
-1. A package should declare its primary business objects clearly.
-2. If a package mostly coordinates other objects, it should remain orchestration-focused and avoid re-owning root entities.
-3. If a package is cross-cutting, it should attach through shared identifiers and relationship paths already defined in the canonical model.
-4. Package APIs must preserve the shared B2B/B2C customer model.
-5. New packages should be added only when a meaningful business or platform boundary exists.
+1. A package must declare the business objects it primarily supports.
+2. A package must declare whether it owns behaviour, orchestration, reporting or configuration.
+3. A package must not create a second identity, client, supplier, employee, project or invoice model.
+4. Cross-cutting packages must attach through documented relationship paths.
+5. New packages should only be added for a real business or platform boundary.
+6. Route convenience must not drive package boundaries by itself.
 
-## Use In Design Reviews
+## Design Review Checklist
 
 Before creating or expanding a package, confirm:
 
-1. which canonical objects the package primarily serves
-2. whether an existing package already owns that object boundary
-3. which route families will depend on it
-4. whether it extends the shared model or risks duplicating it
-5. whether B2B and B2C behavior remains on the shared party and client-account model
+1. which PBM business object the package serves
+2. whether an existing package already supports that boundary
+3. which route families depend on it
+4. whether it owns records, orchestrates records or reports on records
+5. whether it extends the shared model or risks duplicating it
+6. whether it preserves the shared identity, project, finance and evidence spine
