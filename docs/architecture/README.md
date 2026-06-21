@@ -71,6 +71,7 @@ Read the architecture documents in this order:
                         -> 006 Package Object Relationship Appendix
                             -> 007 Architecture Remediation Backlog
                                 -> 008 Repository Alignment Review
+                                    -> 009 Route Workspace Alignment
 ```
 
 ## Key documents
@@ -84,6 +85,7 @@ Read the architecture documents in this order:
 - [006-package-object-relationship-appendix.md](./006-package-object-relationship-appendix.md)
 - [007-architecture-remediation-backlog.md](./007-architecture-remediation-backlog.md)
 - [008-repository-alignment-review.md](./008-repository-alignment-review.md)
+- [009-route-workspace-alignment.md](./009-route-workspace-alignment.md)
 - [012-enterprise-capability-coverage-catalogue.md](./012-enterprise-capability-coverage-catalogue.md)
 - [013-enterprise-sub-capability-coverage-audit.md](./013-enterprise-sub-capability-coverage-audit.md)
 
@@ -128,12 +130,11 @@ Business Setup
 People & Workforce
 Clients & Commercial
 Project Delivery
-Operations & Planning
-Procurement, Materials & Logistics
+Procurement & Supplier Control
 Finance & Control
-Assets, Property & Maintenance
-Quality & Compliance
-Reporting, Documents & Admin
+Property & Assets
+Quality, Risk & Compliance
+Documents, Reporting & Administration
 ```
 
 A workspace may use many business objects. A business object may appear in many workspaces.
@@ -187,10 +188,10 @@ supplier_invoice
 may appear in:
 
 ```text
-Procurement
-Finance
+Procurement & Supplier Control
+Finance & Control
 Project Delivery
-Reporting
+Documents, Reporting & Administration
 ```
 
 but there must still be one record of truth.
@@ -289,6 +290,8 @@ Every route family should answer:
 5. Which table or view persists the record?
 6. Which workflow, event, evidence or control rules apply?
 7. Which reports need to read the same record?
+
+Route naming does not have to be perfect from day one. The route workspace alignment document tracks what should be kept, renamed later, aliased or removed.
 
 ## Architecture review rule
 
