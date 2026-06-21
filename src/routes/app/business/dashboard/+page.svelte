@@ -7,7 +7,7 @@
 	const businessSetupAreas = $derived([
 		{
 			title: 'Business profile',
-			description: 'The tenant business record, legal identity, trading names and operating context.',
+			description: 'The owning business record, legal identity, trading names and operating context.',
 			route: '/app/business/profile',
 			status: workspace.businessProfile ? 'Configured' : 'Required'
 		},
@@ -40,7 +40,7 @@
 	<header class="hero">
 		<div>
 			<p class="eyebrow">Business workspace</p>
-			<h1>Tenant business operating model</h1>
+			<h1>Owning business operating model</h1>
 			<p>
 				Set up the business itself before HR, projects, commercial, procurement or finance workflows
 				depend on it.
@@ -78,7 +78,7 @@
 		</div>
 
 		<ol class="sequence">
-			<li>Tenant business profile</li>
+			<li>Business profile</li>
 			<li>Business functions</li>
 			<li>Organisation units</li>
 			<li>Positions</li>
