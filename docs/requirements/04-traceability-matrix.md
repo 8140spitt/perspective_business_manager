@@ -35,28 +35,28 @@ This matrix exists to prove that PBM is being built as one integrated enterprise
 
 | PBM capability area | Requirement document | Current workspace families | Current route families | Current package families | Core business objects | Current maturity |
 | --- | --- | --- | --- | --- | --- | --- |
-| Clients & Commercial | [modules/sales-client-management.md](./modules/sales-client-management.md) | CRM, Sales | `/app/crm/*`, `/app/sales/*` | `parties`, `client-accounts`, `instructions`, `core` | party, person, business, client account, instruction, quote | foundation |
-| Project Delivery | [modules/service-delivery-projects.md](./modules/service-delivery-projects.md) | Operations, Activities, Projects | `/app/operations/*`, `/app/activities/*`, `/app/projects/*` | `activities`, `inspections`, `instructions`, `building-surveying`, `workflows` | instruction, project, activity, observation, assessment, action, outcome, deliverable | scaffolded |
-| Property & Assets | [modules/property-asset-management.md](./modules/property-asset-management.md) | Property | `/app/property/*`, `/app/properties/*` | `properties`, `core`, `documents` | property, site, building, unit, address, asset, property-party role | foundation |
-| Finance & Control | [modules/finance-commercial-control.md](./modules/finance-commercial-control.md) | Finance | `/app/finance/*` | `finance`, `reports`, `core` | fee agreement, WIP item, sales invoice, supplier invoice, payment, project | scaffolded |
-| Procurement & Supply | [modules/procurement-supply-chain.md](./modules/procurement-supply-chain.md) | Procurement | `/app/procurement/*` | `core`, `finance`, planned procurement package | supplier, supplier role, purchase order, supplier invoice, supplier compliance record | scaffolded |
-| People & Workforce | [modules/workforce-resource-planning.md](./modules/workforce-resource-planning.md) | HR, Resource Planning | `/app/hr/*`, `/app/resource-planning/*` | `core`, `reference-data`, planned workforce package | person, employee, position, competence, allocation, authority limit | scaffolded |
-| Quality, Risk & Compliance | [modules/quality-risk-compliance.md](./modules/quality-risk-compliance.md) | Compliance | `/app/compliance/*` | `compliance`, `audit`, `workflows`, `documents` | risk, control, compliance check, complaint, audit event, corrective action | scaffolded |
-| Documents, Reporting & Administration | [modules/documents-analytics-integration.md](./modules/documents-analytics-integration.md) | Documents, Reporting, Admin, Dashboard | `/app/documents/*`, `/app/reporting/*`, `/app/admin/*`, `/app/dashboard` | `documents`, `evidence`, `reports`, `reference-data`, `workflows` | document, evidence item, workflow definition, business event, report definition | scaffolded |
+| Clients & Commercial | [workspaces/clients-commercial.md](./workspaces/clients-commercial.md) | CRM, Sales | `/app/crm/*`, `/app/sales/*` | `parties`, `client-accounts`, `instructions`, `core` | party, person, business, client account, instruction, quote | foundation |
+| Project Delivery | [workspaces/project-delivery.md](./workspaces/project-delivery.md) | Operations, Activities, Projects | `/app/operations/*`, `/app/activities/*`, `/app/projects/*` | `activities`, `inspections`, `instructions`, `building-surveying`, `workflows` | instruction, project, activity, observation, assessment, action, outcome, deliverable | scaffolded |
+| Property & Assets | [workspaces/property-assets.md](./workspaces/property-assets.md) | Property | `/app/property/*`, `/app/properties/*` | `properties`, `core`, `documents` | property, site, building, unit, address, asset, property-party role | foundation |
+| Finance & Control | [workspaces/finance-control.md](./workspaces/finance-control.md) | Finance | `/app/finance/*` | `finance`, `reports`, `core` | fee agreement, WIP item, sales invoice, supplier invoice, payment, project | scaffolded |
+| Procurement & Supplier Control | [workspaces/procurement-supplier-control.md](./workspaces/procurement-supplier-control.md) | Procurement | `/app/procurement/*` | `core`, `finance`, planned procurement package | supplier, supplier role, purchase order, supplier invoice, supplier compliance record | scaffolded |
+| People & Workforce | [workspaces/people-workforce.md](./workspaces/people-workforce.md) | HR, Resource Planning | `/app/hr/*`, `/app/resource-planning/*` | `core`, `reference-data`, planned workforce package | person, employee, position, competence, allocation, authority limit | scaffolded |
+| Quality, Risk & Compliance | [workspaces/quality-risk-compliance.md](./workspaces/quality-risk-compliance.md) | Compliance | `/app/compliance/*` | `compliance`, `audit`, `workflows`, `documents` | risk, control, compliance check, complaint, audit event, corrective action | scaffolded |
+| Documents, Reporting & Administration | [workspaces/documents-reporting-administration.md](./workspaces/documents-reporting-administration.md) | Documents, Reporting, Admin, Dashboard | `/app/documents/*`, `/app/reporting/*`, `/app/admin/*`, `/app/dashboard` | `documents`, `evidence`, `reports`, `reference-data`, `workflows` | document, evidence item, workflow definition, business event, report definition | scaffolded |
 
 ## Object Spine Traceability
 
 | Business object | Primary capability areas | Example route doorways | Example package families |
 | --- | --- | --- | --- |
-| party | Clients & Commercial, People & Workforce, Procurement & Supply | `/app/crm/clients`, `/app/parties`, `/app/procurement/suppliers` | `parties`, `core` |
+| party | Clients & Commercial, People & Workforce, Procurement & Supplier Control | `/app/crm/clients`, `/app/parties`, `/app/procurement/suppliers` | `parties`, `core` |
 | client account | Clients & Commercial, Finance & Control | `/app/crm/*`, `/app/finance/*` | `client-accounts`, `finance` |
 | instruction | Clients & Commercial, Project Delivery, Finance & Control | `/app/instructions/*`, `/app/operations/instructions`, `/app/activities/*` | `instructions`, `activities`, `finance` |
 | property | Property & Assets, Project Delivery | `/app/property/*`, `/app/properties/*`, `/app/operations/*` | `properties`, `building-surveying`, `activities` |
-| project | Project Delivery, Finance & Control, Procurement & Supply | `/app/projects/*`, `/app/finance/*`, `/app/procurement/*` | `core`, `finance`, `activities`, planned procurement package |
+| project | Project Delivery, Finance & Control, Procurement & Supplier Control | `/app/projects/*`, `/app/finance/*`, `/app/procurement/*` | `core`, `finance`, `activities`, planned procurement package |
 | activity | Project Delivery, Documents, Reporting & Administration | `/app/activities/*` | `activities`, `inspections`, `evidence` |
 | assessment and action | Project Delivery, Quality Risk & Compliance | `/app/activities/*`, `/app/compliance/*` | `activities`, `compliance`, `audit` |
 | outcome and deliverable | Project Delivery, Documents, Reporting & Administration, Finance & Control | `/app/activities/*`, `/app/documents/*`, `/app/finance/*` | `activities`, `documents`, `finance`, `reports` |
-| supplier invoice | Procurement & Supply, Finance & Control, Project Delivery, Reporting | `/app/procurement/*`, `/app/finance/*`, `/app/projects/*`, `/app/reporting/*` | `finance`, planned procurement package, `reports` |
+| supplier invoice | Procurement & Supplier Control, Finance & Control, Project Delivery, Reporting | `/app/procurement/*`, `/app/finance/*`, `/app/projects/*`, `/app/reporting/*` | `finance`, planned procurement package, `reports` |
 
 ## Current Gaps And Tensions
 
