@@ -1,81 +1,61 @@
-# Architecture Alignment Review And Remediation Backlog
+# Architecture remediation backlog
 
 ## Purpose
 
-This document records the first architecture alignment review after the PBM architecture reset.
+This document records the architecture clean-up work required to bring the repository into line with the PBM product direction.
 
-The architecture reset introduced:
+PBM is a business-first enterprise platform. It should be organised around business workspaces, business capabilities, business objects, route doorways, implementation packages and one shared data spine.
 
-```text
-000-enterprise-meta-model.md
-001-enterprise-capability-model.md
-001-canonical-enterprise-data-model.md
-```
+This backlog exists to remove older assumptions where the product was shaped too heavily around a narrow instruction/activity chain or around legacy suite terminology.
 
-The new architectural foundation defines PBM as one coherent ERP platform built from seven meta concepts:
+## Product language rule
+
+Use PBM language in architecture documents and product-facing material:
 
 ```text
-Party
-Thing
-Agreement
-Work
-Transaction
-Information
-Control
+Business workspace
+Business capability
+Business object
+Activity view
+Route doorway
+Shared data spine
+Integrated record
+Operating model
+Coverage audit
+Framework extension
 ```
 
-This document reviews the current repository direction against that model and converts known misalignment into a remediation backlog.
+Avoid making legacy vendor or module terminology part of PBM identity. External enterprise software lists may be used privately as completeness checks only.
 
-## Review Scope
-
-This review covers the current architecture and implementation areas already visible or previously inspected during the refactor:
+## Alignment status key
 
 ```text
-docs/architecture
-setup-perspective-os.cjs
-src/lib/packages
-src/lib/server/db/schema
-src/routes/app
-src/lib/server/repositories
-src/lib/server/services
+KEEP       Directionally correct; continue and strengthen.
+REFACTOR   Valid concept, but wrong shape, location, naming or responsibility.
+MOVE       Should live under a different workspace, package or domain.
+SPLIT      Contains multiple responsibilities that need separating.
+MERGE      Should become part of a broader object or package model.
+EXPAND     Correct start, but materially incomplete.
+REVIEW     Requires a product/architecture decision before further build-out.
+REMOVE     Should be removed after migration because it misleads the model.
 ```
 
-The repository could not be fully enumerated through the connector during this review. Therefore this is an initial architecture alignment review, not a complete code audit.
+## Architecture baseline
 
-A deeper local audit should still be performed using:
-
-```bash
-find src/lib/packages -maxdepth 3 -type f | sort
-find src/routes/app -maxdepth 5 -type f | sort
-find src/lib/server -maxdepth 5 -type f | sort
-```
-
-## Alignment Status Key
+PBM architecture must trace from stable enterprise concepts into buildable implementation:
 
 ```text
-GREEN   = directionally aligned
-AMBER   = partly aligned, needs refactor or clarification
-RED     = materially misaligned with the new architecture
-UNKNOWN = requires deeper inspection
+Meta concept
+    -> business object
+        -> business capability
+            -> business workspace
+                -> route doorway
+                    -> implementation package
+                        -> table / view
+                            -> report / control
 ```
 
----
-
-# Executive Summary
-
-The repository has moved in the right direction but still contains structural assumptions from the earlier instruction/activity-centred model.
-
-The biggest issue is not that current objects are wrong.
-
-The issue is that their relative importance is wrong.
-
-The current implementation gives heavy weight to:
-
-```text
-Party -> Client Account -> Instruction -> Activity -> Observation -> Assessment -> Action -> Outcome
-```
-
-The new architecture says PBM is broader:
+The stable meta concepts are:
 
 ```text
 Party
@@ -87,940 +67,434 @@ Information
 Control
 ```
 
-with user-facing ERP capabilities such as:
-
-```text
-Customers
-Sales
-Projects
-Operations
-Resources
-Procurement
-Finance
-Assets
-Documents
-Compliance
-Reporting
-Administration
-```
-
-The implementation must now be pulled upward from a delivery-chain prototype into a full ERP architecture.
+These are not navigation labels, not package names and not table prefixes. They are architecture categories used to stop the model fragmenting.
 
 ---
 
-# Current Architecture Findings
+# Executive summary
 
-## Finding 1: Setup Script Still Encodes Old Package Set
+The repository has moved in the right direction, but some older assumptions still need to be corrected.
 
-Status: AMBER
-
-`setup-perspective-os.cjs` currently creates packages such as:
+The largest risk is allowing the old delivery chain to become the whole product:
 
 ```text
-core
-reference-data
-parties
-client-accounts
-properties
-instructions
-workflows
-activities
-documents
-evidence
-inspections
-building-surveying
-reports
-finance
-compliance
-audit
+Client account
+    -> instruction
+        -> activity
+            -> observation
+                -> assessment
+                    -> action
+                        -> outcome
 ```
 
-This is partially aligned, but it does not yet reflect the new capability and meta-model package direction.
+That chain is useful, but it is not the whole PBM operating model.
 
-Missing or underrepresented package families include:
+The target model is broader:
 
 ```text
-agreements
-commercial
-contracts
-projects
-work
-resources
-procurement
-assets
-transactions
-controls
-frameworks
-events
-integrations
-administration
+The business defines itself.
+The business manages people, clients, suppliers, assets and controls.
+The business wins work.
+The business delivers work.
+The business controls money.
+The business keeps evidence.
+The business reports one version of the truth.
 ```
 
-The presence of `building-surveying` and `inspections` is not inherently wrong, but these must be treated as extension or work-pattern packages, not core ERP identity packages.
+---
 
-## Finding 2: Routes Still Reflect Earlier Workspace Shape
+# Priority remediation themes
 
-Status: AMBER
+## 1. Re-centre PBM on the business operating model
 
-The setup script still seeds route families such as:
+Status: KEEP / EXPAND
+
+PBM should be expressed as business workspaces over a shared data spine.
+
+Target workspace families:
 
 ```text
-/app/parties
-/app/properties
-/app/instructions
-/app/workflows
-/app/documents
-/app/evidence
-/app/surveys
-/app/reports
-/app/finance
-/app/compliance
-/app/admin/reference-data
+Business Setup
+People & Workforce
+Clients & Commercial
+Project Delivery
+Operations & Planning
+Procurement, Materials & Logistics
+Finance & Control
+Assets, Property & Maintenance
+Quality & Compliance
+Reporting, Documents & Admin
 ```
 
-These routes are useful, but they do not yet represent the intended ERP workspace model:
+Required action:
 
-```text
-Dashboard
-Customers
-Sales
-Projects
-Operations
-Resources
-Procurement
-Finance
-Assets
-Documents
-Compliance
-Reporting
-Administration
-```
+1. Keep workspace names business-readable.
+2. Keep implementation packages separate from navigation.
+3. Ensure every route states which shared objects it reads or writes.
+4. Prevent any route from becoming the owner of a record.
 
-The most important route gaps are:
+## 2. Reduce instruction as the centre of gravity
 
-```text
-/app/sales or /app/commercial
-/app/projects
-/app/resources
-/app/procurement
-/app/assets
-/app/reporting
-/app/administration
-```
+Status: REVIEW / REFACTOR
 
-The current `/app/instructions` route family should be reviewed because Instruction is now an Agreement / Work-authorisation object rather than the centre of the ERP.
+Instruction remains a useful business concept, but it should not be the spine of PBM.
 
-## Finding 3: Party And Client Account Direction Is Strong
-
-Status: GREEN / AMBER
-
-The creation of `client-accounts` as a first-class package was correct.
-
-Party and Client Account now align with the new model:
-
-```text
-Party -> Client Account
-```
-
-However, the surrounding commercial lifecycle is still thin.
-
-Missing Agreement-domain objects include:
-
-```text
-Lead
-Enquiry
-Opportunity
-Proposal
-Quotation
-Tender
-Contract
-Framework Agreement
-Service Agreement
-Purchase Order
-Change Order
-Variation
-```
-
-Client Account should remain the commercial customer relationship layer, but commercial activity must move into an Agreement / Commercial package family rather than stay inside Party or CRM routes.
-
-## Finding 4: Instruction Is Overweighted
-
-Status: RED / AMBER
-
-Instruction remains important, but it should no longer be treated as the central ERP object.
-
-Under the new model, Instruction is context-dependent:
+Possible interpretations:
 
 ```text
 Agreement
 Work authorisation
 Operational request
+Service instruction
 Contract trigger
 ```
 
-The implementation and docs need to stop using Instruction as the main spine of PBM.
-
-Instruction should become one object in the Agreement / Work-authorisation model.
-
-A future decision is required:
+Required decision:
 
 ```text
-Should Instruction remain a canonical object?
-Should it become a type of Agreement?
-Should it become a type of Work Request?
-Should it be renamed to Authorisation / Work Instruction / Service Instruction?
+Should instruction remain a canonical business object?
+Should it become a type of agreement?
+Should it become a type of work request?
+Should it be renamed to work authorisation or service instruction?
 ```
 
-Until that decision is made, new features should avoid deepening Instruction-specific architecture.
+Until that decision is made, avoid building new architecture that makes instruction the centre of the product.
 
-## Finding 5: Activities / Observations / Assessments / Actions / Outcomes Are Valid But Too Central
+## 3. Strengthen project as the controlled work container
 
-Status: AMBER
+Status: EXPAND
 
-These objects are valid PBM objects in the Work domain:
+Project must become one of the most important Work-domain objects.
 
-```text
-Activity
-Observation
-Assessment
-Action
-Outcome
-```
-
-They are useful for operational execution, inspections, audits, quality, risk, compliance, technical work and evidence-driven workflows.
-
-However, they should not define the core ERP spine.
-
-They belong under:
+A project should connect to:
 
 ```text
-Work Domain
-Operations & Work Execution Capability
-Compliance / Quality / Evidence workflows where appropriate
-```
-
-Future refactor should ensure they are reusable work-execution objects, not surveying-specific objects.
-
-## Finding 6: Project Is Underdeveloped Relative To ERP Role
-
-Status: RED
-
-The new architecture makes Project one of the most important Work-domain objects.
-
-A Project should be able to connect to:
-
-```text
-Client Account
-Agreement / Contract
-Party roles
-Things / Assets
-Work packages
-Activities
-Tasks
-Deliverables
-Resources
-Budgets
-Costs
-Purchase Orders
-Invoices
-Documents
-Evidence
-Risks
-Issues
-Changes
-Compliance requirements
-Frameworks
-Workflow instances
-Business events
+Client / owning party
+Agreement or contract
+Project parties and contacts
+Locations, assets or properties
+Services and deliverables
+Assignments and resources
+Budgets and forecasts
+Purchase orders and supplier invoices
+Sales invoices and receipts
+Documents and evidence
+Risks, issues and changes
+Quality and compliance requirements
 Reports
 ```
 
-The current implementation appears to treat Project as secondary to Instruction.
+Required action:
 
-This must be reversed.
+1. Treat project as the controlled delivery container.
+2. Link commercial, procurement, finance, document and control records back to the project where relevant.
+3. Avoid duplicate project-like records inside other workspaces.
 
-Project should become the central controlled delivery container after commercial or internal authorisation.
+## 4. Complete the commercial lifecycle
 
-## Finding 7: Commercial Lifecycle Is Missing
+Status: EXPAND
 
-Status: RED
+PBM needs a clear customer/commercial lifecycle before and after project creation.
 
-The current repository does not yet represent the full commercial lifecycle expected of an ERP:
+Target lifecycle:
 
 ```text
-Lead
+Client / contact
+    -> enquiry
+        -> opportunity
+            -> proposal / quote
+                -> accepted agreement
+                    -> project / work
+                        -> invoice / closeout
+```
+
+Required business objects:
+
+```text
+Client account
+Contact
 Enquiry
 Opportunity
 Proposal
-Quotation
-Tender
-Contract
-Framework Agreement
+Quote
+Quote row
+Agreement / contract
+Variation / change
+Billing trigger
 ```
 
-This is a major gap because ERP delivery normally begins before project creation.
+## 5. Build procurement as a first-class capability
 
-PBM needs a Commercial / Agreement model so work can flow naturally:
+Status: EXPAND
 
-```text
-Party
-  -> Client Account
-    -> Lead / Enquiry / Opportunity
-      -> Proposal / Quotation / Tender
-        -> Contract / Accepted Agreement
-          -> Project / Work
-```
+Procurement must not be a finance afterthought. It is the supplier-side control of commitments, service receipt, goods receipt and supplier cost.
 
-## Finding 8: Procurement Is Missing As A Core ERP Capability
-
-Status: RED
-
-Procurement is currently not represented strongly enough.
-
-PBM needs supplier-side Agreement and Transaction objects:
+Required business objects:
 
 ```text
-Supplier Account
-Purchase Requisition
-RFQ
-Supplier Quote
-Purchase Order
-Subcontract
-Goods Receipt
-Service Receipt
-Purchase Invoice
+Supplier account
+Supplier contact
+Purchase request
+Supplier quote
+Purchase order
+Purchase order row
+Goods receipt
+Service receipt
+Supplier invoice
+Supplier invoice row
 Commitment
 ```
 
-Procurement must attach to:
+Procurement records must be able to reference:
 
 ```text
 Project
-Work Package
-Activity
-Asset
-Cost Centre
+Project service
+Work package
+Asset / thing
+Cost centre
 Agreement
 ```
 
-## Finding 9: Resource Management Is Missing As A Core ERP Capability
+## 6. Build finance as control, not just invoicing
 
-Status: RED
+Status: EXPAND
 
-PBM needs a resource model that can schedule, allocate and cost people and things.
+Current invoice objects are a good start, but finance must support control of money across the business.
 
-Resource should be treated carefully.
-
-A resource is often a Party or Thing used in a Work context:
+Required capability areas:
 
 ```text
-Person as Resource
-Team as Resource
-Equipment as Resource
-Vehicle as Resource
-Facility as Resource
-Material as Resource
-```
-
-The resource model should therefore avoid duplicating Party and Thing identity.
-
-It should define allocation, availability, utilisation, capacity, skills and cost context.
-
-## Finding 10: Finance Is Too Thin
-
-Status: RED
-
-The current finance direction includes early objects such as:
-
-```text
-fee_agreement
-sales_invoice
-```
-
-A full ERP finance model requires:
-
-```text
-Chart of Accounts
-Financial Period
-Cost Centre
-Profit Centre
-Budget
-Forecast
-Commitment
-Cost
+Financial periods
+Chart of accounts
+Cost centres
+Profit centres
+Budgets
+Forecasts
+Commitments
 Revenue
-Sales Invoice
-Purchase Invoice
-Payment
-Receipt
-Credit Note
-Journal Entry
-WIP Item
-Expense
-Tax
+Costs
+Sales invoices
+Supplier invoices
+Receipts
+Payments
+Credit notes
+Journal entries
+Tax/VAT
+WIP / accruals
+Management reporting
 ```
 
-Finance must reference shared objects rather than recreate them.
+Finance must reference shared business objects rather than recreate clients, suppliers, projects or services.
 
-## Finding 11: Asset / Thing Model Needs Generalisation
+## 7. Generalise asset and property into the Thing model
 
-Status: AMBER / RED
+Status: REFACTOR / EXPAND
 
-The implementation currently contains Property-oriented objects.
+Property is valid, but PBM must support a broader Thing / Asset model.
 
-Property is valid, but the broader architecture requires a general Thing / Asset model.
-
-PBM must support:
+Target object family:
 
 ```text
+Asset
 Property
 Building
 Land
+Space
 Equipment
 Plant
 Vehicle
-Product
 Material
-Inventory Item
-Software Asset
-Information Asset
+Inventory item
+Software asset
+Information asset
 Infrastructure
 ```
 
-Property should become a specialisation or view of Asset / Thing, not the only asset concept.
+Property should be a specialisation or view of asset/thing, not the only asset concept.
 
-## Finding 12: Documents And Evidence Are Correctly Recognised But Not Fully Materialised
+## 8. Make documents and evidence cross-object capabilities
 
-Status: AMBER
+Status: KEEP / EXPAND
 
-Documents and evidence are correctly identified as cross-cutting.
+Documents and evidence should attach to business objects, controls, work, projects, finance records and commercial records.
 
-The implementation still needs a stronger Information domain:
+Required objects:
 
 ```text
 Document
-Document Revision
+Document revision
 Record
-Evidence Item
+Evidence item
 Correspondence
 Template
-Report
+Report pack
 Certificate
 Drawing
 Specification
-Knowledge Article
-Retention Policy
+Retention policy
 ```
 
-Documents and evidence must attach to all supported enterprise objects.
+Evidence should satisfy a requirement or support a decision. It should not become a detached file store.
 
-## Finding 13: Compliance And Framework Engine Are Not Yet Materialised
+## 9. Build control, quality and framework management properly
 
-Status: RED
+Status: EXPAND
 
-The new architecture depends heavily on a Framework Engine.
+PBM needs a strong Control domain because this is what makes the platform useful across industries, standards and methods.
 
-The current implementation does not yet appear to provide objects such as:
+Required objects:
 
 ```text
 Framework
-Framework Version
-Framework Assignment
-Lifecycle Template
-Stage Template
-Control Template
-Checklist Template
-Evidence Requirement
-Deliverable Template
-KPI Template
-Report Template
-Compliance Requirement
+Framework version
+Framework assignment
+Lifecycle template
+Stage template
+Control template
+Checklist template
+Evidence requirement
+Deliverable template
+KPI template
+Compliance requirement
+Risk
+Issue
+Corrective action
+Audit evidence
 ```
 
-This is one of PBM's main differentiators and should become a major platform capability.
+Frameworks must extend the shared data spine. They must not create separate applications or duplicate business objects.
 
-## Finding 14: Workflow And Events Are Strong Foundations
+## 10. Make reporting a data-spine capability
 
-Status: GREEN / AMBER
+Status: EXPAND
 
-Workflow and business event foundations exist.
+Reporting should not be route-specific. It should read across shared records.
 
-They need to be connected consistently to all major object domains:
+Required reporting principles:
+
+1. Reports read from shared business objects and reporting views.
+2. Reports must state their source objects.
+3. Reports should support drill-through back to the record of truth.
+4. Route-level dashboards are allowed, but enterprise reporting must stay cross-workspace.
+
+---
+
+# Implementation backlog
+
+## A. Documentation cleanup
+
+Status: IN PROGRESS
+
+Actions:
+
+1. Rewrite architecture documents in PBM language.
+2. Remove vendor/module branding from headings and product language.
+3. Rename coverage documents to enterprise capability coverage documents.
+4. Keep external enterprise software lists as private completeness references only.
+5. Make every architecture document traceable to business object, workspace, route and data spine.
+
+## B. Setup script alignment
+
+Status: REVIEW / REFACTOR
+
+Actions:
+
+1. Stop seeding route and package names that imply old product ownership.
+2. Seed target workspace families.
+3. Seed packages as implementation boundaries, not navigation modules.
+4. Keep compatibility folders only during migration.
+5. Remove deprecated folders after route/import migration.
+
+## C. Route alignment
+
+Status: EXPAND / REFACTOR
+
+Target rule:
 
 ```text
-Party
-Thing
-Agreement
-Work
-Transaction
-Information
-Control
+Route = user activity doorway.
+Route != data owner.
 ```
 
-Important next work:
+Actions:
+
+1. Align routes to business workspaces.
+2. Move raw administration routes under admin where appropriate.
+3. Keep evidence and documents contextual where possible.
+4. Ensure each route has a documented object contract.
+
+## D. Package alignment
+
+Status: EXPAND / REFACTOR
+
+Target rule:
 
 ```text
-workflow-enabled object registry
-event type registry
-standard lifecycle events
-standard create/update/approve/issue/complete/close events
-polymorphic reference validation strategy
+Package = implementation boundary.
+Package != product module.
 ```
 
-## Finding 15: Package Boundary Rule Needs Enforcement
+Actions:
 
-Status: AMBER
+1. Keep packages stable and reusable.
+2. Avoid route-specific packages unless they are UI-only.
+3. Put business behaviour in services.
+4. Put persistence in repositories.
+5. Put shared object contracts in package-level types.
 
-Routes should not import repositories directly.
+## E. Schema alignment
 
-The recent refactor began moving routes toward:
+Status: EXPAND
+
+Target rule:
 
 ```text
-Route -> Service -> Repository -> Database
+Table = persistence for a business object, relationship, event, control or configuration.
 ```
 
-This must become a formal rule and conformance check.
+Actions:
 
-Known package-level direction:
+1. Review every table against the business object catalogue.
+2. Add missing tables for commercial, procurement, finance, controls and reporting.
+3. Remove table names that imply route ownership.
+4. Add relationship tables where shared objects need many-to-many usage.
+
+## F. Traceability alignment
+
+Status: EXPAND
+
+Every new feature must be traceable through:
 
 ```text
-repository = persistence only
-service = business orchestration and transactions
-validator = input and business validation
-constants = controlled object/package constants
-index = package public surface
+Business capability
+Business object
+Workspace activity
+Route doorway
+Package/service
+Repository/table
+Report/control
 ```
 
 ---
 
-# Target Package Direction
-
-The package model should move toward:
+# Current priority order
 
 ```text
-src/lib/packages/
-  core/
-  reference-data/
-
-  parties/
-  client-accounts/
-
-  assets/
-  properties/
-
-  agreements/
-  commercial/
-  contracts/
-
-  projects/
-  work/
-  activities/
-
-  resources/
-  procurement/
-  finance/
-
-  documents/
-  evidence/
-
-  controls/
-  compliance/
-  workflows/
-  events/
-  frameworks/
-  audit/
-
-  reports/
-  integrations/
-  administration/
-
-  extensions/
-    rics/
-    construction/
-    engineering/
-    manufacturing/
-    maritime/
+1. Finish documentation language cleanup.
+2. Lock the PBM workspace model.
+3. Lock the business object catalogue.
+4. Lock the data spine and route/object rules.
+5. Expand capability coverage audit using PBM language.
+6. Convert audit gaps into implementation backlog.
+7. Refactor setup script, packages and routes.
+8. Expand schema and services by business object priority.
 ```
 
-This does not mean every package must be created immediately.
+## Summary
 
-It means future packages should be judged against this model.
+PBM is not a set of old modules with new labels.
 
----
+PBM is one connected enterprise operating model with clear workspaces, shared business objects, reusable packages, controlled workflows, attached evidence and a single data spine.
 
-# Target Workspace Direction
-
-The route model should move toward familiar ERP workspaces:
-
-```text
-src/routes/app/
-  dashboard/
-  customers/
-  sales/
-  projects/
-  operations/
-  resources/
-  procurement/
-  finance/
-  assets/
-  documents/
-  compliance/
-  reporting/
-  administration/
-```
-
-Existing route families should be mapped into this model rather than deleted immediately.
-
-Example:
-
-```text
-/app/crm/*          -> /app/customers/* or retained as alias during transition
-/app/properties/*   -> /app/assets/properties/* or /app/assets/*
-/app/instructions/* -> reviewed under agreements/work
-/app/activities/*   -> /app/operations/activities/* or retained as operational shortcut
-/app/reports/*      -> /app/reporting/*
-/app/admin/*        -> /app/administration/*
-```
-
----
-
-# Remediation Backlog
-
-## Priority 0: Lock Architecture Baseline
-
-### Objective
-
-Stop further drift while the architecture reset is being absorbed into the implementation.
-
-### Actions
-
-1. Treat `000-enterprise-meta-model.md` as the root architecture document.
-2. Treat `001-enterprise-capability-model.md` as the ERP capability scope.
-3. Treat `001-canonical-enterprise-data-model.md` as the object authority.
-4. Add a short architecture decision record confirming the architecture reset.
-5. Update any docs that still state the old instruction/activity spine as the primary model.
-
-## Priority 1: Complete Architecture Relationship Documents
-
-### Objective
-
-Bring remaining architecture appendices into line with the meta model.
-
-### Actions
-
-1. Rewrite `002-business-object-catalogue.md` around Party, Thing, Agreement, Work, Transaction, Information and Control.
-2. Rewrite `003-enterprise-relationship-model.md` as an enterprise graph, not an instruction chain.
-3. Rewrite `004-schema-relationship-appendix.md` against the new CEDM.
-4. Rewrite `005-route-object-relationship-appendix.md` around ERP workspaces.
-5. Rewrite `006-package-object-relationship-appendix.md` around package families derived from the meta model.
-6. Keep this backlog updated as the implementation changes.
-
-## Priority 2: Repository-Wide Local Audit
-
-### Objective
-
-Create a verified map of implementation state.
-
-### Actions
-
-Run locally:
-
-```bash
-find src/lib/packages -maxdepth 3 -type f | sort > docs/architecture/.package-files.audit.txt
-find src/routes/app -maxdepth 5 -type f | sort > docs/architecture/.route-files.audit.txt
-find src/lib/server -maxdepth 5 -type f | sort > docs/architecture/.server-files.audit.txt
-```
-
-Then classify every route, package and server module as:
-
-```text
-GREEN
-AMBER
-RED
-UNKNOWN
-```
-
-against:
-
-```text
-Meta concept
-Capability
-Canonical object
-Package owner
-Route workspace
-```
-
-The `.audit.txt` files should not necessarily be committed unless they are useful. The classification should be committed into an architecture review document.
-
-## Priority 3: Package Boundary Refactor
-
-### Objective
-
-Move implementation toward clean package ownership.
-
-### Actions
-
-1. Enforce `Route -> Service -> Repository -> Database`.
-2. Remove direct route imports from repositories.
-3. Move business orchestration out of repositories.
-4. Keep repositories focused on persistence.
-5. Define public package APIs through `index.ts`.
-6. Create or rename packages only when backed by the meta model and CEDM.
-
-## Priority 4: Commercial And Agreement Model
-
-### Objective
-
-Build the missing commercial lifecycle.
-
-### Actions
-
-Create architecture and implementation plan for:
-
-```text
-Lead
-Enquiry
-Opportunity
-Proposal
-Quotation
-Tender
-Contract
-Framework Agreement
-Service Agreement
-Instruction / Authorisation
-Change Order / Variation
-```
-
-Decide whether `instruction` remains a core table or becomes a specialised Agreement / Work Authorisation pattern.
-
-## Priority 5: Project-Centred Delivery Model
-
-### Objective
-
-Make Project the main controlled delivery container.
-
-### Actions
-
-1. Define Project object lifecycle.
-2. Define Project workspace requirements.
-3. Define Project relationships to Agreement, Party, Thing, Work, Transaction, Information and Control.
-4. Add Work Package model.
-5. Add Task model.
-6. Define Deliverable model.
-7. Review Activity/Observation/Assessment/Action/Outcome under Work execution.
-
-## Priority 6: Procurement Model
-
-### Objective
-
-Add supplier-side ERP capability.
-
-### Actions
-
-Define objects and relationships for:
-
-```text
-Supplier Account
-Purchase Requisition
-RFQ
-Supplier Quote
-Purchase Order
-Subcontract
-Goods Receipt
-Service Receipt
-Purchase Invoice
-Commitment
-```
-
-## Priority 7: Resource Management Model
-
-### Objective
-
-Support resource planning without duplicating Party and Thing identity.
-
-### Actions
-
-Define objects and relationships for:
-
-```text
-Resource Profile
-Availability
-Allocation
-Capacity
-Utilisation
-Skill
-Competency
-Certification
-Timesheet
-Resource Cost Rate
-```
-
-## Priority 8: Finance Model
-
-### Objective
-
-Expand finance into a true ERP finance domain.
-
-### Actions
-
-Define objects and relationships for:
-
-```text
-Chart of Accounts
-Financial Period
-Cost Centre
-Profit Centre
-Budget
-Forecast
-Commitment
-Cost
-Revenue
-Sales Invoice
-Purchase Invoice
-Payment
-Receipt
-Credit Note
-Journal Entry
-WIP Item
-Expense
-Tax
-```
-
-## Priority 9: Asset / Thing Model
-
-### Objective
-
-Generalise property into a broader asset model.
-
-### Actions
-
-1. Decide whether `property` remains separate or becomes an Asset specialisation.
-2. Define general Asset table strategy.
-3. Define asset hierarchy model.
-4. Define asset type/classification model.
-5. Define location model.
-6. Define relationship between Asset, Work, Documents, Compliance and Finance.
-
-## Priority 10: Information Domain
-
-### Objective
-
-Materialise document, evidence and record control.
-
-### Actions
-
-Define objects and relationships for:
-
-```text
-Document
-Document Revision
-Record
-Evidence Item
-Correspondence
-Template
-Report
-Certificate
-Drawing
-Specification
-Knowledge Article
-Retention Policy
-Transmittal
-```
-
-## Priority 11: Control And Framework Engine
-
-### Objective
-
-Build PBM's key differentiator.
-
-### Actions
-
-Define objects and relationships for:
-
-```text
-Framework
-Framework Version
-Framework Assignment
-Lifecycle Template
-Stage Template
-Workflow Template
-Control Template
-Checklist Template
-Evidence Requirement
-Deliverable Template
-KPI Template
-Report Template
-Compliance Requirement
-```
-
-Then support examples such as:
-
-```text
-Project + PRINCE2 + ISO 9001
-Project + Six Sigma + Lean
-Project + Agile + ISO 27001
-Project + CMII + DNV
-```
-
-## Priority 12: Workflow And Event Integrity
-
-### Objective
-
-Make workflow and event behaviour consistent across all domains.
-
-### Actions
-
-1. Create workflow-enabled object registry.
-2. Create event type registry.
-3. Define standard lifecycle events.
-4. Define polymorphic object reference validation rules.
-5. Ensure services emit events consistently.
-6. Ensure workflow transitions are controlled through service layer logic.
-
-## Priority 13: Reporting And Analytics Model
-
-### Objective
-
-Create reporting from shared enterprise objects.
-
-### Actions
-
-1. Define reporting dimensions by meta concept.
-2. Define project profitability view.
-3. Define customer profitability view.
-4. Define resource utilisation view.
-5. Define procurement commitment view.
-6. Define compliance status view.
-7. Define document/evidence completeness view.
-8. Define executive KPI model.
-
----
-
-# Immediate Next Actions
-
-The next practical implementation steps should be:
-
-1. Update `002-business-object-catalogue.md` to match the new CEDM.
-2. Update `003-enterprise-relationship-model.md` to model the enterprise graph.
-3. Run the local implementation audit commands.
-4. Create a package alignment matrix.
-5. Create a route alignment matrix.
-6. Stop adding new feature screens until package and route boundaries are stabilised.
-
----
-
-# Exit Condition
-
-This remediation backlog is materially complete when:
-
-1. every route maps to a workspace and capability
-2. every package maps to a meta concept, capability and canonical object set
-3. every table maps to a canonical object, relationship, event, workflow state or configuration purpose
-4. no route imports repositories directly
-5. service layers own business orchestration
-6. repositories only own persistence
-7. commercial lifecycle exists
-8. project-centred delivery exists
-9. procurement, finance and resource management are first-class ERP domains
-10. documents, evidence, workflow, events and controls are consistently cross-cutting
-11. frameworks can be applied without forking the core object model
+This backlog exists to keep implementation aligned with that direction.
