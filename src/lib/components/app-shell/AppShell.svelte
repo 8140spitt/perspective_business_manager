@@ -10,6 +10,29 @@
 		future: 'Future'
 	};
 
+	const routeLabels: Record<string, string> = {
+		'/app/business/dashboard': 'Overview',
+		'/app/business/profile': 'Business profile',
+		'/app/business/functions': 'Business functions',
+		'/app/business/organisation-units': 'Organisation units',
+		'/app/business/positions': 'Positions',
+		'/app/finance/dashboard': 'Overview',
+		'/app/hr/dashboard': 'Overview',
+		'/app/crm/dashboard': 'Overview',
+		'/app/sales/dashboard': 'Commercial pipeline',
+		'/app/sales/enquiries': 'Enquiries',
+		'/app/projects/dashboard': 'Overview',
+		'/app/projects/projects': 'Projects',
+		'/app/projects/projects/new': 'New project',
+		'/app/procurement/dashboard': 'Overview',
+		'/app/operations/dashboard': 'Overview',
+		'/app/resource-planning/dashboard': 'Resource planning',
+		'/app/compliance/dashboard': 'Overview',
+		'/app/property/dashboard': 'Overview',
+		'/app/reporting/dashboard': 'Reporting overview',
+		'/app/admin/dashboard': 'Administration'
+	};
+
 	function staticPrefix(route: string): string {
 		const dynamicIndex = route.indexOf('/[');
 		return dynamicIndex === -1 ? route : route.slice(0, dynamicIndex);
@@ -25,6 +48,8 @@
 	}
 
 	function routeLabel(route: string): string {
+		if (routeLabels[route]) return routeLabels[route];
+
 		const cleaned = route
 			.split('/')
 			.filter(Boolean)
@@ -56,11 +81,11 @@
 			<span class="brand-mark">PBM</span>
 			<span>
 				<strong>Perspective</strong>
-				<small>Built environment ERP</small>
+				<small>Enterprise operating system</small>
 			</span>
 		</a>
 
-		<nav class="primary-nav" aria-label="Capability navigation">
+		<nav class="primary-nav" aria-label="Workspace navigation">
 			{#each capabilityMap as area}
 				<a class:active={activeArea?.id === area.id} href={area.primaryRoute}>
 					<span>{area.name}</span>
@@ -87,7 +112,7 @@
 		</header>
 
 		{#if activeArea}
-			<nav class="workspace-nav" aria-label="Workspace routes">
+			<nav class="workspace-nav" aria-label="Workspace activities">
 				{#each activeRoutes as route}
 					<a
 						class:active={page.url.pathname === route ||
