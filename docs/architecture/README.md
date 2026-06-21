@@ -1,99 +1,81 @@
-# Perspective Business Manager Architecture
+# PBM architecture
 
-## Vision
+## Purpose
 
-Perspective Business Manager (PBM) is an Enterprise Resource Planning platform designed to provide one coherent system for managing every major business function.
+This folder defines how Perspective Business Manager is structured.
 
-PBM should feel familiar to users of established ERP platforms while avoiding the fragmented, module-owned data models that make traditional ERP implementations expensive, difficult to change and hard to report across.
+PBM is a business-first enterprise platform. It gives a business one connected model for setup, people, clients, work, suppliers, finance, assets, documents, controls and reporting.
 
-PBM is not a CRM system, project management system, finance system, surveying system or document system.
+PBM is not a collection of disconnected business applications. It is also not a legacy suite copied with different labels.
 
-PBM is an enterprise business management platform.
+The architecture is built around:
 
-Workspaces such as Customers, Sales, Projects, Operations, Resources, Procurement, Finance, Assets, Documents, Compliance, Reporting and Administration are user-facing views over shared enterprise capabilities and shared enterprise objects.
+```text
+Business workspaces
+Business capabilities
+Business objects
+Activity views
+Route doorways
+Implementation packages
+Shared data spine
+Framework extensions
+Reporting views
+```
 
-## Architectural Intent
+## Product language rule
 
-PBM must surpass traditional ERP systems by removing unnecessary boundaries between modules.
+Use PBM language in architecture and product documents.
 
-The platform must provide:
+Preferred terms:
 
-1. one coherent enterprise model
-2. one shared party and customer model
-3. one shared project, work and delivery model
-4. one shared resource model
-5. one shared finance and procurement context
-6. one shared document and evidence model
-7. one shared compliance and framework model
-8. one shared workflow engine
-9. one shared event model
-10. one shared reporting and analytics layer
+```text
+Business workspace
+Business capability
+Business object
+Shared data spine
+Integrated record
+Activity view
+Route doorway
+Implementation package
+Operating model
+Coverage audit
+Framework extension
+```
 
-The user experience should be familiar.
+Avoid using external vendor/module language as PBM identity. External enterprise software lists may be used as completeness references, but they must not become PBM navigation, product naming or data ownership language.
 
-The architecture underneath should be simpler, cleaner and more connected than traditional ERP.
+## Architecture principles
 
-## Core Architectural Principles
+1. A route is a doorway into work, not the owner of a record.
+2. A package is an implementation boundary, not the product module.
+3. A table persists a business object, relationship, event, control or configuration.
+4. A workspace shows an activity view over shared records.
+5. A report reads from the shared data spine, not from isolated route data.
+6. Documents and evidence attach to business objects.
+7. Controls, risks and obligations attach to business objects.
+8. Frameworks extend behaviour without duplicating the core model.
+9. Industry-specific behaviour belongs in framework or extension layers.
+10. Every new feature must trace from capability to object to route to data.
 
-1. No table without a business object, relationship, event, workflow state or configuration purpose.
-2. No route owns data.
-3. No module owns data.
-4. Packages implement business and platform boundaries, not isolated application modules.
-5. Workspaces are views over shared enterprise objects.
-6. Workflow is metadata.
-7. Events are immutable.
-8. Documents and evidence attach to business objects.
-9. Compliance attaches to business objects.
-10. Frameworks, standards and methodologies extend the core model rather than fork it.
-11. Industry behaviour is configured through frameworks, controls, templates, workflows and deliverables.
-12. Reporting is derived from shared enterprise data, not from route-specific data stores.
-
-## Architecture Starting Point
-
-The primary architecture baseline is now the Enterprise Meta Model.
-
-Start here:
-
-- [000-enterprise-meta-model.md](./000-enterprise-meta-model.md)
-
-The Enterprise Meta Model defines the irreducible enterprise concepts from which PBM capabilities, business objects, routes, packages, workflows, events, documents, controls, reports and framework extensions are derived.
-
-The capability model comes next:
-
-- [001-enterprise-capability-model.md](./001-enterprise-capability-model.md)
-
-The Enterprise Capability Model defines the ERP capability coverage expected of PBM.
-
-All other architecture documents must align to the meta model and capability model.
-
-## Architecture Reading Order
+## Reading order
 
 Read the architecture documents in this order:
 
 ```text
 000 Enterprise Meta Model
-    ↓
-001 Enterprise Capability Model
-    ↓
-Canonical Enterprise Data Model
-    ↓
-Business Object Catalogue
-    ↓
-Enterprise Relationship Model
-    ↓
-Schema Relationship Appendix
-    ↓
-Route / Workspace Relationship Appendix
-    ↓
-Package Relationship Appendix
-    ↓
-Remediation Backlog
+    -> 001 Canonical Enterprise Data Model
+        -> 002 Business Object Catalogue
+            -> 003 Enterprise Relationship Model
+                -> 004 Schema Relationship Appendix
+                    -> 005 Route Object Relationship Appendix
+                        -> 006 Package Object Relationship Appendix
+                            -> 007 Architecture Remediation Backlog
+                                -> 008 Repository Alignment Review
 ```
 
-## Key Architecture Documents
+## Key documents
 
 - [000-enterprise-meta-model.md](./000-enterprise-meta-model.md)
-- [001-enterprise-capability-model.md](./001-enterprise-capability-model.md)
 - [001-canonical-enterprise-data-model.md](./001-canonical-enterprise-data-model.md)
 - [002-business-object-catalogue.md](./002-business-object-catalogue.md)
 - [003-enterprise-relationship-model.md](./003-enterprise-relationship-model.md)
@@ -101,11 +83,27 @@ Remediation Backlog
 - [005-route-object-relationship-appendix.md](./005-route-object-relationship-appendix.md)
 - [006-package-object-relationship-appendix.md](./006-package-object-relationship-appendix.md)
 - [007-architecture-remediation-backlog.md](./007-architecture-remediation-backlog.md)
-- [core-business-object-spine.md](./core-business-object-spine.md)
+- [008-repository-alignment-review.md](./008-repository-alignment-review.md)
+- [012-enterprise-capability-coverage-catalogue.md](./012-enterprise-capability-coverage-catalogue.md)
+- [013-enterprise-sub-capability-coverage-audit.md](./013-enterprise-sub-capability-coverage-audit.md)
 
-## Enterprise Meta Concepts
+## Relationship to product docs
 
-PBM derives business architecture from seven root concepts:
+The product docs define what PBM is and how it should feel to the business user.
+
+The architecture docs define how that product direction is made consistent in data, packages, routes and implementation.
+
+Product docs live in:
+
+```text
+docs/product
+```
+
+Architecture docs must support the product docs. They must not introduce alternative product language.
+
+## Root architecture concepts
+
+PBM derives its architecture from seven stable concepts:
 
 ```text
 Party
@@ -117,295 +115,209 @@ Information
 Control
 ```
 
-These are not user modules and not table names.
+These are not workspace names, table names, navigation labels or package names. They are architecture categories that keep the model coherent.
 
-They are architecture categories.
+## Business workspaces
 
-Every PBM object, route, package, report, workflow, event and framework extension must remain traceable to these concepts.
+PBM workspaces are activity views over shared records.
 
-## Enterprise Capability Groups
-
-PBM is organised around these Level 0 enterprise capability groups:
-
-1. Strategy & Governance
-2. Customer & Commercial
-3. Project & Delivery
-4. Operations & Work Execution
-5. People & Workforce
-6. Supply Chain & Procurement
-7. Finance & Accounting
-8. Assets, Property & Facilities
-9. Information, Documents & Knowledge
-10. Compliance, Risk & Quality
-11. Reporting & Analytics
-12. Platform Administration
-13. Integration & Automation
-14. Framework & Extension Management
-
-These are capability groups.
-
-They are not necessarily packages, routes, database schemas or navigation labels.
-
-## User-Facing ERP Workspaces
-
-The platform should expose familiar ERP workspaces such as:
+Current target workspace families:
 
 ```text
-Dashboard
-Customers
-Sales
-Projects
-Operations
-Resources
-Procurement
-Finance
-Assets
-Documents
-Compliance
-Reporting
-Administration
+Business Setup
+People & Workforce
+Clients & Commercial
+Project Delivery
+Operations & Planning
+Procurement, Materials & Logistics
+Finance & Control
+Assets, Property & Maintenance
+Quality & Compliance
+Reporting, Documents & Admin
 ```
 
-These workspaces help users navigate the business.
+A workspace may use many business objects. A business object may appear in many workspaces.
 
-They must not create separate data ownership boundaries.
+The workspace does not own the object.
 
-## Internal Enterprise Model
+## Business objects
 
-Internally, PBM must maintain shared enterprise objects that can be reused across all workspaces.
+PBM business objects are the shared records that carry enterprise truth.
 
-Examples include:
+Examples:
 
 ```text
-Party
-Person
-Organisation
+Business Entity
+Person Entity
+Business Partner
+Business Partner Role
+Business Function
+Organisation Unit
+Position
+Employee
+Employee Position
 Client Account
 Supplier Account
+Project
+Project Party
+Project Assignment
+Project Service
+Project Quote
+Purchase Order
+Supplier Invoice
+Sales Invoice
 Asset
 Property
-Opportunity
-Proposal
-Contract
-Project
-Work Package
-Activity
-Task
-Deliverable
-Resource
-Purchase Order
-Sales Invoice
 Document
 Evidence Item
 Risk
-Issue
-Change
-Compliance Requirement
-Workflow Instance
-Business Event
+Control
+Framework
+Report
 ```
 
-The same object may appear in many workspaces.
+The same object can appear in several workspaces.
 
-For example, a Project may appear in Projects, Finance, Resources, Procurement, Documents, Compliance and Reporting.
-
-There must still only be one Project object.
-
-## Framework Engine
-
-PBM must separate universal ERP capabilities from configurable frameworks, standards, methodologies and industry extensions.
-
-A project, programme, work package, activity or operational process may have zero or many frameworks applied.
-
-Examples include:
+Example:
 
 ```text
-PRINCE2
-PMBOK
-Agile
-Scrum
-SAFe
-Six Sigma
-Lean
-CMII
-RICS
-CDM
-NEC
-JCT
-ISO 9001
-ISO 14001
-ISO 45001
-ISO 27001
-Client-specific governance
+supplier_invoice
 ```
 
-Frameworks may contribute:
+may appear in:
 
 ```text
-Lifecycle stages
-Workflow definitions
-Controls
-Checklists
-Deliverable templates
-Document templates
-Evidence requirements
-Approval gates
-Risk rules
-Quality rules
-Compliance rules
-Reports
+Procurement
+Finance
+Project Delivery
+Reporting
+```
+
+but there must still be one record of truth.
+
+## Shared data spine
+
+The shared data spine is the connected model of PBM records and relationships.
+
+It prevents:
+
+```text
+duplicate client records
+duplicate supplier records
+duplicate project records
+duplicate invoice records
+route-owned data silos
+package-owned data silos
+workspace-specific versions of truth
+```
+
+The data spine lets each workspace perform a different job using the same underlying record.
+
+## Framework extensions
+
+PBM must support different industries, standards, methods and client-specific governance without forking the core product.
+
+Frameworks can add:
+
+```text
+lifecycle stages
+workflow definitions
+controls
+checklists
+deliverable templates
+document templates
+evidence requirements
+approval gates
+risk rules
+quality rules
+reporting requirements
 KPIs
 ```
 
-Frameworks must extend the core ERP model.
+Frameworks must extend the shared data spine. They must not create separate applications or duplicate business objects.
 
-They must not create separate applications or duplicate business objects.
-
-## Example Framework Application
-
-A construction project may use:
-
-```text
-PRINCE2
-CDM
-ISO 9001
-Client Governance Framework
-```
-
-A manufacturing improvement project may use:
-
-```text
-Six Sigma
-Lean
-ISO 9001
-```
-
-A software delivery project may use:
-
-```text
-Agile
-Scrum
-ITIL
-ISO 27001
-```
-
-A maritime engineering project may use:
-
-```text
-CMII
-DNV
-Lloyd's Register
-Client Technical Standards
-```
-
-The core PBM objects remain the same.
-
-Only the applied framework behaviour changes.
-
-## Package Direction
+## Package direction
 
 Packages should implement stable business and platform boundaries.
 
-Candidate package families include:
+Candidate package families:
 
 ```text
+core
+reference-data
 parties
+business-structure
+people
 client-accounts
+supplier-accounts
 commercial
+agreements
 contracts
 projects
 work
+operations
 resources
 procurement
 finance
 assets
 documents
+evidence
+controls
 compliance
+quality
 workflows
 events
-reports
 frameworks
-administration
+reports
 integrations
+administration
+extensions
 ```
 
-Existing packages must be assessed against the Enterprise Meta Model and Enterprise Capability Model before further expansion.
+Packages are not user navigation.
 
-## Route Direction
+## Route direction
 
 Routes should represent workspaces and user journeys.
 
-Routes should not imply ownership of business data.
-
 Every route family should answer:
 
-1. Which capability does this support?
-2. Which shared enterprise objects does this view or modify?
-3. Which package owns the relevant business logic?
-4. Which framework, workflow or compliance rules apply?
-5. Which relationships support the screen?
+1. Which business workspace does this belong to?
+2. Which business capability does this support?
+3. Which shared business objects does this view or modify?
+4. Which package owns the relevant business behaviour?
+5. Which table or view persists the record?
+6. Which workflow, event, evidence or control rules apply?
+7. Which reports need to read the same record?
 
-## Migration Roadmap Reframing
+## Architecture review rule
 
-The original migration sequence remains useful but must be reframed under the broader ERP capability model.
+Before creating a new route, package, table, service or workflow, confirm:
 
-### Completed / In Progress
-
-- Core foundation objects
-- Core business objects
-- Workflow and events foundation
-- Client accounts package
-- Activity management foundation
-- Enterprise meta model
-- Enterprise capability model
-
-### Needs Realignment
-
-- Canonical enterprise data model
-- Business object catalogue
-- Commercial lifecycle
-- Project and delivery model
-- Work package and task model
-- Resource management
-- Procurement
-- Finance engine
-- Asset model
-- Documents and evidence
-- Compliance and framework engine
-- Reporting and analytics
-
-## Architecture Review Rule
-
-Before creating a new route, package, table or workflow, confirm:
-
-1. Which meta concept does it derive from?
-2. Which L0 capability does it support?
-3. Which enterprise object does it create, update, read or govern?
+1. Which root architecture concept does it derive from?
+2. Which business capability does it support?
+3. Which business object does it create, update, read or govern?
 4. Does an existing object already represent this concept?
-5. Is this core ERP behaviour or framework-specific behaviour?
+5. Is this core PBM behaviour or framework-specific behaviour?
 6. Is this a workspace concern or package concern?
 7. Does it require workflow?
 8. Does it require immutable events?
 9. Does it require document or evidence attachment?
 10. Does it require compliance controls?
-11. Can it report across the shared enterprise model?
+11. Can it report across the shared data spine?
 
 ## Summary
 
-PBM is one coherent ERP platform.
+PBM architecture has one job: keep the product connected.
 
-The architecture starts with the Enterprise Meta Model.
+Users should see clear business workspaces.
 
-The user sees familiar ERP workspaces.
+The platform should maintain shared business objects and one data spine.
 
-The platform maintains shared enterprise objects.
+Packages should implement reusable behaviour.
 
-Frameworks adapt how work is governed and executed.
+Routes should provide activity views.
 
-Packages implement reusable business and platform capabilities.
+Frameworks should adapt how work is governed and executed.
 
-Routes provide workspaces over those capabilities.
-
-The architectural goal is not to copy traditional ERP.
-
-The goal is to cover the same enterprise breadth while removing the fragmentation that makes traditional ERP difficult to implement, operate and evolve.
+The goal is complete enterprise capability coverage without the fragmentation that makes legacy systems hard to change, report across and operate.
