@@ -1,6 +1,4 @@
 <script lang="ts">
-	import { resolve } from '$app/paths';
-
 	let { data } = $props();
 	let workspace = $derived(data.workspace);
 
@@ -89,7 +87,7 @@
 
 	<section class="cards" aria-label="Business setup activities">
 		{#each businessSetupAreas as area}
-			<a class="card" href={resolve(area.route)}>
+			<a class="card" href={area.route}>
 				<div>
 					<p class="eyebrow">{area.status}</p>
 					<h2>{area.title}</h2>
