@@ -1,26 +1,44 @@
-# Perspective Business Manager Requirements Suite
+# PBM Requirements Suite
 
 ## Purpose
 
-This requirements suite defines the target application scope for Perspective Business Manager as a built-environment ERP platform.
+This requirements suite defines what Perspective Business Manager must do as a business-first enterprise platform for built-environment service businesses.
 
-The suite aligns product capabilities to a complete enterprise module structure while preserving the platform's canonical business object model.
+The requirements are written in PBM product language. External ERP capability lists may be used as completeness checks, but they must not become PBM navigation, object ownership, route naming or user-facing language.
 
-The intent is to make sure the product covers the same broad functional ground expected of a full ERP without making any external vendor model the centre of the documentation.
+## Product Language Rule
+
+Use these terms in requirements:
+
+- enterprise capability
+- business workspace
+- business object
+- activity view
+- route doorway
+- shared data spine
+- integrated record
+- workflow state
+- business event
+- reporting view
+- coverage audit
+
+Avoid using external vendor or legacy module language as PBM product language.
 
 ## Document Set
 
-### Core
+### Core Requirements
 
 - [01-product-scope.md](./01-product-scope.md)
-- [02-enterprise-module-coverage.md](./02-enterprise-module-coverage.md)
+- [02-enterprise-capability-coverage.md](./02-enterprise-capability-coverage.md)
 - [03-cross-cutting-platform-requirements.md](./03-cross-cutting-platform-requirements.md)
 - [04-traceability-matrix.md](./04-traceability-matrix.md)
 - [05-phased-delivery-backlog.md](./05-phased-delivery-backlog.md)
 - [06-customer-model-rules.md](./06-customer-model-rules.md)
 - [07-customer-model-implementation-checklist.md](./07-customer-model-implementation-checklist.md)
 
-### Module Requirements
+### Workspace Requirement Documents
+
+These documents describe workspace-level requirements. They are implementation planning documents, not product module boundaries.
 
 - [modules/sales-client-management.md](./modules/sales-client-management.md)
 - [modules/service-delivery-projects.md](./modules/service-delivery-projects.md)
@@ -33,22 +51,24 @@ The intent is to make sure the product covers the same broad functional ground e
 
 ## How To Use This Suite
 
-1. Use the product scope document to define release boundaries.
-2. Use the enterprise module coverage document to map capabilities to recognised ERP domains.
-3. Use module requirement documents to drive backlog definition, data design, workflow design and reporting.
-4. Use the traceability matrix to check that requirements, routes and package boundaries stay aligned.
+1. Use the product scope to define release boundaries.
+2. Use the enterprise capability coverage document to check that PBM covers the full business operating surface.
+3. Use workspace requirement documents to drive backlog definition, data design, workflow design and reporting.
+4. Use the traceability matrix to keep requirements, route doorways, package boundaries and business objects aligned.
 5. Use the phased delivery backlog to sequence implementation and release scope.
-6. Use the customer model rules document to keep B2B and B2C support on one shared enterprise model.
-7. Use the customer model implementation checklist during schema, route and service changes.
-8. Cross-check every functional requirement against the canonical business object model in [../architecture/001-canonical-enterprise-data-model.md](../architecture/001-canonical-enterprise-data-model.md).
+6. Use the customer model rules to keep organisation-led and individual-led customer journeys on one shared enterprise model.
+7. Use the customer model implementation checklist during schema, route, service and reporting changes.
+8. Cross-check every functional requirement against the shared data spine in [../architecture/001-canonical-enterprise-data-model.md](../architecture/001-canonical-enterprise-data-model.md).
 9. Cross-check every new object against [../architecture/002-business-object-catalogue.md](../architecture/002-business-object-catalogue.md).
 
 ## Architectural Rule
 
-Enterprise modules are planning lenses, not data owners.
+Business workspaces are planning and activity lenses. They do not own data.
 
-Perspective Business Manager remains object-first:
+PBM remains object-first:
 
-- party, client account, instruction, property, project, activity, assessment, action, outcome and invoice remain enterprise objects
-- modules orchestrate work over those objects
-- workflow, documents, evidence and events remain shared enterprise layers
+- business objects are defined once
+- workspaces expose activity views over those objects
+- routes are doorways into the shared data spine
+- packages implement behaviour without creating separate truths
+- workflow, documents, evidence, events and reporting remain shared enterprise layers
