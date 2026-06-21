@@ -10,19 +10,10 @@ export type CapabilityArea = {
 
 export const capabilityMap: CapabilityArea[] = [
 	{
-		id: 'strategy-direction',
-		name: 'Strategy & Direction',
-		description: 'Business planning, objectives, portfolio direction and leadership reporting.',
-		primaryRoute: '/app/dashboard',
-		currentRoutes: ['/app/dashboard', '/app/reporting/dashboard', '/app/reporting/kpis'],
-		coreObjects: ['objective', 'measure', 'portfolio', 'decision'],
-		status: 'future'
-	},
-	{
 		id: 'business-setup',
 		name: 'Business Setup',
 		description:
-			'The owning business profile, functional operating model, organisation units and positions that every other workspace consumes.',
+			'Define the owning business, its functions, organisation units and positions. This is the operating spine for the rest of PBM.',
 		primaryRoute: '/app/business/dashboard',
 		currentRoutes: [
 			'/app/business/dashboard',
@@ -35,10 +26,78 @@ export const capabilityMap: CapabilityArea[] = [
 		status: 'foundation'
 	},
 	{
-		id: 'governance-risk-compliance',
-		name: 'Governance, Risk & Compliance',
+		id: 'people-workforce',
+		name: 'People & Workforce',
 		description:
-			'RICS compliance, conflicts, PI risk, complaints, audits and quality evidence across both organisation-led and consumer-led work.',
+			'Manage people, employees, roles, competence and authority. Projects can consume this data without HR working inside project screens.',
+		primaryRoute: '/app/hr/dashboard',
+		currentRoutes: [
+			'/app/hr/dashboard',
+			'/app/hr/people',
+			'/app/hr/employees',
+			'/app/hr/employee-positions',
+			'/app/hr/competence',
+			'/app/hr/authority'
+		],
+		coreObjects: ['person', 'employee', 'employee_position', 'competence', 'authority_limit'],
+		status: 'foundation'
+	},
+	{
+		id: 'clients-commercial',
+		name: 'Clients & Commercial',
+		description:
+			'Know who the business works for, manage relationships, enquiries, opportunities, quotes and fee proposals.',
+		primaryRoute: '/app/crm/dashboard',
+		currentRoutes: [
+			'/app/crm/dashboard',
+			'/app/crm/clients',
+			'/app/sales/dashboard',
+			'/app/sales/enquiries',
+			'/app/sales/opportunities',
+			'/app/sales/fee-proposals',
+			'/app/sales/quotations'
+		],
+		coreObjects: ['business_partner', 'person', 'relationship', 'enquiry', 'opportunity', 'quote'],
+		status: 'foundation'
+	},
+	{
+		id: 'project-delivery',
+		name: 'Project Delivery',
+		description:
+			'Deliver the work: project setup, services, instructions, team, programme, tasks, risks, issues, evidence and documents.',
+		primaryRoute: '/app/projects/dashboard',
+		currentRoutes: [
+			'/app/projects/dashboard',
+			'/app/projects/projects',
+			'/app/projects/projects/new'
+		],
+		coreObjects: ['project', 'project_service', 'instruction', 'activity', 'risk', 'issue', 'document'],
+		status: 'foundation'
+	},
+	{
+		id: 'money',
+		name: 'Money',
+		description:
+			'Control the commercial money flow: purchase orders, supplier invoices, sales invoices, payments, WIP, revenue, cost and margin.',
+		primaryRoute: '/app/finance/dashboard',
+		currentRoutes: [
+			'/app/finance/dashboard',
+			'/app/finance/sales-invoices',
+			'/app/finance/purchase-invoices',
+			'/app/finance/payments',
+			'/app/finance/wip',
+			'/app/procurement/dashboard',
+			'/app/procurement/suppliers',
+			'/app/procurement/purchase-orders'
+		],
+		coreObjects: ['purchase_order', 'supplier_invoice', 'sales_invoice', 'payment', 'wip_item', 'margin'],
+		status: 'scaffolded'
+	},
+	{
+		id: 'control',
+		name: 'Control',
+		description:
+			'Keep the business safe and auditable: governance, risk, compliance, quality reviews, complaints, audit trail and controlled evidence.',
 		primaryRoute: '/app/compliance/dashboard',
 		currentRoutes: [
 			'/app/compliance/dashboard',
@@ -48,205 +107,18 @@ export const capabilityMap: CapabilityArea[] = [
 			'/app/compliance/quality-reviews',
 			'/app/compliance/audit-trail'
 		],
-		coreObjects: ['risk', 'control', 'compliance_check', 'complaint', 'audit_event'],
+		coreObjects: ['risk', 'control', 'compliance_check', 'quality_review', 'complaint', 'audit_event'],
 		status: 'scaffolded'
 	},
 	{
-		id: 'finance-capital',
-		name: 'Finance & Capital',
+		id: 'reporting-admin',
+		name: 'Reporting & Admin',
 		description:
-			'Fees, WIP, invoices, expenses, payments, profitability and financial reporting for account-based B2B billing and direct B2C billing.',
-		primaryRoute: '/app/finance/dashboard',
-		currentRoutes: [
-			'/app/finance/dashboard',
-			'/app/finance/fees',
-			'/app/finance/wip',
-			'/app/finance/sales-invoices',
-			'/app/finance/purchase-invoices',
-			'/app/finance/payments',
-			'/app/finance/expenses',
-			'/app/finance/profitability'
-		],
-		coreObjects: ['client_account', 'fee', 'wip_item', 'invoice', 'payment', 'expense'],
-		status: 'scaffolded'
-	},
-	{
-		id: 'people-workforce',
-		name: 'People & Workforce',
-		description:
-			'People, employees, employee positions, competencies, authority, availability, allocations and utilisation.',
-		primaryRoute: '/app/hr/dashboard',
-		currentRoutes: [
-			'/app/hr/dashboard',
-			'/app/hr/people',
-			'/app/hr/employees',
-			'/app/hr/employee-positions',
-			'/app/hr/competence',
-			'/app/hr/authority',
-			'/app/resource-planning/dashboard',
-			'/app/resource-planning/availability',
-			'/app/resource-planning/allocations',
-			'/app/resource-planning/workload',
-			'/app/resource-planning/utilisation',
-			'/app/resource-planning/inspection-calendar'
-		],
-		coreObjects: ['person', 'employee', 'position', 'competence', 'authority_limit', 'allocation'],
-		status: 'scaffolded'
-	},
-	{
-		id: 'crm-commercial',
-		name: 'CRM & Commercial',
-		description:
-			'Clients, contacts, relationships, enquiries, opportunities, tenders, quotations and fee proposals.',
-		primaryRoute: '/app/crm/dashboard',
-		currentRoutes: [
-			'/app/crm/dashboard',
-			'/app/crm/clients',
-			'/app/crm/clients/organisation-clients',
-			'/app/crm/clients/individual-clients',
-			'/app/parties',
-			'/app/sales/dashboard',
-			'/app/sales/enquiries',
-			'/app/sales/opportunities',
-			'/app/sales/fee-proposals',
-			'/app/sales/quotations',
-			'/app/sales/tenders',
-			'/app/sales/pipeline'
-		],
-		coreObjects: [
-			'party',
-			'person',
-			'business_partner',
-			'party_relationship',
-			'client_account',
-			'contact_method',
-			'opportunity'
-		],
-		status: 'foundation'
-	},
-	{
-		id: 'projects-portfolio',
-		name: 'Projects, Programmes & Portfolio',
-		description:
-			'Project setup, teams, programme, milestones, tasks, risks, issues and financial control.',
-		primaryRoute: '/app/projects/dashboard',
-		currentRoutes: [
-			'/app/projects/dashboard',
-			'/app/projects/projects',
-			'/app/projects/projects/new',
-			'/app/projects/projects/[projectId]/overview',
-			'/app/projects/projects/[projectId]/team',
-			'/app/projects/projects/[projectId]/programme',
-			'/app/projects/projects/[projectId]/milestones',
-			'/app/projects/projects/[projectId]/tasks',
-			'/app/projects/projects/[projectId]/risks',
-			'/app/projects/projects/[projectId]/issues',
-			'/app/projects/projects/[projectId]/documents',
-			'/app/projects/projects/[projectId]/financials'
-		],
-		coreObjects: ['project', 'project_role', 'task', 'milestone', 'project_risk'],
-		status: 'scaffolded'
-	},
-	{
-		id: 'operations-service-delivery',
-		name: 'Operations & Service Delivery',
-		description:
-			'Instruction lifecycle for building surveys, schedules of condition, dilapidations and reinstatement work across both portfolio clients and individual customers.',
-		primaryRoute: '/app/operations/dashboard',
-		currentRoutes: [
-			'/app/operations/dashboard',
-			'/app/operations/instructions',
-			'/app/operations/building-surveys',
-			'/app/operations/schedules-of-condition',
-			'/app/operations/dilapidations',
-			'/app/operations/reinstatement-cost-assessments',
-			'/app/operations/insurance-reinstatements'
-		],
-		coreObjects: [
-			'client_account',
-			'instruction',
-			'scope',
-			'inspection',
-			'evidence',
-			'defect',
-			'deliverable'
-		],
-		status: 'scaffolded'
-	},
-	{
-		id: 'property-technical-asset',
-		name: 'Property, Technical & Asset Management',
-		description:
-			'Property register, sites, buildings, units, rooms, elements, ownership, occupiers and condition history for both organisation-led and individual-led customer relationships.',
-		primaryRoute: '/app/property/dashboard',
-		currentRoutes: [
-			'/app/property/dashboard',
-			'/app/property/property-register',
-			'/app/property/sites',
-			'/app/property/buildings',
-			'/app/property/units',
-			'/app/property/building-elements'
-		],
-		coreObjects: [
-			'property',
-			'property_unit',
-			'address',
-			'building_element',
-			'property_party_role'
-		],
-		status: 'foundation'
-	},
-	{
-		id: 'supply-chain-procurement',
-		name: 'Supply Chain & Procurement',
-		description: 'Suppliers, purchase orders, supplier relationships and bought-in services.',
-		primaryRoute: '/app/procurement/dashboard',
-		currentRoutes: [
-			'/app/procurement/dashboard',
-			'/app/procurement/suppliers',
-			'/app/procurement/purchase-orders'
-		],
-		coreObjects: ['supplier', 'purchase_order', 'supplier_party_role'],
-		status: 'scaffolded'
-	},
-	{
-		id: 'information-data-digital',
-		name: 'Information, Data & Digital',
-		description:
-			'Admin, reference data, workflows, permissions, integrations, numbering and system settings.',
-		primaryRoute: '/app/admin/dashboard',
-		currentRoutes: [
-			'/app/admin/dashboard',
-			'/app/admin/users',
-			'/app/admin/teams',
-			'/app/admin/roles',
-			'/app/admin/permissions',
-			'/app/admin/reference-data',
-			'/app/admin/workflows',
-			'/app/admin/numbering-sequences',
-			'/app/admin/service-lines',
-			'/app/admin/integrations',
-			'/app/admin/system-settings'
-		],
-		coreObjects: ['user', 'permission', 'workflow', 'ref_code_set', 'ref_code_value'],
-		status: 'foundation'
-	},
-	{
-		id: 'knowledge-records',
-		name: 'Knowledge & Records Management',
-		description:
-			'Document library, evidence, photos, drawings, templates and controlled records across organisation and consumer customer journeys.',
-		primaryRoute: '/app/documents/dashboard',
-		currentRoutes: [
-			'/app/documents/dashboard',
-			'/app/documents/document-library',
-			'/app/documents/evidence-library',
-			'/app/documents/photos',
-			'/app/documents/drawings',
-			'/app/documents/templates'
-		],
-		coreObjects: ['document', 'evidence_item', 'photo', 'drawing', 'template'],
-		status: 'scaffolded'
+			'Cross-functional reporting, reference data, workflows, permissions, numbering, integrations and system settings.',
+		primaryRoute: '/app/reporting/dashboard',
+		currentRoutes: ['/app/reporting/dashboard', '/app/admin/dashboard'],
+		coreObjects: ['report', 'kpi', 'workflow', 'permission', 'reference_data', 'integration'],
+		status: 'future'
 	}
 ];
 
@@ -255,7 +127,7 @@ export const ricsInstructionLifecycle = [
 	'Opportunity',
 	'Fee Proposal',
 	'Instruction',
-	'Property / Site Setup',
+	'Project Setup',
 	'Scope Definition',
 	'Resource Allocation',
 	'Inspection',
