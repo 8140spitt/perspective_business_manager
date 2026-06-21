@@ -1,229 +1,149 @@
 <script lang="ts">
-	import { capabilityMap, ricsInstructionLifecycle } from '$lib/business/capability-map';
+	import { capabilityMap, type CapabilityArea } from '$lib/business/capability-map';
 
-	const statusLabel = {
-		foundation: 'Foundation model exists',
-		scaffolded: 'Screen scaffolded',
-		future: 'Future build'
+	const statusLabel: Record<CapabilityArea['status'], string> = {
+		foundation: 'Foundation',
+		scaffolded: 'Scaffolded',
+		future: 'Future'
 	};
 
-	const erpAlignment = [
-		{
-			module: 'CRM',
-			submodules: ['Customer master', 'Contacts', 'Relationships', 'Account view'],
-			coverage: 'Sales & Client Management',
-			routes: ['/app/crm/dashboard', '/app/crm/clients', '/app/parties'],
-			position: 'Present'
-		},
-		{
-			module: 'Sales',
-			submodules: ['Enquiries', 'Opportunities', 'Proposals', 'Quotations', 'Tenders'],
-			coverage: 'Sales & Client Management',
-			routes: ['/app/sales/dashboard', '/app/sales/enquiries', '/app/sales/opportunities'],
-			position: 'Present'
-		},
-		{
-			module: 'Service Orders & Operations',
-			submodules: ['Instructions', 'Activities', 'Findings', 'Actions', 'Deliverables'],
-			coverage: 'Service Delivery & Projects',
-			routes: ['/app/operations/instructions', '/app/activities', '/app/operations/dashboard'],
-			position: 'Present'
-		},
-		{
-			module: 'Project Management',
-			submodules: ['Overview', 'Team', 'Milestones', 'Tasks', 'Risks', 'Issues'],
-			coverage: 'Service Delivery & Projects',
-			routes: ['/app/projects/dashboard', '/app/projects/projects'],
-			position: 'Present'
-		},
-		{
-			module: 'Asset / Property',
-			submodules: ['Property register', 'Sites', 'Buildings', 'Units', 'Occupiers'],
-			coverage: 'Property & Asset Management',
-			routes: ['/app/property/dashboard', '/app/property/property-register', '/app/properties'],
-			position: 'Present'
-		},
-		{
-			module: 'Finance',
-			submodules: ['Fees', 'WIP', 'Sales invoices', 'Payments', 'Expenses', 'Profitability'],
-			coverage: 'Finance & Commercial Control',
-			routes: ['/app/finance/dashboard', '/app/finance/fees', '/app/finance/wip'],
-			position: 'Present'
-		},
-		{
-			module: 'Procurement',
-			submodules: ['Suppliers', 'Purchase orders', 'Bought-in services'],
-			coverage: 'Procurement & Supply Chain',
-			routes: ['/app/procurement/dashboard', '/app/procurement/suppliers'],
-			position: 'Partial'
-		},
-		{
-			module: 'HR & Resource Planning',
-			submodules: ['Employees', 'Competencies', 'Allocations', 'Availability', 'Utilisation'],
-			coverage: 'Workforce & Resource Planning',
-			routes: ['/app/hr/dashboard', '/app/resource-planning/dashboard'],
-			position: 'Present'
-		},
-		{
-			module: 'Compliance & Audit',
-			submodules: ['Conflicts', 'Complaints', 'PI risk', 'Audit trail', 'Quality reviews'],
-			coverage: 'Quality, Risk & Compliance',
-			routes: ['/app/compliance/dashboard', '/app/compliance/complaints'],
-			position: 'Present'
-		},
-		{
-			module: 'Documents, Reporting & Admin',
-			submodules: ['Documents', 'Evidence', 'Reporting', 'Reference data', 'Workflows'],
-			coverage: 'Documents, Analytics & Integration',
-			routes: ['/app/documents/dashboard', '/app/reporting/dashboard', '/app/admin/dashboard'],
-			position: 'Present'
-		}
-	] as const;
+	const priorityWorkspaceIds = [
+		'business-setup',
+		'people-workforce',
+		'crm-commercial',
+		'projects-portfolio',
+		'finance-capital',
+		'supply-chain-procurement',
+		'governance-risk-compliance',
+		'operations-service-delivery',
+		'property-technical-asset',
+		'information-data-digital'
+	];
 
+	const orderedWorkspaces = priorityWorkspaceIds
+		.map((id) => capabilityMap.find((area) => area.id === id))
+		.filter((area): area is CapabilityArea => Boolean(area));
+
+	const otherWorkspaces = capabilityMap.filter((area) => !priorityWorkspaceIds.includes(area.id));
+	const workspaceCount = capabilityMap.length;
 	const foundationCount = capabilityMap.filter((area) => area.status === 'foundation').length;
-	const scaffoldedCount = capabilityMap.filter((area) => area.status === 'scaffolded').length;
 	const routeCount = capabilityMap.reduce((total, area) => total + area.currentRoutes.length, 0);
 </script>
 
 <svelte:head>
-	<title>Operating Model | Perspective Business Manager</title>
+	<title>Functional Workspaces | Perspective Business Manager</title>
 </svelte:head>
 
-<section class="shell">
-	<div class="hero">
-		<p class="eyebrow">Perspective Business Manager</p>
-		<h1>RICS practice ERP realigned around business capability.</h1>
-		<p class="lede">
-			The app keeps the existing module routes, but the design authority now comes from the business
-			operating model: client, instruction, property, project, people, finance, compliance and
-			records.
-		</p>
-	</div>
-
-	<div class="metrics" aria-label="Realignment summary">
-		<div class="metric">
-			<strong>{capabilityMap.length}</strong>
-			<span>capability areas</span>
-		</div>
-		<div class="metric">
-			<strong>{foundationCount}</strong>
-			<span>foundation areas</span>
-		</div>
-		<div class="metric">
-			<strong>{scaffoldedCount}</strong>
-			<span>scaffolded areas</span>
-		</div>
-		<div class="metric">
-			<strong>{routeCount}</strong>
-			<span>mapped routes</span>
-		</div>
-	</div>
-
-	<section class="panel">
+<section class="page-shell">
+	<section class="hero">
 		<div>
-			<p class="eyebrow">Primary business thread</p>
-			<h2>Instruction lifecycle</h2>
-		</div>
-
-		<ol class="timeline">
-			{#each ricsInstructionLifecycle as step, index}
-				<li>
-					<span>{String(index + 1).padStart(2, '0')}</span>
-					<p>{step}</p>
-				</li>
-			{/each}
-		</ol>
-	</section>
-
-	<section class="panel">
-		<div>
-			<p class="eyebrow">ERP Alignment</p>
-			<h2>Normal ERP modules, mapped here</h2>
-			<p class="lede small">
-				This product is object-first, but the workspaces below show where familiar ERP modules and
-				submodules sit in the app.
+			<p class="eyebrow">Perspective Business Manager</p>
+			<h1>Functional workspaces over old module silos.</h1>
+			<p class="lede">
+				PBM keeps one integrated business model, but each user enters through the workspace that
+				matches their job: business setup, HR, CRM, projects, finance, procurement, compliance,
+				operations, property, reporting and admin.
 			</p>
 		</div>
 
-		<div class="alignment-grid" aria-label="ERP module alignment">
-			{#each erpAlignment as item}
-				<article class="alignment-card">
-					<div class="alignment-head">
-						<div>
-							<p class="eyebrow">{item.coverage}</p>
-							<h3>{item.module}</h3>
-						</div>
-						<span class="badge" data-position={item.position.toLowerCase()}>{item.position}</span>
-					</div>
-
-					<div class="stack">
-						<div>
-							<span class="meta-label">Submodules</span>
-							<div class="chips">
-								{#each item.submodules as submodule}
-									<span>{submodule}</span>
-								{/each}
-							</div>
-						</div>
-
-						<div>
-							<span class="meta-label">Workspace routes</span>
-							<div class="route-list">
-								{#each item.routes as route}
-									<a href={route}>{route}</a>
-								{/each}
-							</div>
-						</div>
-					</div>
-				</article>
-			{/each}
+		<div class="hero-actions" aria-label="Primary workspaces">
+			<a href="/app/business/dashboard">Start with Business Setup</a>
+			<a href="/app/hr/dashboard">Open HR & Workforce</a>
+			<a href="/app/projects/dashboard">Open Projects</a>
 		</div>
 	</section>
 
-	<section class="capabilities" aria-label="Capability map">
-		{#each capabilityMap as area}
-			<article class="card">
-				<div class="card-header">
-					<p class="status" data-status={area.status}>{statusLabel[area.status]}</p>
-					<h2>{area.name}</h2>
+	<section class="metrics" aria-label="Workspace summary">
+		<article>
+			<strong>{workspaceCount}</strong>
+			<span>functional workspaces</span>
+		</article>
+		<article>
+			<strong>{foundationCount}</strong>
+			<span>foundation areas</span>
+		</article>
+		<article>
+			<strong>{routeCount}</strong>
+			<span>mapped routes</span>
+		</article>
+	</section>
+
+	<section class="panel">
+		<div class="section-heading">
+			<p class="eyebrow">Route standard</p>
+			<h2>Users work by function, not by database table.</h2>
+			<p>
+				Finance users work in Finance, HR users work in HR, and project managers work in Projects.
+				The routes may consume shared project, person, partner and finance data in the background,
+				but the entry point stays aligned to the business activity.
+			</p>
+		</div>
+
+		<div class="principles">
+			<article>
+				<h3>Packages</h3>
+				<p>Reusable domain/data capability.</p>
+			</article>
+			<article>
+				<h3>Routes</h3>
+				<p>Functional workspaces and user activities.</p>
+			</article>
+			<article>
+				<h3>Database</h3>
+				<p>Integrated enterprise truth.</p>
+			</article>
+		</div>
+	</section>
+
+	<section class="workspace-grid" aria-label="Functional workspace map">
+		{#each orderedWorkspaces as area, index}
+			<article class="workspace-card" data-status={area.status}>
+				<div class="card-topline">
+					<span>{String(index + 1).padStart(2, '0')}</span>
+					<strong>{statusLabel[area.status]}</strong>
 				</div>
 
+				<h2>{area.name}</h2>
 				<p>{area.description}</p>
 
-				<div class="meta">
-					<span>Primary route</span>
-					<a href={area.primaryRoute}>{area.primaryRoute}</a>
-				</div>
+				<a class="primary-link" href={area.primaryRoute}>{area.primaryRoute}</a>
 
 				<div class="chips" aria-label="Core objects">
 					{#each area.coreObjects as object}
-						<span>{object}</span>
+						<span>{object.replace(/_/g, ' ')}</span>
 					{/each}
 				</div>
 			</article>
 		{/each}
 	</section>
+
+	{#if otherWorkspaces.length > 0}
+		<section class="panel">
+			<div class="section-heading">
+				<p class="eyebrow">Additional workspaces</p>
+				<h2>Mapped but lower priority for this refactor pass.</h2>
+			</div>
+
+			<div class="route-list">
+				{#each otherWorkspaces as area}
+					<a href={area.primaryRoute}>{area.name}</a>
+				{/each}
+			</div>
+		</section>
+	{/if}
 </section>
 
 <style>
-	.shell {
+	.page-shell {
 		display: grid;
 		gap: 1.5rem;
 		padding: clamp(1rem, 3vw, 2.5rem);
-		background:
-			radial-gradient(
-				circle at top left,
-				color-mix(in oklch, CanvasText 8%, transparent),
-				transparent 28rem
-			),
-			Canvas;
-		color: CanvasText;
 	}
 
 	.hero,
 	.panel,
-	.card,
-	.metric {
+	.workspace-card,
+	.metrics article {
 		border: 1px solid color-mix(in oklch, CanvasText 14%, transparent);
 		background: color-mix(in oklch, Canvas 92%, CanvasText 8%);
 		box-shadow: 0 1rem 3rem color-mix(in oklch, CanvasText 8%, transparent);
@@ -231,14 +151,15 @@
 
 	.hero {
 		display: grid;
-		gap: 1rem;
+		grid-template-columns: minmax(0, 1fr) auto;
+		gap: 1.5rem;
+		align-items: end;
 		padding: clamp(1.5rem, 5vw, 4rem);
 		border-radius: 2rem;
 	}
 
-	.eyebrow,
-	.status {
-		margin: 0;
+	.eyebrow {
+		margin: 0 0 0.5rem;
 		font-size: 0.75rem;
 		font-weight: 800;
 		letter-spacing: 0.09em;
@@ -248,210 +169,171 @@
 
 	h1,
 	h2,
+	h3,
 	p {
 		margin: 0;
 	}
 
 	h1 {
-		max-width: 14ch;
-		font-size: clamp(2.5rem, 8vw, 6rem);
-		line-height: 0.9;
+		max-width: 13ch;
+		font-size: clamp(2.5rem, 7vw, 5.25rem);
+		line-height: 0.92;
 		letter-spacing: -0.07em;
 	}
 
-	h2 {
-		font-size: clamp(1.15rem, 2vw, 1.65rem);
-		letter-spacing: -0.035em;
-	}
-
-	h3 {
-		margin: 0;
-		font-size: 1.05rem;
-		letter-spacing: -0.02em;
-	}
-
 	.lede {
-		max-width: 72ch;
-		font-size: clamp(1rem, 2vw, 1.25rem);
+		max-width: 75ch;
+		margin-top: 1rem;
+		font-size: 1.1rem;
 		line-height: 1.65;
-		opacity: 0.78;
+		opacity: 0.74;
 	}
 
-	.lede.small {
-		font-size: 1rem;
+	.hero-actions,
+	.route-list {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.65rem;
+	}
+
+	.hero-actions {
+		justify-content: end;
+		max-width: 24rem;
+	}
+
+	.hero-actions a,
+	.route-list a,
+	.primary-link {
+		border-radius: 999px;
+		padding: 0.7rem 0.95rem;
+		background: CanvasText;
+		color: Canvas;
+		font-weight: 800;
+		text-decoration: none;
+	}
+
+	.hero-actions a:nth-child(n + 2),
+	.route-list a {
+		background: color-mix(in oklch, CanvasText 10%, transparent);
+		color: CanvasText;
 	}
 
 	.metrics {
 		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+		grid-template-columns: repeat(3, minmax(0, 1fr));
 		gap: 1rem;
 	}
 
-	.metric {
+	.metrics article {
 		display: grid;
 		gap: 0.25rem;
 		padding: 1.25rem;
-		border-radius: 1.25rem;
+		border-radius: 1.5rem;
 	}
 
-	.metric strong {
-		font-size: 2rem;
-		line-height: 1;
+	.metrics strong {
+		font-size: clamp(2rem, 6vw, 4rem);
+		letter-spacing: -0.06em;
 	}
 
-	.metric span,
-	.meta span {
-		opacity: 0.65;
+	.metrics span {
+		font-weight: 800;
+		opacity: 0.68;
 	}
 
 	.panel {
 		display: grid;
 		gap: 1.25rem;
-		padding: clamp(1rem, 3vw, 2rem);
+		padding: 1.5rem;
 		border-radius: 1.5rem;
 	}
 
-	.timeline {
+	.section-heading {
 		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
-		gap: 0.75rem;
-		padding: 0;
-		margin: 0;
-		list-style: none;
+		gap: 0.5rem;
+		max-width: 80ch;
 	}
 
-	.timeline li {
+	.section-heading p:not(.eyebrow) {
+		line-height: 1.6;
+		opacity: 0.72;
+	}
+
+	.principles {
 		display: grid;
-		gap: 0.35rem;
-		align-content: start;
-		min-height: 6rem;
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		gap: 1rem;
+	}
+
+	.principles article {
 		padding: 1rem;
 		border-radius: 1rem;
-		background: color-mix(in oklch, Canvas 80%, CanvasText 20%);
+		background: color-mix(in oklch, Canvas 86%, CanvasText 14%);
 	}
 
-	.timeline span {
-		font-size: 0.75rem;
-		font-weight: 800;
-		opacity: 0.5;
+	.principles p {
+		margin-top: 0.35rem;
+		opacity: 0.7;
 	}
 
-	.alignment-grid {
+	.workspace-grid {
 		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr));
+		grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
 		gap: 1rem;
 	}
 
-	.alignment-card {
+	.workspace-card {
 		display: grid;
+		align-content: start;
 		gap: 1rem;
-		padding: 1.1rem;
-		border-radius: 1rem;
-		background: color-mix(in oklch, Canvas 84%, CanvasText 16%);
+		padding: 1.25rem;
+		border-radius: 1.5rem;
 	}
 
-	.alignment-head {
+	.card-topline {
 		display: flex;
 		justify-content: space-between;
-		gap: 0.75rem;
-		align-items: start;
-	}
-
-	.stack {
-		display: grid;
-		gap: 0.9rem;
-	}
-
-	.meta-label {
-		display: block;
-		margin-bottom: 0.45rem;
-		font-size: 0.76rem;
-		font-weight: 800;
+		gap: 1rem;
+		font-size: 0.75rem;
+		font-weight: 900;
 		letter-spacing: 0.08em;
 		text-transform: uppercase;
 		opacity: 0.62;
 	}
 
-	.route-list {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 0.45rem;
-	}
-
-	.route-list a {
-		padding: 0.3rem 0.5rem;
-		border-radius: 999px;
-		background: color-mix(in oklch, CanvasText 8%, transparent);
-		font-size: 0.8rem;
-		text-decoration: none;
-	}
-
-	.badge {
-		padding: 0.35rem 0.55rem;
-		border-radius: 999px;
-		font-size: 0.72rem;
-		font-weight: 800;
-		text-transform: uppercase;
-		letter-spacing: 0.07em;
-		background: #d7ead7;
-	}
-
-	.badge[data-position='partial'] {
-		background: #efe4d2;
-	}
-
-	.capabilities {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr));
-		gap: 1rem;
-	}
-
-	.card {
-		display: grid;
-		gap: 1rem;
-		align-content: start;
-		padding: 1.25rem;
-		border-radius: 1.25rem;
-	}
-
-	.card-header {
-		display: grid;
-		gap: 0.35rem;
-	}
-
-	.card > p {
+	.workspace-card p {
 		line-height: 1.55;
-		opacity: 0.76;
+		opacity: 0.72;
 	}
 
-	.status[data-status='foundation'] {
-		opacity: 1;
-	}
-
-	.meta {
-		display: grid;
-		gap: 0.2rem;
-		font-size: 0.9rem;
-	}
-
-	a {
-		color: inherit;
-		font-weight: 700;
-		text-decoration-thickness: 0.08em;
-		text-underline-offset: 0.18em;
+	.primary-link {
+		justify-self: start;
+		font-size: 0.85rem;
 	}
 
 	.chips {
 		display: flex;
 		flex-wrap: wrap;
-		gap: 0.4rem;
+		gap: 0.45rem;
 	}
 
 	.chips span {
-		padding: 0.35rem 0.55rem;
 		border-radius: 999px;
-		background: color-mix(in oklch, CanvasText 10%, transparent);
+		padding: 0.45rem 0.65rem;
+		background: color-mix(in oklch, CanvasText 8%, transparent);
 		font-size: 0.78rem;
 		font-weight: 700;
+	}
+
+	@media (max-width: 52rem) {
+		.hero,
+		.metrics,
+		.principles {
+			grid-template-columns: 1fr;
+		}
+
+		.hero-actions {
+			justify-content: start;
+		}
 	}
 </style>
