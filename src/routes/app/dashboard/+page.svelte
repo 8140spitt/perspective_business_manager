@@ -3,32 +3,32 @@
 
 	const statusLabel: Record<CapabilityArea['status'], string> = {
 		foundation: 'Foundation',
-		scaffolded: 'Next',
-		future: 'Later'
+		scaffolded: 'Scaffolded',
+		future: 'Future'
 	};
 
-	const operatingLanes = capabilityMap;
-	const foundationLanes = operatingLanes.filter((lane) => lane.status === 'foundation');
+	const workspaces = capabilityMap;
+	const foundationWorkspaces = workspaces.filter((workspace) => workspace.status === 'foundation');
 </script>
 
 <svelte:head>
-	<title>Operating Model | Perspective Business Manager</title>
+	<title>SAP-Grade Coverage | Perspective Business Manager</title>
 </svelte:head>
 
 <section class="page-shell">
 	<section class="hero">
 		<p class="eyebrow">Perspective Business Manager</p>
-		<h1>One business. Seven clear lanes.</h1>
+		<h1>SAP-grade coverage. PBM clarity.</h1>
 		<p class="lede">
-			PBM is not a pile of modules. It is one integrated business system with clear workspaces
-			for the jobs people actually do: set up the business, manage people, win work, deliver
-			work, control money, stay compliant and report clearly.
+			PBM covers the breadth expected from a serious ERP, but presents it as modern business
+			workspaces instead of old module codes. The rule is simple: every capability has a home,
+			and every workspace exists for a job people actually do.
 		</p>
 
 		<div class="hero-actions" aria-label="Primary actions">
 			<a href="/app/business/dashboard">Start with Business Setup</a>
+			<a href="/app/hr/dashboard">Open People & Workforce</a>
 			<a href="/app/projects/dashboard">Open Project Delivery</a>
-			<a href="/app/finance/dashboard">Open Money</a>
 		</div>
 	</section>
 
@@ -36,39 +36,45 @@
 		<article>
 			<span>01</span>
 			<strong>Define the business</strong>
-			<p>Profile, functions, organisation units and positions.</p>
+			<p>Profile, functions, organisation units, positions and reference data.</p>
 		</article>
 		<article>
 			<span>02</span>
-			<strong>Manage the people</strong>
-			<p>People, employees, competence and authority.</p>
+			<strong>Resource the business</strong>
+			<p>People, employees, competence, authority and workforce planning.</p>
 		</article>
 		<article>
 			<span>03</span>
-			<strong>Run the work</strong>
-			<p>Clients, commercial pipeline, projects and services.</p>
+			<strong>Win and deliver work</strong>
+			<p>Clients, commercial pipeline, projects, services and operations.</p>
 		</article>
 		<article>
 			<span>04</span>
-			<strong>Control the money</strong>
-			<p>POs, invoices, payments, WIP, cost and margin.</p>
+			<strong>Control money and supply</strong>
+			<p>Finance, cost, margin, procurement, materials and supplier performance.</p>
 		</article>
 		<article>
 			<span>05</span>
-			<strong>Stay in control</strong>
-			<p>Risk, compliance, quality, audit and evidence.</p>
+			<strong>Assure and improve</strong>
+			<p>Quality, compliance, assets, documents, reporting and administration.</p>
 		</article>
 	</section>
 
-	<section class="lane-grid" aria-label="Business workspaces">
-		{#each operatingLanes as lane}
-			<a class="lane-card" href={lane.primaryRoute} data-status={lane.status}>
-				<div class="lane-topline">
-					<span>{statusLabel[lane.status]}</span>
+	<section class="workspace-grid" aria-label="SAP coverage workspaces">
+		{#each workspaces as workspace}
+			<a class="workspace-card" href={workspace.primaryRoute} data-status={workspace.status}>
+				<div class="workspace-topline">
+					<span>{statusLabel[workspace.status]}</span>
+					<small>{workspace.sapCoverage.join(' · ')}</small>
 				</div>
-				<h2>{lane.name}</h2>
-				<p>{lane.description}</p>
-				<small>{lane.primaryRoute}</small>
+				<h2>{workspace.name}</h2>
+				<p>{workspace.description}</p>
+				<ul aria-label={`${workspace.name} capabilities`}>
+					{#each workspace.capabilities.slice(0, 6) as capability}
+						<li>{capability}</li>
+					{/each}
+				</ul>
+				<small class="route">{workspace.primaryRoute}</small>
 			</a>
 		{/each}
 	</section>
@@ -76,14 +82,14 @@
 	<section class="panel">
 		<div>
 			<p class="eyebrow">Build order</p>
-			<h2>Keep the build focused.</h2>
+			<h2>Build the spine first, then widen the coverage.</h2>
 		</div>
 		<ol>
-			{#each foundationLanes as lane}
-				<li>{lane.name}</li>
+			{#each foundationWorkspaces as workspace}
+				<li>{workspace.name}</li>
 			{/each}
-			<li>Then wire Money and Control properly.</li>
-			<li>Reporting and Admin stay quiet until the operating spine is stable.</li>
+			<li>Then wire Finance & Control and Procurement, Materials & Logistics.</li>
+			<li>Quality, assets, reporting and administration follow once the operating spine is stable.</li>
 		</ol>
 	</section>
 </section>
@@ -98,7 +104,7 @@
 	.hero,
 	.panel,
 	.spine article,
-	.lane-card {
+	.workspace-card {
 		border: 1px solid color-mix(in oklch, CanvasText 14%, transparent);
 		background: color-mix(in oklch, Canvas 94%, CanvasText 6%);
 		box-shadow: 0 1rem 3rem color-mix(in oklch, CanvasText 7%, transparent);
@@ -127,14 +133,14 @@
 	}
 
 	h1 {
-		max-width: 12ch;
+		max-width: 14ch;
 		font-size: clamp(2.75rem, 8vw, 6rem);
 		line-height: 0.9;
 		letter-spacing: -0.08em;
 	}
 
 	.lede {
-		max-width: 74ch;
+		max-width: 78ch;
 		font-size: 1.08rem;
 		line-height: 1.65;
 		opacity: 0.76;
@@ -147,7 +153,7 @@
 	}
 
 	.hero-actions a,
-	.lane-card {
+	.workspace-card {
 		text-decoration: none;
 	}
 
@@ -171,19 +177,21 @@
 	}
 
 	.spine article,
-	.lane-card,
+	.workspace-card,
 	.panel {
 		border-radius: 1.5rem;
 		padding: 1.25rem;
 	}
 
-	.spine article {
+	.spine article,
+	.workspace-card {
 		display: grid;
-		gap: 0.45rem;
+		align-content: start;
+		gap: 0.75rem;
 	}
 
 	.spine span,
-	.lane-topline span {
+	.workspace-topline span {
 		font-size: 0.75rem;
 		font-weight: 900;
 		letter-spacing: 0.08em;
@@ -196,46 +204,49 @@
 	}
 
 	.spine p,
-	.lane-card p,
-	.panel li {
+	.workspace-card p,
+	.panel li,
+	.workspace-card li {
 		line-height: 1.55;
 		opacity: 0.72;
 	}
 
-	.lane-grid {
+	.workspace-grid {
 		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+		grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
 		gap: 1rem;
 	}
 
-	.lane-card {
-		display: grid;
-		gap: 0.75rem;
+	.workspace-card {
 		color: CanvasText;
 	}
 
-	.lane-card h2 {
+	.workspace-card h2 {
 		font-size: clamp(1.35rem, 3vw, 2rem);
 		letter-spacing: -0.04em;
 	}
 
-	.lane-card small {
-		font-weight: 800;
+	.workspace-topline {
+		display: flex;
+		justify-content: space-between;
+		gap: 1rem;
+		align-items: start;
+	}
+
+	.workspace-topline small,
+	.route {
 		opacity: 0.58;
+	}
+
+	.workspace-card ul,
+	.panel ol {
+		margin: 0;
+		padding-left: 1.1rem;
 	}
 
 	.panel {
 		display: grid;
 		gap: 1rem;
-	}
-
-	ol {
-		margin: 0;
-		padding-left: 1.35rem;
-	}
-
-	li + li {
-		margin-top: 0.4rem;
 	}
 
 	@media (max-width: 900px) {
