@@ -19,6 +19,22 @@ export const capabilityMap: CapabilityArea[] = [
 		status: 'future'
 	},
 	{
+		id: 'business-setup',
+		name: 'Business Setup',
+		description:
+			'The owning business profile, functional operating model, organisation units and positions that every other workspace consumes.',
+		primaryRoute: '/app/business/dashboard',
+		currentRoutes: [
+			'/app/business/dashboard',
+			'/app/business/profile',
+			'/app/business/functions',
+			'/app/business/organisation-units',
+			'/app/business/positions'
+		],
+		coreObjects: ['business_profile', 'business_function', 'organisation_unit', 'position'],
+		status: 'foundation'
+	},
+	{
 		id: 'governance-risk-compliance',
 		name: 'Governance, Risk & Compliance',
 		description:
@@ -58,14 +74,15 @@ export const capabilityMap: CapabilityArea[] = [
 		id: 'people-workforce',
 		name: 'People & Workforce',
 		description:
-			'Employees, roles, competencies, training, availability, allocations and utilisation.',
+			'People, employees, employee positions, competencies, authority, availability, allocations and utilisation.',
 		primaryRoute: '/app/hr/dashboard',
 		currentRoutes: [
 			'/app/hr/dashboard',
+			'/app/hr/people',
 			'/app/hr/employees',
-			'/app/hr/roles',
-			'/app/hr/training',
-			'/app/hr/competencies',
+			'/app/hr/employee-positions',
+			'/app/hr/competence',
+			'/app/hr/authority',
 			'/app/resource-planning/dashboard',
 			'/app/resource-planning/availability',
 			'/app/resource-planning/allocations',
@@ -73,18 +90,21 @@ export const capabilityMap: CapabilityArea[] = [
 			'/app/resource-planning/utilisation',
 			'/app/resource-planning/inspection-calendar'
 		],
-		coreObjects: ['person', 'employee', 'role', 'competency', 'allocation'],
+		coreObjects: ['person', 'employee', 'position', 'competence', 'authority_limit', 'allocation'],
 		status: 'scaffolded'
 	},
 	{
-		id: 'sales-client-management',
-		name: 'Sales & Client Management',
+		id: 'crm-commercial',
+		name: 'CRM & Commercial',
 		description:
-			'Organisation customers, individual consumers, intermediaries, contacts, enquiries, opportunities, tenders, quotations and fee proposals.',
+			'Clients, contacts, relationships, enquiries, opportunities, tenders, quotations and fee proposals.',
 		primaryRoute: '/app/crm/dashboard',
 		currentRoutes: [
 			'/app/crm/dashboard',
 			'/app/crm/clients',
+			'/app/crm/clients/organisation-clients',
+			'/app/crm/clients/individual-clients',
+			'/app/parties',
 			'/app/sales/dashboard',
 			'/app/sales/enquiries',
 			'/app/sales/opportunities',
@@ -96,7 +116,7 @@ export const capabilityMap: CapabilityArea[] = [
 		coreObjects: [
 			'party',
 			'person',
-			'organisation',
+			'business_partner',
 			'party_relationship',
 			'client_account',
 			'contact_method',
