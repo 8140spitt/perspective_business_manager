@@ -29,7 +29,7 @@ const businessProfileSelect = `
 	FROM business_partner bp
 	JOIN business_partner_role bpr
 		ON bpr.business_partner_id = bp.business_partner_id
-		AND bpr.role_code = 'tenant_business'
+		AND bpr.role_code = 'owning_business'
 		AND bpr.is_active = TRUE
 	LEFT JOIN business_entity be
 		ON be.business_entity_id = bp.business_entity_id
@@ -88,12 +88,12 @@ const positionSelect = `
 		p.is_active AS isActive,
 		p.created_at AS createdAt,
 		p.updated_at AS updatedAt
-	FROM \`position\` p
+	FROM `position` p
 	LEFT JOIN organisation_unit ou
 		ON ou.organisation_unit_id = p.organisation_unit_id
 	LEFT JOIN business_function bf
 		ON bf.business_function_id = p.business_function_id
-	LEFT JOIN \`position\` manager
+	LEFT JOIN `position` manager
 		ON manager.position_id = p.reports_to_position_id
 `;
 
@@ -120,7 +120,7 @@ const employeeSelect = `
 		ON pe.person_entity_id = e.person_entity_id
 	LEFT JOIN organisation_unit ou
 		ON ou.organisation_unit_id = e.primary_organisation_unit_id
-	LEFT JOIN \`position\` p
+	LEFT JOIN `position` p
 		ON p.position_id = e.primary_position_id
 `;
 
@@ -148,7 +148,7 @@ const employeePositionSelect = `
 		ON e.employee_id = ep.employee_id
 	JOIN person_entity pe
 		ON pe.person_entity_id = e.person_entity_id
-	JOIN \`position\` p
+	JOIN `position` p
 		ON p.position_id = ep.position_id
 	JOIN organisation_unit ou
 		ON ou.organisation_unit_id = p.organisation_unit_id
