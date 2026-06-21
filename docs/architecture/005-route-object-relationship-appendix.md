@@ -1,258 +1,172 @@
-# Route To Object Relationship Appendix
+# Route To Business Object Relationship Appendix
 
 ## Purpose
 
-Map the application route structure to the canonical business objects and relationship model.
+This appendix explains how PBM route families expose shared business objects through user activity views.
 
-This appendix explains which enterprise objects each route family is primarily concerned with and how those routes should be interpreted in relation to the shared architecture.
+A route is a doorway into the data spine. It is not the owner of the record it displays.
 
 ## Design Rule
 
-Routes are workspaces, not owners of data.
+Routes are business workspaces and activity views over shared records.
 
-Every route family should be explainable as a view over canonical business objects already defined in:
+Every route family must be explainable through:
 
 - [001-canonical-enterprise-data-model.md](./001-canonical-enterprise-data-model.md)
+- [002-business-object-catalogue.md](./002-business-object-catalogue.md)
 - [003-enterprise-relationship-model.md](./003-enterprise-relationship-model.md)
 - [004-schema-relationship-appendix.md](./004-schema-relationship-appendix.md)
 
 ## Route Mapping Matrix
 
-| Route family                                                                             | Primary purpose                              | Primary objects                                                           | Common linked objects                                                                        | Relationship notes                                      |
-| ---------------------------------------------------------------------------------------- | -------------------------------------------- | ------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- | ------------------------------------------------------- |
-| `/app/crm/*`                                                                             | customer and client workspace                | party, person, organisation, client_account                               | contact_method, party_relationship, property, instruction                                    | customer root for both B2B and B2C journeys             |
-| `/app/sales/*`                                                                           | pre-instruction commercial pipeline          | enquiry, opportunity, fee_proposal, quotation                             | party, client_account, property, instruction                                                 | commercial funnel before instruction acceptance         |
-| `/app/operations/*`                                                                      | live instruction delivery                    | instruction                                                               | instruction_party_role, instruction_property, activity, evidence, deliverable, fee_agreement | primary operations control layer                        |
-| `/app/activities/*`                                                                      | unit-of-work execution                       | activity, observation, assessment, action, outcome                        | instruction, project, property, evidence_item, workflow_instance                             | technical finding chain workspace                       |
-| `/app/projects/*`                                                                        | managed delivery and governance              | project                                                                   | instruction, activity, deliverable, task, risk, issue, sales_invoice                         | project coordination over instructions and outputs      |
-| `/app/property/*`                                                                        | structured asset and register views          | property, property_unit, property_party_role                              | address, instruction, activity, document, evidence                                           | portfolio and technical asset context                   |
-| `/app/properties/*`                                                                      | direct property records                      | property                                                                  | address, property_party_role, instruction_property                                           | direct record-oriented property surface                 |
-| `/app/finance/*`                                                                         | commercial control and billing               | fee_agreement, sales_invoice                                              | client_account, instruction, project, payment, expense, WIP                                  | financial state over shared customer and delivery model |
-| `/app/procurement/*`                                                                     | suppliers and external buying                | supplier, purchase_order                                                  | party, project, instruction, purchase_invoice                                                | supplier and external cost control                      |
-| `/app/hr/*`                                                                              | people administration                        | person, employee, role, competency                                        | team, allocation, training                                                                   | internal workforce master data                          |
-| `/app/resource-planning/*`                                                               | capacity and deployment                      | allocation, availability, utilisation                                     | employee, competency, activity, project, instruction                                         | scheduling and delivery capacity                        |
-| `/app/compliance/*`                                                                      | governance and assurance                     | compliance_check, complaint, risk, control, audit_event                   | party, instruction, outcome, document, action                                                | cross-cutting assurance over the operational chain      |
-| `/app/documents/*`                                                                       | record and evidence access                   | document, evidence_item, template                                         | party, property, instruction, activity, outcome, deliverable                                 | attached record layer, not source-of-truth layer        |
-| `/app/reporting/*`                                                                       | analytical and exported views                | report_definition, aggregated metrics                                     | all major business objects                                                                   | derived analytical layer                                |
-| `/app/admin/*`                                                                           | configuration and platform controls          | user, role, permission, workflow_definition, ref_code_set, ref_code_value | integrations, numbering, teams                                                               | platform control layer                                  |
-| `/app/dashboard`, `/app/reports`, `/app/workflows`, `/app/evidence`, `/app/instructions` | cross-cutting summary or shortcut workspaces | mixed                                                                     | mixed                                                                                        | convenience and aggregate surfaces over shared objects  |
+| Route family | PBM workspace | Primary job | Primary business objects | Common linked objects | Rule |
+| --- | --- | --- | --- | --- | --- |
+| `/app/business/*` | Business Setup | define the owning business and its structure | business profile, business function, organisation unit, position | reference data, sites, number sequences, authority limits | workspace for business configuration, not trading activity |
+| `/app/crm/*` | Clients & Commercial | manage client and relationship context | party, person, organisation, client account | contact method, party relationship, project, instruction, quote, invoice | client context must remain on the shared identity spine |
+| `/app/sales/*` | Clients & Commercial | manage early commercial work | enquiry, opportunity, proposal, quotation | party, client account, project, instruction | commercial pipeline must resolve into controlled work |
+| `/app/projects/*` | Project Delivery | manage controlled work delivery | project, project service, project assignment | client account, instruction, party, property, quote row, purchase order row, invoice row, risk, issue, evidence | project is a delivery container, not a duplicate client model |
+| `/app/operations/*` | Operations & Planning | manage live work and service execution | instruction, activity, work/service order | project, employee, property, deliverable, evidence, outcome | operational work must attach to shared delivery records |
+| `/app/activities/*` | Project Delivery / Operations | execute technical or professional activity | activity, activity area, observation, assessment, action, outcome | project, instruction, property, evidence, workflow instance | this is the reusable work-chain view |
+| `/app/property/*` and `/app/properties/*` | Assets, Property & Maintenance | manage property and asset context | property, property unit, property role | address, party, project, instruction, activity, document, evidence | asset context must not become a duplicate delivery model |
+| `/app/procurement/*` | Procurement, Materials & Logistics | manage supplier and external spend | supplier role, purchase order, purchase order row, supplier invoice | party, project, project service, instruction, finance status | supplier spend must attach to projects/services where possible |
+| `/app/finance/*` | Finance & Control | control revenue, cost, billing and payment | fee agreement, sales invoice, supplier invoice, payment, ledger entry, WIP | client account, party, project, instruction, purchase order | finance consumes shared client/project/supplier context |
+| `/app/hr/*` | People & Workforce | manage people records and workforce rules | person, employee, employee position, competence, authority limit | organisation unit, position, project assignment, training | workforce data must stay connected to business structure |
+| `/app/resource-planning/*` | Operations & Planning | plan capacity and deployment | employee, position, competence, allocation, availability, utilisation | project, activity, instruction, service | planning must use the same people and project records |
+| `/app/compliance/*` | Quality & Compliance | manage risk, control, audit and assurance | risk, control, compliance check, complaint, audit event | party, project, instruction, document, evidence, action, outcome | assurance is cross-cutting and attaches to existing records |
+| `/app/documents/*` and `/app/evidence/*` | Reporting, Documents & Admin | manage supporting information | document, evidence item, template | party, project, property, instruction, activity, outcome, deliverable | information supports records; it does not own them |
+| `/app/reporting/*` and `/app/reports` | Reporting, Documents & Admin | show derived business truth | report definition, metric, export, dashboard | all major business objects | reporting is derived from the spine |
+| `/app/admin/*` | Reporting, Documents & Admin | manage platform configuration | user, role, permission, workflow definition, reference data, integration, setting | all governed objects | admin configures behaviour; it is not a business workspace |
+| `/app/dashboard` | Cross-workspace summary | show current position | mixed | all relevant objects | shortcut surface only |
 
-## Route Family Notes
+## Workspace Notes
 
-### CRM
-
-Relevant routes include:
-
-- `/app/crm/dashboard`
-- `/app/crm/clients/*`
+### Business Setup
 
 Primary relationship path:
 
 ```text
-Party -> Client Account -> Instruction -> Project/Activity -> Invoice
+Owning business -> Business function -> Organisation unit -> Position -> Authority rule
 ```
 
-CRM routes should not invent separate customer data models for organisation and consumer journeys.
+Business setup defines how the business is structured. Other workspaces consume this structure.
 
-### Sales
-
-Relevant routes include:
-
-- `/app/sales/enquiries/*`
-- `/app/sales/opportunities/*`
-- `/app/sales/fee-proposals`
-- `/app/sales/quotations`
-- `/app/sales/tenders`
+### Clients & Commercial
 
 Primary relationship path:
 
 ```text
-Party -> Opportunity -> Proposal/Quotation -> Client Account -> Instruction
+Party -> Client account -> Opportunity / Quote -> Project / Instruction -> Invoice
 ```
 
-Sales routes prepare commercial context that should ultimately resolve into the canonical instruction chain.
+Commercial routes should not create separate client records. They should use the shared identity and client account model.
 
-### Operations
-
-Relevant routes include:
-
-- `/app/operations/instructions/*`
-- `/app/operations/building-surveys`
-- `/app/operations/schedules-of-condition`
-- `/app/operations/dilapidations`
+### Project Delivery
 
 Primary relationship path:
 
 ```text
-Client Account -> Instruction -> Instruction Party Role / Instruction Property -> Activity / Deliverable / Fee Agreement
+Client / instruction -> Project -> Service -> Assignment -> Cost / Revenue / Evidence
 ```
 
-Operations routes are instruction-centric and should resolve all delivery context from the shared instruction model.
+Projects coordinate work. They do not replace client, supplier, property or finance records.
 
-### Activities
-
-Relevant routes include:
-
-- `/app/activities`
-- `/app/activities/new`
-- `/app/activities/[activityId]`
+### Operations & Activities
 
 Primary relationship path:
 
 ```text
-Instruction or Project -> Activity -> Observation -> Assessment -> Action -> Outcome
+Project or instruction -> Activity -> Observation -> Assessment -> Action -> Outcome
 ```
 
-This route family is the clearest expression of the technical work chain.
+Activities are the reusable work-chain. Sector-specific activities should extend this chain rather than create parallel chains.
 
-### Projects
-
-Relevant routes include:
-
-- `/app/projects/projects/*`
-- `/app/projects/dashboard`
+### Property And Assets
 
 Primary relationship path:
 
 ```text
-Instruction -> Project -> Activity / Deliverable / Financials
+Address -> Property -> Unit / Role -> Project or instruction -> Activity / Evidence
 ```
 
-Projects organise work; they do not replace the instruction or customer root.
-
-### Property
-
-Relevant routes include:
-
-- `/app/property/*`
-- `/app/properties/*`
-
-Primary relationship path:
-
-```text
-Address -> Property -> Property Unit / Property Party Role -> Instruction Property -> Activity
-```
-
-Property routes should expose asset context without becoming a duplicate delivery model.
-
-### Finance
-
-Relevant routes include:
-
-- `/app/finance/fees`
-- `/app/finance/wip`
-- `/app/finance/sales-invoices`
-- `/app/finance/payments`
-
-Primary relationship path:
-
-```text
-Client Account -> Instruction -> Fee Agreement -> Sales Invoice
-Project -> Sales Invoice
-```
-
-Finance routes remain downstream of customer, instruction and project context.
+Property and asset routes provide context. They should not own project delivery or commercial records.
 
 ### Procurement
 
-Relevant routes include:
+Primary relationship path:
 
-- `/app/procurement/suppliers/*`
-- `/app/procurement/purchase-orders`
+```text
+Supplier party -> Purchase order -> Purchase order row -> Project service -> Supplier invoice
+```
+
+Procurement records should attach to project and service context wherever spend is related to delivery.
+
+### Finance
 
 Primary relationship path:
 
 ```text
-Party/Supplier -> Purchase Order -> Project / Instruction / External Cost
+Client account -> Project / instruction -> Sales invoice -> Receipt
+Supplier party -> Purchase order -> Supplier invoice -> Payment
 ```
 
-Procurement should attach suppliers and external buying into the shared delivery and finance chain.
+Finance owns financial control and accounting views. It must not recreate client, project or supplier data.
 
-### Workforce And Resource Planning
-
-Relevant routes include:
-
-- `/app/hr/*`
-- `/app/resource-planning/*`
+### People & Workforce
 
 Primary relationship path:
 
 ```text
-Person/Employee -> Competency -> Allocation -> Activity / Project / Instruction
+Person -> Employee -> Employee position -> Competence / authority -> Project assignment
 ```
 
-These routes manage internal delivery capacity rather than customer objects directly.
+People routes manage internal capacity and responsibility. They should support project delivery, operations, approvals and compliance.
 
-### Compliance
-
-Relevant routes include:
-
-- `/app/compliance/conflicts-of-interest`
-- `/app/compliance/complaints`
-- `/app/compliance/pi-risk`
-- `/app/compliance/audit-trail`
+### Quality & Compliance
 
 Primary relationship path:
 
 ```text
-Party / Instruction / Outcome / Document -> Compliance Check / Complaint / Audit Event / Action
+Any governed record -> Risk / Control / Check / Audit event / Evidence / Action
 ```
 
-Compliance routes are cross-cutting and may attach into many parts of the business chain.
+Compliance is cross-cutting. It attaches governance and assurance to existing business records.
 
-### Documents And Evidence
-
-Relevant routes include:
-
-- `/app/documents/document-library`
-- `/app/documents/evidence-library`
-- `/app/evidence`
+### Documents, Evidence And Reporting
 
 Primary relationship path:
 
 ```text
-Any supported business object -> Document or Evidence Item
+Any supported business object -> Document / Evidence -> Report / Export
 ```
 
-These routes should never become the ownership point for the business objects they reference.
-
-### Reporting And Admin
-
-Relevant routes include:
-
-- `/app/reporting/*`
-- `/app/admin/*`
-
-Primary relationship path:
-
-```text
-All core objects -> reporting aggregates
-Reference data / workflow / permissions -> admin configuration
-```
-
-Reporting is derived; admin configures the platform metadata that governs object behavior.
+Information and reporting routes are support surfaces. They must not become alternative ownership models for the records they reference.
 
 ## Route Relationship Rules
 
-1. A route should identify its primary business object.
-2. If a route shows linked data, those relationships should already exist in the canonical model or schema appendix.
-3. If a route needs a new concept, first decide whether it is a root entity, a role, a relationship, a workflow state or a document attachment.
-4. Route families must preserve the shared B2B/B2C customer model.
-5. Route naming should not imply data ownership that contradicts the canonical object model.
+1. A route must declare its primary business object.
+2. A route must declare whether it creates, updates, reviews or reports on that object.
+3. Linked data must follow a documented relationship path.
+4. Route naming must not imply ownership that contradicts the business object model.
+5. Shortcut routes must remain summaries and not become separate record systems.
+6. Cross-cutting routes must attach to shared records through stable identifiers.
+7. New routes should extend an existing workspace unless a genuinely new workspace activity exists.
 
 ## Current Route-Level Tensions
 
-1. `/app/property/*` and `/app/properties/*` overlap and may need a deliberate consolidation strategy.
-2. `/app/instructions/*` and `/app/operations/instructions/*` both exist, so their intended distinction should remain explicit.
-3. several route families expose planned capability earlier than their backing package boundaries currently suggest.
-4. reporting, documents and compliance routes are necessarily cross-cutting and should be checked carefully to avoid route-specific duplicate data models.
+1. `/app/property/*` and `/app/properties/*` overlap and need a deliberate consolidation decision.
+2. `/app/instructions/*` and `/app/operations/instructions/*` overlap and need a clear split or merge decision.
+3. Procurement and workforce routes are ahead of their package depth and need stronger package support.
+4. Documents, evidence, compliance and reporting are cross-cutting and must be checked for duplicate ownership assumptions.
+5. Dashboard and shortcut surfaces must stay read-led unless a clear activity workflow is added.
 
-## Use In Design Reviews
+## Design Review Checklist
 
 Before approving a new route or route family, confirm:
 
-1. which primary object the route is centered on
-2. which linked objects are being shown or edited
-3. which relationship path supports the route behavior
-4. whether the route respects the shared customer model
-5. whether the route belongs in an existing workspace instead of creating a new parallel surface
+1. which business workspace it belongs to
+2. which primary business object it surfaces
+3. which activity the user performs there
+4. which linked objects appear on the screen
+5. which relationship path supports the route
+6. whether the route respects the shared identity, project and finance spine
+7. whether the route belongs inside an existing workspace instead of creating a parallel surface
