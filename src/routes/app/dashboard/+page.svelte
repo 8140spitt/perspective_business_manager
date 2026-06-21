@@ -12,17 +12,17 @@
 </script>
 
 <svelte:head>
-	<title>SAP-Grade Coverage | Perspective Business Manager</title>
+	<title>Enterprise Operating Coverage | Perspective Business Manager</title>
 </svelte:head>
 
 <section class="page-shell">
 	<section class="hero">
 		<p class="eyebrow">Perspective Business Manager</p>
-		<h1>SAP-grade coverage. PBM clarity.</h1>
+		<h1>Full business coverage. PBM clarity.</h1>
 		<p class="lede">
-			PBM covers the breadth expected from a serious ERP, but presents it as modern business
-			workspaces instead of old module codes. The rule is simple: every capability has a home,
-			and every workspace exists for a job people actually do.
+			PBM covers the breadth expected from a serious enterprise platform, but presents it as
+			clear business workspaces instead of legacy vendor labels. The rule is simple: every
+			capability has a home, and every workspace exists for a job people actually do.
 		</p>
 
 		<div class="hero-actions" aria-label="Primary actions">
@@ -56,16 +56,16 @@
 		<article>
 			<span>05</span>
 			<strong>Assure and improve</strong>
-			<p>Quality, compliance, assets, documents, reporting and administration.</p>
+			<p>Quality, risk, compliance, assets, documents, reporting and administration.</p>
 		</article>
 	</section>
 
-	<section class="workspace-grid" aria-label="SAP coverage workspaces">
+	<section class="workspace-grid" aria-label="PBM workspace coverage">
 		{#each workspaces as workspace}
 			<a class="workspace-card" href={workspace.primaryRoute} data-status={workspace.status}>
 				<div class="workspace-topline">
 					<span>{statusLabel[workspace.status]}</span>
-					<small>{workspace.sapCoverage.join(' · ')}</small>
+					<small>{workspace.referenceCoverage.join(' · ')}</small>
 				</div>
 				<h2>{workspace.name}</h2>
 				<p>{workspace.description}</p>
@@ -88,8 +88,8 @@
 			{#each foundationWorkspaces as workspace}
 				<li>{workspace.name}</li>
 			{/each}
-			<li>Then wire Finance & Control and Procurement, Materials & Logistics.</li>
-			<li>Quality, assets, reporting and administration follow once the operating spine is stable.</li>
+			<li>Then wire Finance & Control and Procurement & Supplier Control.</li>
+			<li>Quality, risk, assets, reporting and administration follow once the operating spine is stable.</li>
 		</ol>
 	</section>
 </section>
