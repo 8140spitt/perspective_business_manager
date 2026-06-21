@@ -2,222 +2,166 @@
 
 ## Purpose
 
-Map the conceptual relationship model to the current database schema, with concrete table names, foreign keys, uniqueness rules and important implementation notes.
+This appendix connects PBM's business object model to the current database schema.
 
-This appendix should be read together with [003-enterprise-relationship-model.md](./003-enterprise-relationship-model.md).
+It is intentionally written in PBM language. The schema exists to support shared business records, not isolated route or workspace data stores.
 
-## Scope
+## How To Read This Document
 
-This appendix covers the current schema represented in:
+PBM has three levels of language:
+
+1. **Business object** — the thing the business understands, such as client, project, employee, supplier invoice or document.
+2. **Schema table** — the current table or group of tables that stores the record.
+3. **Workspace activity** — the user-facing job that reads or changes the record.
+
+A table is not owned by a workspace. A table supports one or more business objects, and those objects are surfaced through whichever workspace needs them.
+
+## Current Schema Sources
+
+This appendix reflects the current migration structure:
 
 - `001_core.sql`
 - `002_core_business_objects.sql`
 - `003_workflow_and_events.sql`
 - `004_activity_management_engine.sql`
 
-## Foundation Schema Relationships
+When schema names change, this appendix must be updated in the same change.
 
-### Party Specialisation
+## Foundation Identity Relationships
 
-| Parent table | Child table    | Key                                       | Constraint          | Notes                                        |
-| ------------ | -------------- | ----------------------------------------- | ------------------- | -------------------------------------------- |
-| `party`      | `person`       | `person.party_id -> party.party_id`       | foreign key, unique | one party may specialise as one person       |
-| `party`      | `organisation` | `organisation.party_id -> party.party_id` | foreign key, unique | one party may specialise as one organisation |
+### Business Party Structure
 
-### Party Communication And Addressing
+| PBM business object | Current schema table | Relationship | Meaning |
+| --- | --- | --- | --- |
+| Party / stakeholder | `party` | root record | shared identity root for people and organisations |
+| Person | `person` | `person.party_id -> party.party_id` | one party may specialise as a person |
+| Organisation | `organisation` | `organisation.party_id -> party.party_id` | one party may specialise as an organisation |
+| Contact method | `contact_method` | `contact_method.party_id -> party.party_id` | communication details attached to the shared identity record |
+| Address | `address` and `party_address` | `party_address.party_id -> party.party_id`, `party_address.address_id -> address.address_id` | addresses are reusable and should not be duplicated per workspace |
 
-| Parent table | Child table      | Key                                              | Constraint  | Notes                                 |
-| ------------ | ---------------- | ------------------------------------------------ | ----------- | ------------------------------------- |
-| `party`      | `contact_method` | `contact_method.party_id -> party.party_id`      | foreign key | shared communications for B2B and B2C |
-| `party`      | `party_address`  | `party_address.party_id -> party.party_id`       | foreign key | links parties to addresses            |
-| `address`    | `party_address`  | `party_address.address_id -> address.address_id` | foreign key | address reused across parties         |
+### Relationship Rule
 
-### Party Relationships
+People and organisations must remain on the same shared identity spine. PBM must not create separate client, supplier, employee or contact identity tables when a role on the shared identity model is enough.
 
-| From table | To table             | Key                                                  | Constraint  | Notes                           |
-| ---------- | -------------------- | ---------------------------------------------------- | ----------- | ------------------------------- |
-| `party`    | `party_relationship` | `party_relationship.from_party_id -> party.party_id` | foreign key | directional relationship source |
-| `party`    | `party_relationship` | `party_relationship.to_party_id -> party.party_id`   | foreign key | directional relationship target |
+## Relationship Records
 
-## Property Schema Relationships
+| PBM business object | Current schema table | Relationship | Meaning |
+| --- | --- | --- | --- |
+| Party relationship | `party_relationship` | `from_party_id` and `to_party_id` both reference `party.party_id` | directional connection between two parties |
+| Property role | `property_party_role` | links `property` and `party` | ownership, occupation, management or other property-related role |
+| Instruction role | `instruction_party_role` | links `instruction` and `party` | role a party plays on an instruction |
 
-### Address To Property
+Relationship tables are important because they let one real-world person or organisation play different roles without duplicating the source record.
 
-| Parent table | Child table | Key                                         | Constraint            | Notes                                         |
-| ------------ | ----------- | ------------------------------------------- | --------------------- | --------------------------------------------- |
-| `address`    | `property`  | `property.address_id -> address.address_id` | foreign key, nullable | property may exist before full address detail |
+## Property And Asset Context
 
-### Property Structure And Roles
+| PBM business object | Current schema table | Relationship | Meaning |
+| --- | --- | --- | --- |
+| Property | `property` | `property.address_id -> address.address_id` | location or asset context for work |
+| Property unit | `property_unit` | `property_unit.property_id -> property.property_id` | subdivision of a property |
+| Property role | `property_party_role` | links `property` and `party` | party involvement with a property |
 
-| Parent table | Child table           | Key                                                       | Constraint  | Notes                                   |
-| ------------ | --------------------- | --------------------------------------------------------- | ----------- | --------------------------------------- |
-| `property`   | `property_unit`       | `property_unit.property_id -> property.property_id`       | foreign key | one property to many units              |
-| `property`   | `property_party_role` | `property_party_role.property_id -> property.property_id` | foreign key | ownership, occupation, management       |
-| `party`      | `property_party_role` | `property_party_role.party_id -> party.party_id`          | foreign key | works for organisations and individuals |
+Property records provide asset context. They must not become a separate delivery model. Work is still controlled through instructions, projects, activities and services.
 
-## Customer And Commercial Spine
+## Client And Commercial Spine
 
-### Party To Client Account
+| PBM business object | Current schema table | Relationship | Meaning |
+| --- | --- | --- | --- |
+| Client account | `client_account` | `client_account.party_id -> party.party_id` | commercial account for a party |
+| Instruction | `instruction` | `instruction.client_account_id -> client_account.client_account_id` | accepted or controlled work request |
+| Instruction party role | `instruction_party_role` | links `instruction` and `party` | billing, contact, customer, intermediary or other role |
+| Instruction property | `instruction_property` | links `instruction` and `property` | subject property or property context |
 
-| Parent table | Child table      | Key                                         | Constraint          | Notes                                               |
-| ------------ | ---------------- | ------------------------------------------- | ------------------- | --------------------------------------------------- |
-| `party`      | `client_account` | `client_account.party_id -> party.party_id` | foreign key, unique | each party currently has at most one client account |
+Current implementation note: `client_account` is currently one-to-one with `party`. If PBM later needs multiple commercial accounts for one party, this must be changed deliberately.
 
-Implementation note:
+## Project And Delivery Relationships
 
-- `uq_client_account_party` means one party cannot currently hold multiple client accounts.
-- if future legal-entity or multi-brand scenarios require more than one commercial account per party, this constraint will need deliberate review.
+| PBM business object | Current schema table | Relationship | Meaning |
+| --- | --- | --- | --- |
+| Project | `project` | root delivery coordination record | controlled body of work |
+| Project instruction link | `project_instruction` | links `project` and `instruction` | connects project delivery back to instructed work |
+| Deliverable | `deliverable` | `deliverable.project_id -> project.project_id` | output or agreed result of work |
+| Activity | `activity` | may link to `instruction`, `project`, `property` and lead `party` | unit of work or technical activity |
 
-### Client Account To Instruction
+Projects organise delivery. They do not replace the client, instruction or property root.
 
-| Parent table     | Child table   | Key                                                                 | Constraint  | Notes                                          |
-| ---------------- | ------------- | ------------------------------------------------------------------- | ----------- | ---------------------------------------------- |
-| `client_account` | `instruction` | `instruction.client_account_id -> client_account.client_account_id` | foreign key | each instruction belongs to one client account |
+## Activity Chain Relationships
 
-### Instruction Roles And Property Links
+PBM's technical work chain is:
 
-| Parent table  | Child table              | Key                                                                   | Constraint  | Notes                                             |
-| ------------- | ------------------------ | --------------------------------------------------------------------- | ----------- | ------------------------------------------------- |
-| `instruction` | `instruction_party_role` | `instruction_party_role.instruction_id -> instruction.instruction_id` | foreign key | customer, billing, contact and intermediary roles |
-| `party`       | `instruction_party_role` | `instruction_party_role.party_id -> party.party_id`                   | foreign key | shared party model                                |
-| `instruction` | `instruction_property`   | `instruction_property.instruction_id -> instruction.instruction_id`   | foreign key | subject-property links                            |
-| `property`    | `instruction_property`   | `instruction_property.property_id -> property.property_id`            | foreign key | property may recur across instructions            |
+```text
+Activity
+  -> Activity Area
+    -> Observation
+      -> Assessment
+        -> Action
+          -> Outcome
+            -> Outcome Revision
+```
 
-Implementation note:
+| PBM business object | Current schema table | Relationship | Meaning |
+| --- | --- | --- | --- |
+| Activity area | `activity_area` | `activity_area.activity_id -> activity.activity_id` | internal structure of an activity |
+| Observation | `observation` | `observation.activity_id -> activity.activity_id` | finding or recorded fact |
+| Assessment | `assessment` | `assessment.observation_id -> observation.observation_id` | evaluation of the finding |
+| Action | `action` | `action.assessment_id -> assessment.assessment_id` | response to the assessment |
+| Outcome | `outcome` | may link to `activity`, `action` or `deliverable` | result, conclusion or output |
+| Outcome revision | `outcome_revision` | `outcome_revision.outcome_id -> outcome.outcome_id` | revision and approval history |
 
-- `uq_instruction_party_role` prevents duplicate party-role-period combinations on the same instruction.
-- `uq_instruction_property_role` prevents duplicate property links for the same relationship type.
+This chain must remain reusable across service types. Sector-specific packages can extend it, but should not fork it.
 
-## Project And Deliverable Relationships
+## Evidence And Information Relationships
 
-### Project Coordination
+| PBM business object | Current schema table | Relationship | Meaning |
+| --- | --- | --- | --- |
+| Evidence item | `evidence_item` | may link to activity, area, observation, assessment, action or outcome | material supporting a record |
+| Capturing party | `party` | `evidence_item.captured_by_party_id -> party.party_id` | who captured or authored the evidence |
+| Document | planned document tables | planned | controlled business record, template, file or formal output |
 
-| Parent table  | Child table           | Key                                                                | Constraint  | Notes                       |
-| ------------- | --------------------- | ------------------------------------------------------------------ | ----------- | --------------------------- |
-| `project`     | `project_instruction` | `project_instruction.project_id -> project.project_id`             | foreign key | project-to-instruction link |
-| `instruction` | `project_instruction` | `project_instruction.instruction_id -> instruction.instruction_id` | foreign key | instruction-to-project link |
+Evidence is attached to business records. It should not become the ownership point for the work, client, property or project.
 
-### Deliverables
+## Financial Relationships
 
-| Parent table  | Child table   | Key                                                        | Constraint            | Notes                                   |
-| ------------- | ------------- | ---------------------------------------------------------- | --------------------- | --------------------------------------- |
-| `project`     | `deliverable` | `deliverable.project_id -> project.project_id`             | foreign key           | deliverable always belongs to a project |
-| `instruction` | `deliverable` | `deliverable.instruction_id -> instruction.instruction_id` | foreign key, nullable | optional direct instruction context     |
+| PBM business object | Current schema table | Relationship | Meaning |
+| --- | --- | --- | --- |
+| Fee agreement | `fee_agreement` | `fee_agreement.instruction_id -> instruction.instruction_id` | commercial basis for work |
+| Sales invoice | `sales_invoice` | may link to `client_account`, `instruction` and `project` | money requested from the client |
+| Payment / receipt | planned | planned | money received or paid |
+| Ledger entry | planned | planned | formal accounting record |
+| WIP item | planned | planned | work in progress value |
 
-## Finance Relationships
-
-### Fee Agreement
-
-| Parent table  | Child table     | Key                                                          | Constraint  | Notes                            |
-| ------------- | --------------- | ------------------------------------------------------------ | ----------- | -------------------------------- |
-| `instruction` | `fee_agreement` | `fee_agreement.instruction_id -> instruction.instruction_id` | foreign key | fee basis belongs to instruction |
-
-### Sales Invoice
-
-| Parent table     | Child table     | Key                                                                   | Constraint            | Notes                        |
-| ---------------- | --------------- | --------------------------------------------------------------------- | --------------------- | ---------------------------- |
-| `client_account` | `sales_invoice` | `sales_invoice.client_account_id -> client_account.client_account_id` | foreign key           | invoice customer anchor      |
-| `instruction`    | `sales_invoice` | `sales_invoice.instruction_id -> instruction.instruction_id`          | foreign key, nullable | optional instruction context |
-| `project`        | `sales_invoice` | `sales_invoice.project_id -> project.project_id`                      | foreign key, nullable | optional project context     |
-
-Implementation note:
-
-- the current schema does not yet include payment, credit note, WIP item or ledger entry tables.
-- these remain planned extensions to the financial relationship chain.
-
-## Activity Management Engine Relationships
-
-### Activity Parentage
-
-| Parent table  | Child table | Key                                                     | Constraint            | Notes                       |
-| ------------- | ----------- | ------------------------------------------------------- | --------------------- | --------------------------- |
-| `instruction` | `activity`  | `activity.instruction_id -> instruction.instruction_id` | foreign key, nullable | direct instruction work     |
-| `project`     | `activity`  | `activity.project_id -> project.project_id`             | foreign key, nullable | project-controlled work     |
-| `property`    | `activity`  | `activity.property_id -> property.property_id`          | foreign key, nullable | property-anchored work      |
-| `party`       | `activity`  | `activity.lead_party_id -> party.party_id`              | foreign key, nullable | lead person or organisation |
-
-### Activity Chain
-
-| Parent table    | Child table     | Key                                                                       | Constraint            | Notes                       |
-| --------------- | --------------- | ------------------------------------------------------------------------- | --------------------- | --------------------------- |
-| `activity`      | `activity_area` | `activity_area.activity_id -> activity.activity_id`                       | foreign key           | internal activity structure |
-| `activity_area` | `activity_area` | `activity_area.parent_activity_area_id -> activity_area.activity_area_id` | foreign key, nullable | recursive hierarchy         |
-| `activity`      | `observation`   | `observation.activity_id -> activity.activity_id`                         | foreign key           | activity findings           |
-| `activity_area` | `observation`   | `observation.activity_area_id -> activity_area.activity_area_id`          | foreign key, nullable | area-specific finding       |
-| `observation`   | `assessment`    | `assessment.observation_id -> observation.observation_id`                 | foreign key           | evaluation step             |
-| `assessment`    | `action`        | `action.assessment_id -> assessment.assessment_id`                        | foreign key           | response step               |
-| `action`        | `outcome`       | `outcome.action_id -> action.action_id`                                   | foreign key, nullable | outcome from action         |
-| `activity`      | `outcome`       | `outcome.activity_id -> activity.activity_id`                             | foreign key, nullable | direct outcome              |
-| `deliverable`   | `outcome`       | `outcome.deliverable_id -> deliverable.deliverable_id`                    | foreign key, nullable | contractual outcome         |
-
-### Outcome Revision
-
-| Parent table | Child table        | Key                                                                    | Constraint             | Notes                     |
-| ------------ | ------------------ | ---------------------------------------------------------------------- | ---------------------- | ------------------------- |
-| `outcome`    | `outcome_revision` | `outcome_revision.outcome_id -> outcome.outcome_id`                    | foreign key            | revision history          |
-| `party`      | `outcome_revision` | `prepared_by_party_id`, `reviewed_by_party_id`, `approved_by_party_id` | foreign keys, nullable | review and approval roles |
-
-### Evidence Links
-
-| Parent table    | Child table     | Key                                                                | Constraint            | Notes                       |
-| --------------- | --------------- | ------------------------------------------------------------------ | --------------------- | --------------------------- |
-| `activity`      | `evidence_item` | `evidence_item.activity_id -> activity.activity_id`                | foreign key, nullable | direct activity evidence    |
-| `activity_area` | `evidence_item` | `evidence_item.activity_area_id -> activity_area.activity_area_id` | foreign key, nullable | area evidence               |
-| `observation`   | `evidence_item` | `evidence_item.observation_id -> observation.observation_id`       | foreign key, nullable | finding evidence            |
-| `assessment`    | `evidence_item` | `evidence_item.assessment_id -> assessment.assessment_id`          | foreign key, nullable | evaluation evidence         |
-| `action`        | `evidence_item` | `evidence_item.action_id -> action.action_id`                      | foreign key, nullable | action evidence             |
-| `outcome`       | `evidence_item` | `evidence_item.outcome_id -> outcome.outcome_id`                   | foreign key, nullable | output evidence             |
-| `party`         | `evidence_item` | `evidence_item.captured_by_party_id -> party.party_id`             | foreign key, nullable | evidence author or capturer |
+Finance must consume the shared client, instruction and project context. It must not create a duplicate commercial or delivery model.
 
 ## Workflow And Event Relationships
 
-### Workflow Definition Layer
+| PBM business object | Current schema table | Relationship | Meaning |
+| --- | --- | --- | --- |
+| Workflow definition | `workflow_definition` | root workflow template | reusable lifecycle definition |
+| Workflow state | `workflow_state` | belongs to workflow definition | allowed state |
+| Workflow transition | `workflow_transition` | links from/to workflow states | allowed movement |
+| Workflow instance | `workflow_instance` | polymorphic binding through `entity_type_code` and `entity_id` | workflow attached to a business record |
+| Workflow instance state | `workflow_instance_state` | state history for workflow instance | progression record |
+| Business event | `business_event` | polymorphic binding through `entity_type_code` and `entity_id` | append-only business history |
 
-| Parent table          | Child table           | Key                                                                                        | Constraint   | Notes                          |
-| --------------------- | --------------------- | ------------------------------------------------------------------------------------------ | ------------ | ------------------------------ |
-| `workflow_definition` | `workflow_state`      | `workflow_state.workflow_definition_id -> workflow_definition.workflow_definition_id`      | foreign key  | state set belongs to workflow  |
-| `workflow_definition` | `workflow_transition` | `workflow_transition.workflow_definition_id -> workflow_definition.workflow_definition_id` | foreign key  | transitions belong to workflow |
-| `workflow_state`      | `workflow_transition` | `from_workflow_state_id`, `to_workflow_state_id`                                           | foreign keys | state-to-state move            |
-| `workflow_transition` | `workflow_action`     | `workflow_action.workflow_transition_id -> workflow_transition.workflow_transition_id`     | foreign key  | actions on transition          |
-
-### Workflow Runtime Layer
-
-| Parent table          | Child table               | Key                                                                                      | Constraint            | Notes                 |
-| --------------------- | ------------------------- | ---------------------------------------------------------------------------------------- | --------------------- | --------------------- |
-| `workflow_definition` | `workflow_instance`       | `workflow_instance.workflow_definition_id -> workflow_definition.workflow_definition_id` | foreign key           | live workflow binding |
-| `workflow_instance`   | `workflow_instance_state` | `workflow_instance_state.workflow_instance_id -> workflow_instance.workflow_instance_id` | foreign key           | progression history   |
-| `workflow_state`      | `workflow_instance_state` | `workflow_instance_state.workflow_state_id -> workflow_state.workflow_state_id`          | foreign key           | current state marker  |
-| `party`               | `workflow_instance_state` | `entered_by_party_id -> party.party_id`                                                  | foreign key, nullable | actor on state entry  |
-
-Implementation note:
-
-- `workflow_instance` uses polymorphic binding through `entity_type_code` and `entity_id` rather than direct foreign keys to business objects.
-- `uq_workflow_instance_entity` prevents duplicate workflow-definition bindings for the same entity.
-
-### Business Event Layer
-
-| Parent or referenced table | Child table      | Key                                                                    | Constraint                    | Notes                 |
-| -------------------------- | ---------------- | ---------------------------------------------------------------------- | ----------------------------- | --------------------- |
-| any business object        | `business_event` | `entity_type_code`, `entity_id`                                        | indexed polymorphic reference | append-only history   |
-| `workflow_instance`        | `business_event` | `workflow_instance_id -> workflow_instance.workflow_instance_id`       | foreign key, nullable         | workflow-linked event |
-| `workflow_transition`      | `business_event` | `workflow_transition_id -> workflow_transition.workflow_transition_id` | foreign key, nullable         | transition event      |
-| `workflow_state`           | `business_event` | `from_workflow_state_id`, `to_workflow_state_id`                       | foreign keys, nullable        | state change context  |
-| `party`                    | `business_event` | `performed_by_party_id -> party.party_id`                              | foreign key, nullable         | actor context         |
+Current implementation note: polymorphic bindings mean database-level referential integrity cannot fully validate every target object. The application layer must enforce the supported entity types and record existence.
 
 ## Current Relationship Caveats
 
-1. `client_account` is currently one-to-one with `party` because of `uq_client_account_party`.
-2. `deliverable` currently requires `project_id`, so a purely instruction-level deliverable is not yet supported without a project.
-3. `workflow_instance` and `business_event` use polymorphic entity references, which means referential integrity to business entities is enforced partly by application logic.
-4. `document` tables are still planned, so document relationships are conceptual in the architecture model but not yet materialised in current schema.
-5. finance extensions such as payments, WIP items, credit notes and ledger entries are described in requirements but not all are present in current schema.
+1. `client_account` is currently one-to-one with `party`.
+2. `deliverable` currently requires a project, so direct instruction-only deliverables are not fully supported.
+3. `workflow_instance` and `business_event` use polymorphic entity references.
+4. Document tables are planned and not yet fully materialised.
+5. Payments, WIP, credit notes and ledger entries remain planned finance extensions.
+6. Procurement and workforce relationships need deeper schema support as those workspaces mature.
 
-## Use In Design Reviews
+## Schema Change Review Rules
 
 Before approving a schema change, confirm:
 
-1. the relationship already exists here or the appendix is updated in the same change
-2. cardinality is explicit
-3. required foreign keys and uniqueness constraints are identified
-4. B2B and B2C behavior still works through the shared customer model
-5. polymorphic or nullable links are deliberate rather than accidental
+1. which PBM business object the table supports
+2. whether the relationship already exists in this appendix
+3. whether the cardinality is explicit
+4. whether foreign keys and uniqueness constraints are deliberate
+5. whether the change preserves the shared identity and client model
+6. whether the change avoids route-specific duplicate data ownership
+7. whether related product, architecture and requirement docs need to be updated in the same change
