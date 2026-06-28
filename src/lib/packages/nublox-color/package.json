@@ -1,0 +1,13 @@
+{
+  "name": "@nublox/color",
+  "version": "1.2.2-near-neutral",
+  "type": "module",
+  "private": true,
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "node test/smoke.mjs && node test/validate.mjs"
+  },
+  "devDependencies": {}
+}
