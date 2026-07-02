@@ -1,98 +1,83 @@
 export type Hex = `#${string}`;
-export type PaletteStep = 50 | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 | 950;
-export type StopSelection = 'auto' | 'manual';
-export type PaletteProfile = 'balanced' | 'vivid' | 'soft' | 'ink';
-export type SeedKind = 'neutral' | 'near-neutral' | 'chromatic';
+export type Stop = 50 | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 | 950;
+export const STOPS = [50,100,200,300,400,500,600,700,800,900,950] as const;
 
-export interface Rgb {
-  r: number; // 0..255
-  g: number;
-  b: number;
+export interface Rgb { r: number; g: number; b: number }
+export interface LinearRgb { r: number; g: number; b: number }
+export interface Oklab { l: number; a: number; b: number }
+export interface Oklch { l: number; c: number; h: number }
+
+export type RampProfileName = 'ui' | 'paint' | 'accessibility' | 'display';
+
+export interface RampOptions {
+  profile?: RampProfileName | RampProfile;
+  referenceStop?: Stop;
+  outputGamut?: 'srgb';
+  explain?: boolean;
+  maxIterations?: number;
 }
 
-export interface Rgb01 {
-  r: number; // 0..1
-  g: number;
-  b: number;
+export interface RampProfile {
+  name: RampProfileName | string;
+  lightness: Record<Stop, number>;
+  weights: ObjectiveWeights;
+  chromaBias: number;
+  hueFreedom: number;
+  contrastPriority: number;
+  description: string;
 }
 
-export interface Hwb {
-  h: number; // degrees
-  w: number; // 0..100
-  b: number; // 0..100
+export interface ObjectiveWeights {
+  deltaE: number;
+  hue: number;
+  chroma: number;
+  smoothness: number;
+  gamut: number;
+  contrast: number;
+  brand: number;
 }
 
-export interface Hsl {
-  h: number;
-  s: number;
-  l: number;
+export interface StopMetrics {
+  luminance: number;
+  contrastOnWhite: number;
+  contrastOnBlack: number;
+  preferredText: '#000000' | '#ffffff';
+  deltaEFromPrevious: number | null;
+  deltaEFromBase: number;
+  targetLightness: number;
+  actualLightness: number;
+  chromaScale: number;
+  hueAdjustment: number;
+  gamutCompressed: boolean;
+  gamutCompressionSteps: number;
+  objectiveScore: number;
+  notes: string[];
 }
 
-export interface Oklab {
-  L: number;
-  a: number;
-  b: number;
-}
-
-export interface Oklch {
-  L: number;
-  C: number;
-  h: number | null;
-}
-
-export interface PaletteOptions {
-  stopSelection?: StopSelection;
-  anchor?: PaletteStep;
-  profile?: PaletteProfile;
-  /** 0.5..1.5, higher makes light stops move closer to white. */
-  tintStrength?: number;
-  /** 0.5..1.5, higher makes dark stops move closer to black. */
-  shadeStrength?: number;
-  /** 0..2, adds a tiny opposite mix to avoid chalk/crush. */
-  toneStrength?: number;
-  /** 0.5..1.5, controls how much colour survives away from the anchor. */
-  vibrancy?: number;
-  /** Optional manual target brightness map, values 0..1. */
-  brightnessTargets?: Partial<Record<PaletteStep, number>>;
-}
-
-export interface PaletteStop {
-  step: PaletteStep;
+export interface ColorStop {
+  stop: Stop;
   hex: Hex;
   rgb: Rgb;
-  hsl: Hsl;
-  hwb: Hwb;
-  oklab: Oklab;
   oklch: Oklch;
-  brightness: number; // HSP brightness 0..1
-  targetBrightness: number;
-  mix: {
-    white: number; // 0..1
-    black: number; // 0..1
-    colour: number; // 0..1
-  };
-  colourStrength: number; // 0..100
-  text: '#111111' | '#ffffff';
-  contrast: {
-    white: number;
-    black: number;
-  };
-  deltaE: number | null;
-  anchor: boolean;
-  seedKind?: SeedKind;
+  metrics: StopMetrics;
 }
 
-export interface PaletteQualityCheck {
-  label: string;
-  status: 'pass' | 'warn' | 'fail';
-  message: string;
+export type Ramp = Record<Stop, ColorStop>;
+
+export interface ThemeInput {
+  primary: Hex;
+  secondary?: Hex;
+  accent?: Hex;
+  success?: Hex;
+  warning?: Hex;
+  danger?: Hex;
+  info?: Hex;
+  neutral?: Hex;
 }
 
-export interface PaletteQuality {
-  pass: boolean;
-  score: number;
-  anchor: PaletteStep;
-  checks: PaletteQualityCheck[];
-  issues: string[];
-  warnings: string[];
+export interface Theme {
+  ramps: Record<string, Ramp>;
+  tokens: Record<string, string>;
+  css: string;
+  json: string;
 }

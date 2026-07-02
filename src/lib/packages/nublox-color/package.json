@@ -1,13 +1,19 @@
 {
   "name": "@nublox/color",
-  "version": "1.2.2-near-neutral",
+  "version": "0.2.0",
+  "description": "Explainable perceptual colour definition engine for ramps, palettes, themes, accessibility and design tokens.",
   "type": "module",
-  "private": true,
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "sideEffects": false,
   "scripts": {
     "build": "tsc -p tsconfig.json",
-    "test": "node test/smoke.mjs && node test/validate.mjs"
+    "dev": "npm run build && node dist/demo.js",
+    "test": "npm run build && node dist/__tests__/basic.test.js"
   },
-  "devDependencies": {}
+  "keywords": ["oklab", "oklch", "color", "colour", "design-system", "accessibility", "wcag", "tokens"],
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "^5.5.0"
+  }
 }

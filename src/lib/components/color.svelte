@@ -1,51 +1,97 @@
 <script lang="ts">
 	import {
-		assessPaletteQuality,
-		calculateStopFromColor,
-		generatePalette,
-		getPaletteProfile,
-		paletteToCssVars,
-		type PaletteStep
+		generateRamp,
+		rampToCssVars,
+		resolveProfile,
+		STOPS,
+		type ColorStop,
+		type Hex,
+		type Ramp,
+		type RampProfileName,
+		type Stop
 	} from '$lib/packages/nublox-color/dist';
 
 	type StopSelection = 'auto' | 'manual';
-	type Profile = 'balanced' | 'vivid' | 'soft' | 'ink';
 
-	let seed = $state('#9437ff');
+	let seed = $state<Hex>('#9437ff');
 	let name = $state('brand');
 	let stopSelection = $state<StopSelection>('auto');
-	let anchor = $state<PaletteStep>(500);
-	let profile = $state<Profile>('vivid');
-	let tintStrength = $state(0.9);
-	let shadeStrength = $state(0.92);
-	let toneStrength = $state(0.55);
-	let vibrancy = $state(1.16);
+	let anchor = $state<Stop>(500);
+	let profile = $state<RampProfileName>('ui');
 
-	$effect(() => {
-		const preset = getPaletteProfile(profile);
-		tintStrength = preset.tintStrength;
-		shadeStrength = preset.shadeStrength;
-		toneStrength = preset.toneStrength;
-		vibrancy = preset.vibrancy;
-	});
+	function calculateStopFromColor(hex: Hex): Stop {
+		const ramp = generateRamp(hex, { profile: 'ui', referenceStop: 500 });
+		const baseL = ramp[500].oklch.l;
+
+		let closest: Stop = 500;
+		let best = Infinity;
+
+		for (const stop of STOPS) {
+			const distance = Math.abs(ramp[stop].oklch.l - baseL);
+			if (distance < best) {
+				best = distance;
+				closest = stop;
+			}
+		}
+
+		return closest;
+	}
 
 	let autoAnchor = $derived(calculateStopFromColor(seed));
 	let activeAnchor = $derived(stopSelection === 'auto' ? autoAnchor : anchor);
 
-	let palette = $derived(
-		generatePalette(seed, {
-			stopSelection,
-			anchor,
+	let ramp: Ramp = $derived(
+		generateRamp(seed, {
 			profile,
-			tintStrength,
-			shadeStrength,
-			toneStrength,
-			vibrancy
+			referenceStop: activeAnchor,
+			explain: true
 		})
 	);
 
-	let quality = $derived(assessPaletteQuality(palette, { seed, anchor: activeAnchor }));
-	let cssVars = $derived(paletteToCssVars(name || 'brand', palette));
+	let palette: ColorStop[] = $derived(STOPS.map((stop) => ramp[stop]));
+
+	let activeProfile = $derived(resolveProfile(profile));
+	let cssVars = $derived(rampToCssVars(name || 'brand', ramp));
+
+	let quality = $derived.by(() => {
+		const stops = palette;
+		const compressed = stops.filter((s) => s.metrics.gamutCompressed).length;
+		const poorContrast = stops.filter(
+			(s) => Math.max(s.metrics.contrastOnWhite, s.metrics.contrastOnBlack) < 4.5
+		).length;
+
+		const deltaValues = stops
+			.map((s) => s.metrics.deltaEFromPrevious)
+			.filter((v): v is number => typeof v === 'number');
+
+		const averageDelta =
+			deltaValues.length > 0 ? deltaValues.reduce((a, b) => a + b, 0) / deltaValues.length : 0;
+
+		const deltaVariance =
+			deltaValues.length > 0
+				? deltaValues.reduce((sum, value) => sum + Math.abs(value - averageDelta), 0) /
+					deltaValues.length
+				: 0;
+
+		const score = Math.max(
+			0,
+			Math.round(100 - compressed * 4 - poorContrast * 8 - deltaVariance * 2)
+		);
+
+		return {
+			score,
+			pass: score >= 75,
+			issues: [
+				...(poorContrast > 0
+					? [`${poorContrast} stops have weak black/white foreground contrast.`]
+					: [])
+			],
+			warnings: [
+				...(compressed > 0 ? [`${compressed} stops required sRGB gamut compression.`] : []),
+				...(deltaVariance > 6 ? ['Perceptual spacing is uneven across the ramp.'] : [])
+			]
+		};
+	});
 
 	function n(value: unknown, digits = 2) {
 		return typeof value === 'number' && Number.isFinite(value) ? value.toFixed(digits) : '—';
@@ -70,66 +116,42 @@
 		<label>
 			Stop selection
 			<select bind:value={stopSelection}>
-				<option value="auto">Auto from brightness</option>
-				<option value="manual">Manual anchor</option>
+				<option value="auto">Auto from lightness</option>
+				<option value="manual">Manual reference stop</option>
 			</select>
 		</label>
 
 		<label>
-			Anchor
+			Reference stop
 			<select bind:value={anchor} disabled={stopSelection === 'auto'}>
-				<option value={50}>50</option>
-				<option value={100}>100</option>
-				<option value={200}>200</option>
-				<option value={300}>300</option>
-				<option value={400}>400</option>
-				<option value={500}>500</option>
-				<option value={600}>600</option>
-				<option value={700}>700</option>
-				<option value={800}>800</option>
-				<option value={900}>900</option>
-				<option value={950}>950</option>
+				{#each STOPS as stop}
+					<option value={stop}>{stop}</option>
+				{/each}
 			</select>
 		</label>
 
 		<label>
 			Profile
 			<select bind:value={profile}>
-				<option value="vivid">Vivid</option>
-				<option value="balanced">Balanced</option>
-				<option value="soft">Soft</option>
-				<option value="ink">Ink</option>
+				<option value="ui">UI</option>
+				<option value="paint">Paint</option>
+				<option value="accessibility">Accessibility</option>
+				<option value="display">Display</option>
 			</select>
 		</label>
 	</div>
 
-	<div class="sliders">
-		<label
-			>Tint <input type="range" min="0.5" max="1.5" step="0.01" bind:value={tintStrength} />
-			{n(tintStrength, 2)}</label
-		>
-		<label
-			>Shade <input type="range" min="0.5" max="1.5" step="0.01" bind:value={shadeStrength} />
-			{n(shadeStrength, 2)}</label
-		>
-		<label
-			>Tone <input type="range" min="0" max="2" step="0.01" bind:value={toneStrength} />
-			{n(toneStrength, 2)}</label
-		>
-		<label
-			>Vibrancy <input type="range" min="0.5" max="1.5" step="0.01" bind:value={vibrancy} />
-			{n(vibrancy, 2)}</label
-		>
-	</div>
-
 	<div class="summary">
-		<div><strong>Engine</strong> Bezier visual-brightness paint path</div>
-		<div><strong>Anchor</strong> {activeAnchor}</div>
+		<div><strong>Engine</strong> NuBlox perceptual monochromatic ramp</div>
+		<div><strong>Profile</strong> {activeProfile.name}</div>
+		<div><strong>Reference stop</strong> {activeAnchor}</div>
 		<div class:pass={quality.pass} class:fail={!quality.pass}>
 			<strong>Quality</strong>
 			{quality.score}/100
 		</div>
 	</div>
+
+	<p class="description">{activeProfile.description}</p>
 
 	{#if quality.issues.length > 0 || quality.warnings.length > 0}
 		<ul class="issues">
@@ -140,23 +162,32 @@
 
 	<div class="ramp">
 		{#each palette as stop}
-			<div class:anchor={stop.anchor} class="swatch">
-				<div class="chip" style={`background:${stop.hex}; color:${stop.text}`}>
-					<span>{stop.step}</span>
+			<div class:anchor={stop.stop === activeAnchor} class="swatch">
+				<div class="chip" style={`background:${stop.hex}; color:${stop.metrics.preferredText}`}>
+					<span>{stop.stop}</span>
 				</div>
+
 				<div class="meta">
 					<strong>{stop.hex}</strong>
-					<span>brightness {n(stop.brightness, 3)} / target {n(stop.targetBrightness, 3)}</span>
+					<span>OKLCH {n(stop.oklch.l, 3)} {n(stop.oklch.c, 3)} {n(stop.oklch.h, 1)}</span>
+					<span>Luminance {n(stop.metrics.luminance, 3)}</span>
+					<span>Target L {n(stop.metrics.targetLightness, 3)}</span>
+					<span>Actual L {n(stop.metrics.actualLightness, 3)}</span>
+					<span>Chroma scale {n(stop.metrics.chromaScale, 3)}</span>
+					<span>Hue adjust {n(stop.metrics.hueAdjustment, 2)}°</span>
 					<span
-						>mix W {n(stop.mix.white * 100, 1)} B {n(stop.mix.black * 100, 1)} C {n(
-							stop.mix.colour * 100,
-							1
+						>Contrast W {n(stop.metrics.contrastOnWhite, 2)} B {n(
+							stop.metrics.contrastOnBlack,
+							2
 						)}</span
 					>
-					<span>HWB {n(stop.hwb.h, 1)} {n(stop.hwb.w, 1)}% {n(stop.hwb.b, 1)}%</span>
-					<span>OKLCH {n(stop.oklch.L, 3)} {n(stop.oklch.C, 3)} {n(stop.oklch.h, 1)}</span>
-					<span>contrast W {n(stop.contrast.white, 2)} B {n(stop.contrast.black, 2)}</span>
-					<span>ΔE {n(stop.deltaE, 3)}</span>
+					<span>ΔE prev {n(stop.metrics.deltaEFromPrevious, 3)}</span>
+					<span>ΔE base {n(stop.metrics.deltaEFromBase, 3)}</span>
+					<span>Objective {n(stop.metrics.objectiveScore, 2)}</span>
+
+					{#if stop.metrics.gamutCompressed}
+						<span class="warn">Gamut compressed: {stop.metrics.gamutCompressionSteps} steps</span>
+					{/if}
 				</div>
 			</div>
 		{/each}
@@ -168,107 +199,3 @@
 	<h3>Raw first stop</h3>
 	<pre>{JSON.stringify(palette[0], null, 2)}</pre>
 </section>
-
-<style>
-	.tester {
-		display: grid;
-		gap: 1.5rem;
-		padding: 1.5rem;
-		font-family: system-ui, sans-serif;
-	}
-	.controls {
-		display: flex;
-		flex-wrap: wrap;
-		align-items: end;
-		gap: 1rem;
-	}
-	label {
-		display: grid;
-		gap: 0.35rem;
-		font-weight: 700;
-	}
-	input[type='text'],
-	input[type='number'],
-	select {
-		padding: 0.5rem 0.65rem;
-		border: 1px solid #ccc;
-		border-radius: 0.5rem;
-	}
-	input[type='color'] {
-		width: 4rem;
-		height: 2.5rem;
-	}
-	code {
-		padding: 0.55rem 0.7rem;
-		border-radius: 0.5rem;
-		background: #f3f4f6;
-		font-weight: 700;
-	}
-	.sliders {
-		display: grid;
-		gap: 0.65rem;
-		max-width: 48rem;
-	}
-	.sliders label {
-		grid-template-columns: 6rem 1fr 3rem;
-		align-items: center;
-	}
-	.summary {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 0.75rem;
-	}
-	.summary > div {
-		width: fit-content;
-		padding: 0.6rem 0.8rem;
-		border-radius: 0.6rem;
-		background: #f3f4f6;
-	}
-	.pass {
-		background: #dcfce7 !important;
-		color: #14532d;
-	}
-	.fail {
-		background: #fee2e2 !important;
-		color: #7f1d1d;
-	}
-	.issues {
-		margin: 0;
-		padding-left: 1.25rem;
-		color: #7f1d1d;
-	}
-	.ramp {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
-		gap: 1rem;
-	}
-	.swatch {
-		overflow: hidden;
-		border: 1px solid #ddd;
-		border-radius: 0.75rem;
-		background: white;
-	}
-	.swatch.anchor {
-		outline: 3px solid #111;
-	}
-	.chip {
-		display: grid;
-		min-height: 5rem;
-		place-items: center;
-		font-size: 1.25rem;
-		font-weight: 900;
-	}
-	.meta {
-		display: grid;
-		gap: 0.2rem;
-		padding: 0.75rem;
-		font-size: 0.72rem;
-	}
-	pre {
-		overflow: auto;
-		padding: 1rem;
-		border-radius: 0.75rem;
-		background: #111;
-		color: #eee;
-	}
-</style>
